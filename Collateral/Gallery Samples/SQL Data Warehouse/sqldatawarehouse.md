@@ -52,7 +52,7 @@ Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http
 
 ## Create V12 Azure SQL Server
 
-New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateFile "C:\Users\roalexan\Source\Repos\SolutionArchitects\Collateral\Gallery Samples\SQL Data Warehouse\deploy-sqlserver.json"
+New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateUri https://raw.githubusercontent.com/roalexan/SolutionArchitects/c7505f45a5a7985e58c9a52efad77085b47647a7/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse/deploy-sqlserver.json
 
 ## Create Azure SQL Data Warehouse
 

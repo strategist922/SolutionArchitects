@@ -96,6 +96,20 @@
             "resources": [
                 {
                     "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
+                    "name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
+                    "type": "databases",
+                    "location": "[variables('settings')['sqlSettings'].sqlLocation]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', variables('settings')['sqlSettings'].sqlServerName)]"
+                    ],
+                    "properties": {
+                        "edition": "[variables('settings')['sqlSettings'].sqlEdition]",
+                        "collation": "[variables('settings')['sqlSettings'].sqlCollation]",
+                        "maxSizeBytes": "[variables('settings')['sqlSettings'].sqlMaxSizeBytes]"
+                    }
+                },
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
                     "name": "AllowAllWindowsAzureIps",
                     "type": "firewallrules",
                     "location": "[variables('settings')['sqlSettings'].sqlLocation]",
