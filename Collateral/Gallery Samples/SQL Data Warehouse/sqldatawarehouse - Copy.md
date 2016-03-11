@@ -34,15 +34,17 @@ Fill in  - one paragraph
 - Microsoft SQL Server Management Studio
 - Local SQL Server with Data Management Gateway
 
-## Populate Local SQL Server
+## Create Local SQL Server
 
+* install SQL Server
+* make user
 * make database
 * make table
 * populate table
 
 ## Get Latest PowerShell
 
-Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http://go.microsoft.com/fwlink/p/?linkid=320376&clcid=0x409
+download the Azure PowerShell module, run Microsoft Web Platform Installer. http://go.microsoft.com/fwlink/p/?linkid=320376&clcid=0x409
 
 ## Create Azure Resource Group
 
@@ -52,13 +54,7 @@ Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http
 
 ## Create V12 Azure SQL Server
 
-New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateFile "C:\Users\roalexan\Source\Repos\SolutionArchitects\Collateral\Gallery Samples\SQL Data Warehouse\deploy-sqlserver.json"
-
 ## Create Azure SQL Data Warehouse
-
-New-AzureRmSqlDatabase -RequestedServiceObjectiveName "<Service Objective>" -DatabaseName "<Data Warehouse Name>" -ServerName "<Server Name>" -ResourceGroupName "<ResourceGroupName>" -Edition "DataWarehouse"
-
-New-AzureRmSqlDatabase -RequestedServiceObjectiveName "DW400" -DatabaseName "mynewsqldw1" -ServerName "personal-rba" -ResourceGroupName "rbaResourceGroup3" -Edition "DataWarehouse"
 
 ### Deploy Azure SQL Server
 
