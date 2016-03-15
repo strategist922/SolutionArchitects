@@ -52,6 +52,8 @@ Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http
 
 ## Create V12 Azure SQL Server
 
+New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateFile "C:\Users\roalexan\Source\Repos\SolutionArchitects\Collateral\Gallery Samples\SQL Data Warehouse\deploy-sqlserver.json"
+
 New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateUri https://raw.githubusercontent.com/roalexan/SolutionArchitects/c7505f45a5a7985e58c9a52efad77085b47647a7/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse/deploy-sqlserver.json
 
 ## Create Azure SQL Data Warehouse
@@ -67,7 +69,41 @@ New-AzureRmSqlDatabase -RequestedServiceObjectiveName "DW400" -DatabaseName "myn
 * make database
 * make table
 
+      IF OBJECT_ID('dbo.Events', 'U') IS NOT NULL DROP TABLE dbo.Events
+	  IF OBJECT_ID('dbo.Ratings', 'U') IS NOT NULL DROP TABLE dbo.Ratings
+
+      CREATE TABLE dbo.Events(
+	    EventId INT,
+	    EventName NVARCHAR(50) NOT NULL,
+	    Speakers NVARCHAR(200) NOT NULL,
+	    Topics NVARCHAR(200) NOT NULL,
+	    Country NVARCHAR(50) NOT NULL,
+	    State NVARCHAR(50) NOT NULL,
+	    City NVARCHAR(50) NOT NULL
+	    CONSTRAINT PK_Events PRIMARY KEY(EventId)
+      )
+
+      CREATE TABLE dbo.Ratings(
+	    DateTime DATETIME2(7),
+	    EventId INT,
+	    Rating INT
+	    CONSTRAINT PK_Ratings PRIMARY KEY(DateTime)
+      )
+
+      INSERT INTO dbo.Events  VALUES(1234,'MLADS','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
+
+      INSERT INTO dbo.Ratings VALUES('08/13/2015 00:15:07',1234,5)
+      INSERT INTO dbo.Ratings VALUES('08/13/2015 00:16:07',1234,1)
+      INSERT INTO dbo.Ratings VALUES('08/13/2015 00:17:07',1234,3)
+
 ## Create Pipeline From Local SQL Server to Azure SQL Data Warehouse
+
+
+
+
+
+
+# OLD STUFF
 
 ### Using Local File
 
