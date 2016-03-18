@@ -4,7 +4,7 @@
     "parameters": {
         "unique": {
             "type": "string",
-            "defaultValue": "rba7",
+            "defaultValue": "rba8",
             "metadata": {
                 "description": "Suffix for deployed resources"
             }
@@ -43,7 +43,6 @@
                 "datafactorySettings": {
                     "ETLHiveActivityQuery": "ETLQuery.hql",
                     "inputSerilization": {
-                        /*"type": "json",*/
 						"type": "CSV",
                         "properties": {
 							"fieldDelimiter": ",",
@@ -94,7 +93,6 @@
                 "sqlMaxSizeBytes": "2147483648",
                 "sqlStartIpAddress": "0.0.0.0",
                 "sqlEndIpAddress": "255.255.255.255",
-                /*"sqlEdition": "Basic",*/
 				"sqlEdition": "DataWarehouse",
                 "sqlCollation": "SQL_Latin1_General_CP1_CI_AS",
 				"requestedServiceObjectiveName": "DW400"
@@ -105,15 +103,12 @@
             "serviceBusSettings": {
                 "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
                 "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
-                /*"serviceBusPublishEventHubName": "[concat(variables('currentSolAccSettings').title,'publish',parameters('unique'))]",*/
                 "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
-                /*"consumerGroupName": "streamConsumerGroup",*/
-                /*"powerBIConsumerGroupName": "PowerBIConsumerGroup",*/
             }
         }
     },
     "resources": [
-        /* Azure Storage Account */ {
+        {
             "apiVersion": "[variables('settings')['apiVersion'].storageAccountApiVersion]",
             "type": "Microsoft.ClassicStorage/StorageAccounts",
             "name": "[variables('settings')['storageSettings'].storageAccountName]",
@@ -125,7 +120,7 @@
                 "description": "Create the Azure Storage Account"
             }
         },
-        /* Azure Service Bus */ {
+        {
             "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
             "type": "Microsoft.EventHub/namespaces",
             "name": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
@@ -143,53 +138,16 @@
                     "properties": {
                         "path": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
                     },
-                    /*"resources": [
-                        {
-                            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
-                            "type": "ConsumerGroups",
-                            "name": "[variables('settings')['serviceBusSettings'].consumerGroupName]",
-                            "dependsOn": [
-                                "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
-                            ],
-                            "properties": {
-                                "enableCheckpoint": "false"
-                            }
-                        },
-                        {
-                            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
-                            "type": "ConsumerGroups",
-                            "name": "[variables('settings')['serviceBusSettings'].powerBIConsumerGroupName]",
-                            "dependsOn": [
-                                "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
-                            ],
-                            "properties": {
-                                "enableCheckpoint": "false"
-                            }
-                        }
-                    ],*/
                     "metadata": {
                         "description": "Create the Event Hub"
                     }
                 }
-                /*{
-                    "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
-                    "type": "eventHubs",
-                    "name": "[variables('settings')['serviceBusSettings'].serviceBusPublishEventHubName]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [ "[concat('Microsoft.EventHub/namespaces/', variables('settings')['serviceBusSettings'].serviceBusNamespaceName)]" ],
-                    "properties": {
-                        "path": "[variables('settings')['serviceBusSettings'].serviceBusPublishEventHubName]"
-                    },
-                    "metadata": {
-                        "description": "Create the Publish Event Hub"
-                    }
-                }*/
             ],
             "metadata": {
                 "description": "Create the Event Hub Namespace"
             }
         },
-        /* Azure SQL */ {
+        {
             "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
             "type": "Microsoft.Sql/servers",
             "name": "[variables('settings')['sqlSettings'].sqlServerName]",
@@ -211,7 +169,6 @@
                     "properties": {
                         "edition": "[variables('settings')['sqlSettings'].sqlEdition]",
                         "collation": "[variables('settings')['sqlSettings'].sqlCollation]"
-                        /*"maxSizeBytes": "[variables('settings')['sqlSettings'].sqlMaxSizeBytes]"*/
                     }
                 },
                 {
@@ -232,7 +189,7 @@
                 "description": "Create the SQL Database"
             }
         },
-        /* Azure Stream Analytics */ {
+        {
             "apiVersion": "[variables('settings')['apiVersion'].asaApiVersion]",
             "type": "Microsoft.StreamAnalytics/streamingJobs",
             "name": "[variables('settings')['asaSettings'].asaJobName]",
@@ -257,7 +214,6 @@
                                     "SharedAccessPolicyName": "[variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName]",
                                     "SharedAccessPolicyKey": "[listKeys(resourceid('Microsoft.Eventhub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName ), variables('settings')['apiVersion'].serviceBusApiVersion).primaryKey]",
                                     "SourcePartitionCount": 16
-                                    /*"consumerGroupName": "[variables('settings')['serviceBusSettings'].consumerGroupName]"*/
                                 }
                             }
                         }
@@ -267,7 +223,6 @@
                     "name": "ProcessSampleData",
                     "properties": {
                         "streamingUnits": 1,
-                        /*"query": "select user_id, state, product_id, product_name as 'product viewed', product_category,product_price as 'product price', ad_id, ad_name as 'ad shown', ad_category, ad_price as 'ad price', click, sampletime, EventProcessedUtcTime, PartitionId, EventEnqueuedUtcTime into OutputSQL from InputHub"*/
 						"query": "select DateTime, EventId, Rating into OutputSQL from InputHub"
                     }
                 },
@@ -280,7 +235,6 @@
 									"Database": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
 									"Password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
 									"Server": "[variables('settings')['sqlSettings'].sqlServerName]",
-									/*"Table": "streamdata",*/
 									"Table": "Ratings",
 									"User": "[variables('settings')['sqlSettings'].sqlServerUserName]"
 								},
