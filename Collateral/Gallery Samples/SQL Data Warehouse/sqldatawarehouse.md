@@ -62,6 +62,29 @@ New-AzureRmSqlDatabase -RequestedServiceObjectiveName "<Service Objective>" -Dat
 
 New-AzureRmSqlDatabase -RequestedServiceObjectiveName "DW400" -DatabaseName "mynewsqldw1" -ServerName "personal-rba" -ResourceGroupName "rbaResourceGroup3" -Edition "DataWarehouse"
 
+* make table
+
+      IF OBJECT_ID('dbo.Events', 'U') IS NOT NULL DROP TABLE dbo.Events
+      IF OBJECT_ID('dbo.Ratings', 'U') IS NOT NULL DROP TABLE dbo.Ratings
+
+      CREATE TABLE dbo.Events(
+      EventId INT,
+      EventName NVARCHAR(50) NOT NULL,
+      Speakers NVARCHAR(200) NOT NULL,
+      Topics NVARCHAR(200) NOT NULL,
+      Country NVARCHAR(50) NOT NULL,
+      State NVARCHAR(50) NOT NULL,
+      City NVARCHAR(50) NOT NULL
+      CONSTRAINT PK_Events PRIMARY KEY(EventId)
+      )
+
+      CREATE TABLE dbo.Ratings(
+      DateTime DATETIME2(7),
+      EventId INT,
+      Rating INT
+      CONSTRAINT PK_Ratings PRIMARY KEY(DateTime)
+      )
+
 ### Deploy Azure SQL Server
 
 * provision
