@@ -33,11 +33,14 @@ Fill in  - one paragraph
 - Microsoft Azure subscription with login credentials
 - Microsoft SQL Server Management Studio
 
+<!--
 ## Get Latest PowerShell
 
 Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http://go.microsoft.com/fwlink/p/?linkid=320376&clcid=0x409
+-->
 
 ## Deploy to Azure
+<!--
 <a href="https://azuredeploy.net/?repository=https://github.com/roalexan/SolutionArchitects" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 
 for MongoDB
@@ -51,6 +54,7 @@ for MongoDB
 </a>
 
 my stuff
+-->
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -60,14 +64,16 @@ my stuff
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-
-
+<!--
 * Login-AzureRmAccount
 * Select-AzureRmSubscription -SubscriptionID "bc4170f0-cc6e-49d2-ba65-bc00a7a4df6b"
 * New-AzureRmResourceGroup -Name rbaResourceGroup7 -Location "Central US"
 * New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateUri https://raw.githubusercontent.com/roalexan/SolutionArchitects/c7505f45a5a7985e58c9a52efad77085b47647a7/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse/deploy.json
+-->
 
 ## Create tables
+
+Connect to the Data Warehouse using a SQL Client (example: Microsoft SQL Server Management Studio) and create/populate the tables by running:
 
     CREATE TABLE Events (
     EventId INT,
@@ -93,10 +99,20 @@ my stuff
     CLUSTERED COLUMNSTORE INDEX
     )
 
-INSERT INTO Events VALUES(1234,'MLADS','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
+		INSERT INTO Events VALUES(1,'MLADS','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
+		INSERT INTO Events VALUES(2,'STRATA','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
+		INSERT INTO Events VALUES(3,'BUILD','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
+		INSERT INTO Events VALUES(4,'USER','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
 
+## Start the ASA job
 
+Log into the Azure Portal and start the ASA job.
 
+## Run the data generator
+
+## Create the AML service
+
+## Create the PBI dashboard
 
 # JUNK FROM HERE DOWN
 
