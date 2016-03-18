@@ -39,8 +39,17 @@ Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http
 
 ## Deploy to Azure
 <a href="https://azuredeploy.net/?repository=https://github.com/roalexan/SolutionArchitects" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+from MongoDB
 
-## Create Resources
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fmongodb-high-availability%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+edited
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
 
 * Login-AzureRmAccount
 * Select-AzureRmSubscription -SubscriptionID "bc4170f0-cc6e-49d2-ba65-bc00a7a4df6b"
