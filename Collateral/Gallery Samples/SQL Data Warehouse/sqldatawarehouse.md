@@ -38,7 +38,7 @@ Fill in  - one paragraph
 Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http://go.microsoft.com/fwlink/p/?linkid=320376&clcid=0x409
 
 ## Deploy to Azure
-<a href="https://azuredeploy.net/?repository=https://github.com/roalexan/SolutionArchitects/tree/master/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a href="https://azuredeploy.net/?repository=https://github.com/roalexan/SolutionArchitects" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 
 ## Create Resources
 
