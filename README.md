@@ -17,7 +17,6 @@
 	ms.date="02/23/2016"
 	ms.author="roalexan" />
 
-
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
 
 ## Use case
@@ -31,30 +30,10 @@ Fill in  - one paragraph
 ## Prerequisites
 
 - Microsoft Azure subscription with login credentials
+- PowerBI subscription with login credentialas
 - Microsoft SQL Server Management Studio
 
-<!--
-## Get Latest PowerShell
-
-Download the Azure PowerShell module. Run Microsoft Web Platform Installer. http://go.microsoft.com/fwlink/p/?linkid=320376&clcid=0x409
--->
-
 ## Deploy to Azure
-<!--
-<a href="https://azuredeploy.net/?repository=https://github.com/roalexan/SolutionArchitects" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-
-for MongoDB
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fmongodb-high-availability%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fmongodb-high-availability%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
-
-my stuff
--->
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -64,30 +43,24 @@ my stuff
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-<!--
-* Login-AzureRmAccount
-* Select-AzureRmSubscription -SubscriptionID "bc4170f0-cc6e-49d2-ba65-bc00a7a4df6b"
-* New-AzureRmResourceGroup -Name rbaResourceGroup7 -Location "Central US"
-* New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateUri https://raw.githubusercontent.com/roalexan/SolutionArchitects/c7505f45a5a7985e58c9a52efad77085b47647a7/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse/deploy.json
--->
-
 ## Create tables
 
-Connect to the Data Warehouse using a SQL Client (example: Microsoft SQL Server Management Studio) and create/populate the tables by running:
-
-    CREATE TABLE Events (
-    EventId INT,
-    EventName VARCHAR(20) NOT NULL,
-    Speakers VARCHAR(200) NOT NULL,
-    Topics VARCHAR(200) NOT NULL,
-    Country VARCHAR(10) NOT NULL,
-    State VARCHAR(2) NOT NULL,
-    City VARCHAR(20) NOT NULL
-    )
-    WITH (
-    DISTRIBUTION = HASH(EventId),
-    CLUSTERED COLUMNSTORE INDEX
-    )
+Connect to the Data Warehouse using a SQL client of your choice
+    Example:
+		Start: Microsoft SQL Server Management Studio
+		Click: File > Connect Object Explorer...
+			Select: Server type: Database Engine
+			Type: Server name: personal-<unique>.database.windows.net
+			Select: Authentication: SQL Server Authentication
+			Type: Login: personaluser
+			Type: Password: pass@word1
+			Check: Remember password # Up to user
+			Click: Connect
+Create the tables
+    Example:
+	    Expand: personal-<unique>.database.windows.net > Databases > personalDB
+		Click: New Query # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
+		Copy and Paste:
 
     CREATE TABLE Ratings (
     DateTime DATETIME2,
@@ -101,76 +74,91 @@ Connect to the Data Warehouse using a SQL Client (example: Microsoft SQL Server 
     DISTRIBUTION = HASH(DateTime),
     CLUSTERED COLUMNSTORE INDEX
     )
+	Click: Execute
+		
+## Edit and start the ASA job
+	
+Browse: https://manage.windowsazure.com
+	
+### Edit
 
-		INSERT INTO Events VALUES(1,'MLADS','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
-		INSERT INTO Events VALUES(2,'STRATA','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
-		INSERT INTO Events VALUES(3,'BUILD','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
-		INSERT INTO Events VALUES(4,'USER','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
-		
-## Edit the ASA job
-		
-Define OutputPBI		
-		
-## Start the ASA job
+Click: personalstreamanalytics<unique>
+Click: OUTPUTS
+Click: ADD OUTPUT
+Select: Power BI
+Click: Next
+Click: Authorize Now # Login with your credentials
+Type: OUTPUT ALIAS: OutputPowerBI
+Type: DATASET NAME: personalDB # Note: This dataset will be overwritten in PBI, should it already exist
+Type: TABLE NAME: **personalDB**
+Select: WORKSPACE: My Workspace # Default
+Click: Finish
 
-Log into the Azure Portal and start the ASA job.
+### Start
+
+Click: personalstreamanalytics<unique>
+Click: Start
+Click: Finish # You do not need to specify a custom time
 
 ## Run the data generator
 
-## Create the AML service
+Download data generator zip
+Unzip
+Edit: Rage.exe.config
+Replace: EVENTHUBNAME: personaleventhub<unique>
+Get the endpoint
+    Browse: https://manage.windowsazure.com
+	Click: SERVICE BUS
+	Click: CONNECTION INFORMATION
+	Copy: CONNECTION STRING
+Replace: ENDPOINT: CONNECTION STRING
+Double click: Rage.exe # Runs the executable
+
+## Verify data being written
+
+### From Portal
+
+Browse: https://manage.windowsazure.com
+Click: personalstreamanalytics<unique>
+Click: DASHBOARD
+Click: Operation Logs
+Select: log # up to user
+Click: DETAILS
+
+### From SQL Client
+
+Connect to the Data Warehouse using a SQL client of your choice
+    Example:
+		Start: Microsoft SQL Server Management Studio
+		Click: File > Connect Object Explorer...
+			Select: Server type: Database Engine
+			Type: Server name: personal-<unique>.database.windows.net
+			Select: Authentication: SQL Server Authentication
+			Type: Login: personaluser
+			Type: Password: pass@word1
+			Check: Remember password # Up to user
+			Click: Connect
+Create the tables
+    Example:
+	    Expand: personal-<unique>.database.windows.net > Databases > personalDB
+		Click: New Query # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
+		Copy and Paste:
+	select * from Ratings order by EventId, DateTime;
+	Click: Execute
 
 ## Create the PBI dashboard
 
-# JUNK FROM HERE DOWN
+Browse: https://powerbi.microsoft.com
+Click: Sign in # Login with your credentials
+Show: The navigation pane
+Click: personalDB # Under the Datasets folder
+Click: Line chart # Under Visualizations
+Drag: datetime > To: Axis
+Drag: deviceid > To: Legend 
+Drag: rating > To: Values
 
-### Using Local File
-
-    New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateFile C:\microsoft\sqldatawarehouse\arm\mine\deploy-storageaccount.json -TemplateParameterFile C:\microsoft\sqldatawarehouse\arm\mine\deploy-storageaccount-parameters.json
-
-### Using URI
-
-    New-AzureRmResourceGroupDeployment -Name rbaDeployment3 -ResourceGroupName rbaResourceGroup3 -TemplateUri https://raw.githubusercontent.com/roalexan/SolutionArchitects/10ce462255ba0199f7b06492bbf9fed9ed6d82ec/Collateral/Gallery%20Samples/SQL%20Data%20Warehouse/deploy-storageaccount.json -TemplateParameterFile C:\microsoft\sqldatawarehouse\arm\mine\deploy-storageaccount-parameters.json
-
-## Install local SQL Server
-![sqlserverlogin-image1](./media/sqlserverlogin.png)
-## Create database
-
-Expand: **SERVERNAME**, right click: **Databases**: select: **New Database...**, type: Database name: **SQLSERVERDATABASENAME** # Up to user, click: **OK**
-
-## Create table and populate with data
-
-Expand: **Databases**, right click: **SQLSERVERDATABASENAME**: New Query
-
-Copy below text and paste into query window
-
-	IF OBJECT_ID('dbo.SystemEvents', 'U') IS NOT NULL DROP TABLE dbo.SystemEvents
-	CREATE TABLE dbo.SystemEvents(DateTime DATETIME2(7) NOT NULL,ComputerName NVARCHAR(50) NOT NULL, EventID NVARCHAR(50),EventMessage NVARCHAR(500) CONSTRAINT PK_SystemEvents PRIMARY KEY CLUSTERED(DateTime,ComputerName))
-	INSERT INTO dbo.SystemEvents VALUES('08/13/2015 00:15:07.262','MACHINE1','3','System Reboot')
-
-Click: **Execute**
-
-## Install Datamanagement gateway locally
-## Create table in local SQL Server
-
-
+## Create the AML service
 
 ## Undeploy
 
-    Remove-AzureRmResourceGroup -Name rbaResourceGroup3
-
-## Appendix create Datamanagement gateway
-
-## Appendix small/large populate tables
-
-## Useful Links
-
-https://azure.microsoft.com/en-us/documentation/templates/101-storage-account-create/
-https://azure.microsoft.com/en-us/documentation/articles/resource-group-authoring-templates/
-https://msdn.microsoft.com/en-us/library/mt603823.aspx
-https://azure.microsoft.com/en-us/documentation/articles/powershell-azure-resource-manager/
-https://blogs.technet.microsoft.com/dataplatforminsider/2014/07/30/transitioning-from-smp-to-mpp-the-why-and-the-how/
-https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is/
-https://github.com/Azure/azure-quickstart-templates
-https://azure.microsoft.com/en-us/documentation/articles/resource-manager-supported-services/
-https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-get-started-provision-powershell/
-https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-develop/
+Remove-AzureRmResourceGroup -Name rbaResourceGroup3
