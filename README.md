@@ -37,7 +37,7 @@ Fill in  - one paragraph
 
 ### Resources
 
-Many of the resources (...) can be deployed uch is automated. Click the button.
+Many of the resources (SQL Server V12, SQL Warehouse, Service Bus, Event Hub, Stream Analytics Job) are deployed automatically when you click the **Deploy to Azure button**.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -61,7 +61,7 @@ Screenshots on how to set parameters.
    1. Select: Authentication: **SQL Server Authentication**
    1. Type: Login: **personaluser**
    1. Type: Password: **pass@word1**
-   1. Check: **Remember password** # Up to user
+   1. Check: **Remember password** # Optional
   1. Click: **Connect**
 1. Create the tables. For example:
 	 1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
