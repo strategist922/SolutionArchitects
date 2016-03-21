@@ -92,7 +92,10 @@ Connect to the Data Warehouse using a SQL Client (example: Microsoft SQL Server 
     CREATE TABLE Ratings (
     DateTime DATETIME2,
     EventId INT,
-    Rating INT
+    Rating INT,
+    DeviceId INT,
+    Lat DECIMAL(8,5),
+    Lon DECIMAL(8,5)
     )
     WITH (
     DISTRIBUTION = HASH(DateTime),
@@ -103,7 +106,11 @@ Connect to the Data Warehouse using a SQL Client (example: Microsoft SQL Server 
 		INSERT INTO Events VALUES(2,'STRATA','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
 		INSERT INTO Events VALUES(3,'BUILD','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
 		INSERT INTO Events VALUES(4,'USER','roalexan,jacrowle','sqldw,dl','USA','WA','Redmond')
-
+		
+## Edit the ASA job
+		
+Define OutputPBI		
+		
 ## Start the ASA job
 
 Log into the Azure Portal and start the ASA job.
