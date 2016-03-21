@@ -19,7 +19,7 @@
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
 
-## Use case
+## Use Case
 
 Fill in  - one paragraph
 
@@ -30,135 +30,119 @@ Fill in  - one paragraph
 ## Prerequisites
 
 - Microsoft Azure subscription with login credentials
-- PowerBI subscription with login credentialas
-- Microsoft SQL Server Management Studio
+- PowerBI subscription with login credentials
+- SQL client (Example: Microsoft SQL Server Management Studio)
 
-## Deploy to Azure
+## Deploy
+
+### Resources
+
+Many of the resources (...) can be deployed uch is automated. Click the button.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
+Screenshots on how to set parameters.
+
+<!--
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
+-->
 
-## Create tables
+### Create Azure SQL Data Warehouse tables
 
-Connect to the Data Warehouse using a SQL client of your choice
-    Example:
-		Start: Microsoft SQL Server Management Studio
-		Click: File > Connect Object Explorer...
-			Select: Server type: Database Engine
-			Type: Server name: personal-<unique>.database.windows.net
-			Select: Authentication: SQL Server Authentication
-			Type: Login: personaluser
-			Type: Password: pass@word1
-			Check: Remember password # Up to user
-			Click: Connect
-Create the tables
-    Example:
-	    Expand: personal-<unique>.database.windows.net > Databases > personalDB
-		Click: New Query # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
-		Copy and Paste:
+1. Connect to the Data Warehouse using a SQL client of your choice. For example:
+   1. Start: **Microsoft SQL Server Management Studio**
+   1. Click: **File** > **Connect Object Explorer...**
+   1. Select: Server type: **Database Engine**
+   1. Type: Server name: **personal-[*UNIQUE*].database.windows.net**
+   1. Select: Authentication: **SQL Server Authentication**
+   1. Type: Login: **personaluser**
+   1. Type: Password: **pass@word1**
+   1. Check: **Remember password** # Up to user
+  1. Click: **Connect**
+1. Create the tables. For example:
+	 1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
+	 1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
+	 1. Copy and Paste:
+            CREATE TABLE Ratings (
+               DateTime DATETIME2,
+               EventId INT,
+               Rating INT,
+               DeviceId INT,
+               Lat DECIMAL(8,5),
+               Lon DECIMAL(8,5)
+            )
+            WITH (
+               DISTRIBUTION = HASH(DateTime),
+               CLUSTERED COLUMNSTORE INDEX
+		    )
+     1. Click: **Execute**
 
-    CREATE TABLE Ratings (
-    DateTime DATETIME2,
-    EventId INT,
-    Rating INT,
-    DeviceId INT,
-    Lat DECIMAL(8,5),
-    Lon DECIMAL(8,5)
-    )
-    WITH (
-    DISTRIBUTION = HASH(DateTime),
-    CLUSTERED COLUMNSTORE INDEX
-    )
-	Click: Execute
-		
-## Edit and start the ASA job
-	
-Browse: https://manage.windowsazure.com
-	
-### Edit
+### Edit and start the ASA job
 
-Click: personalstreamanalytics<unique>
-Click: OUTPUTS
-Click: ADD OUTPUT
-Select: Power BI
-Click: Next
-Click: Authorize Now # Login with your credentials
-Type: OUTPUT ALIAS: OutputPowerBI
-Type: DATASET NAME: personalDB # Note: This dataset will be overwritten in PBI, should it already exist
-Type: TABLE NAME: **personalDB**
-Select: WORKSPACE: My Workspace # Default
-Click: Finish
+1. Browse: https://manage.windowsazure.com
+1. Click: **personalstreamanalytics<unique>**
+1. Click: **OUTPUTS**
+1. Click: **ADD OUTPUT**
+1. Select: **Power BI**
+1. Click: **Next**
+1. Click: **Authorize Now** # Login with your credentials
+1. Type: OUTPUT ALIAS: **OutputPowerBI**
+1. Type: DATASET NAME: **personalDB** # This dataset will be overwritten in PBI should it already exist
+1. Type: TABLE NAME: **personalDB**
+1. Select: WORKSPACE: **My Workspace** # Default
+1. Click: **Finish**
+1. Click: **Start**
+1. Click: **Finish** # You do not need to specify a custom time
 
-### Start
+### Download and run the data generator
 
-Click: personalstreamanalytics<unique>
-Click: Start
-Click: Finish # You do not need to specify a custom time
+1. Download **debug.zip**
+1. Unzip
+1. Edit: **Rage.exe.config**
+1. Replace: EVENTHUBNAME: With: **personaleventhub[*UNIQUE*]**
+1. Browse: https://manage.windowsazure.com # Get the endpoint
+1. Click: SERVICE BUS
+1. Click: CONNECTION INFORMATION
+1. Copy: CONNECTION STRING
+1. Replace: ENDPOINT: With: CONNECTION STRING
+1. Double click: **Rage.exe** # Runs until you click any key on the console
 
-## Run the data generator
+#### Verify data being written
 
-Download data generator zip
-Unzip
-Edit: Rage.exe.config
-Replace: EVENTHUBNAME: personaleventhub<unique>
-Get the endpoint
-    Browse: https://manage.windowsazure.com
-	Click: SERVICE BUS
-	Click: CONNECTION INFORMATION
-	Copy: CONNECTION STRING
-Replace: ENDPOINT: CONNECTION STRING
-Double click: Rage.exe # Runs the executable
+##### From Portal
 
-## Verify data being written
+1. Browse: https://manage.windowsazure.com
+1. Click: **personalstreamanalytics[*UNIQUE*]**
+1. Click: DASHBOARD
+1. Click: **Operation Logs**
+1. Select: a recent log
+1. Click: DETAILS
 
-### From Portal
+##### From SQL Client
 
-Browse: https://manage.windowsazure.com
-Click: personalstreamanalytics<unique>
-Click: DASHBOARD
-Click: Operation Logs
-Select: log # up to user
-Click: DETAILS
+1. Connect to the Data Warehouse using a SQL client of your choice
+1. Run SQL to view the latest entries. For example:
+   1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
+   1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
+   1. Copy and Paste:
+	      select * from Ratings order by DateTime desc;
+   1. Click: **Execute**
 
-### From SQL Client
+### Create the PBI dashboard
 
-Connect to the Data Warehouse using a SQL client of your choice
-    Example:
-		Start: Microsoft SQL Server Management Studio
-		Click: File > Connect Object Explorer...
-			Select: Server type: Database Engine
-			Type: Server name: personal-<unique>.database.windows.net
-			Select: Authentication: SQL Server Authentication
-			Type: Login: personaluser
-			Type: Password: pass@word1
-			Check: Remember password # Up to user
-			Click: Connect
-Create the tables
-    Example:
-	    Expand: personal-<unique>.database.windows.net > Databases > personalDB
-		Click: New Query # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
-		Copy and Paste:
-	select * from Ratings order by EventId, DateTime;
-	Click: Execute
-
-## Create the PBI dashboard
-
-Browse: https://powerbi.microsoft.com
-Click: Sign in # Login with your credentials
-Show: The navigation pane
-Click: personalDB # Under the Datasets folder
-Click: Line chart # Under Visualizations
-Drag: datetime > To: Axis
-Drag: deviceid > To: Legend 
-Drag: rating > To: Values
+1. Browse: https://powerbi.microsoft.com
+1. Click: **Sign in** # Login with your credentials
+1. Show: The navigation pane
+1. Click: **personalDB** # Under the Datasets folder
+1. Click: **Line chart** # Under Visualizations
+1. Drag: **datetime**: To: **Axis**
+1. Drag: **deviceid**: To: **Legend**
+1. Drag: **rating**: To: **Values**
 
 ## Create the AML service
 
 ## Undeploy
-
-Remove-AzureRmResourceGroup -Name rbaResourceGroup3
