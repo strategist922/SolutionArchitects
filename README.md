@@ -142,7 +142,27 @@ Screenshots on how to set parameters.
 1. Drag: **datetime**: To: **Axis**
 1. Drag: **deviceid**: To: **Legend**
 1. Drag: **rating**: To: **Values**
+1. Click: **Save**
+1. Type: Name: **personalDB**
+1. Click: **Save**
+1. Click: **Pin visual** # pin icon on upper-right
+1. Select: **New dashboard**
+1. Type: Name: **personalDB**
+1. Click: **Pin**
 
 ## Create the AML service
+
+Browse: https://studio.azureml.net
+Click: Sign In
+Click: Experiments > NEW
+Click: Blank Experiment
+Expand: Data Input and Output
+Drag: Reader: To: Canvas
+Select: Data source: Azure SQL Database
+Type: Database server name: rbasqlserver.database.windows.net
+Type: Database name: AdventureWorksDW
+Type: Server user account name: madman
+Type: Server user account password: v4PLScyHyDQs
+Uncheck: Accept any server certificate (insecure): No # Default
 
 ## Undeploy
