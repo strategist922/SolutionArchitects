@@ -153,16 +153,54 @@ Screenshots on how to set parameters.
 ## Create the AML service
 
 1. Browse: https://studio.azureml.net
-1. Click: Sign In
+1. Click: **Sign** In # Login with your credentials
 1. Click: Experiments > NEW
 1. Click: Blank Experiment
 1. Expand: Data Input and Output
 1. Drag: Reader: To: Canvas
 1. Select: Data source: Azure SQL Database
 1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
-1. Type: Database name: AdventureWorksDW
-1. Type: Server user account name: madman
-1. Type: Server user account password: v4PLScyHyDQs
+1. Type: Database name: personalDB
+1. Type: Server user account name: personaluser
+1. Type: Server user account password: pass@word1
 1. Uncheck: Accept any server certificate (insecure): No # Default
+1. Type: Database query:
+       SELECT
+       CAST(Rating AS INT) AS Rating
+       FROM Ratings
+       WHERE EventId = 1
+1. Click: Database server name: web service parameter
+1. Click: Database name: web service parameter
+1. Click: Server user account name: web service parameter
+1. Click: Server user account password: web service parameter
+1. Click: Database query: web service parameter
+1. Expand: Statistical Functions
+1. Drag: Compute Elementary Statistics: To: Canvas
+1. Select: Method: Mean
+1. Connect: Reader: With: Compute Elementary Statistics
+1. Expand: Web Service
+1. Drag: Output: To: Canvas
+1. Connect: Compute Elementary Statistics: Web service output
+1. Click: RUN
+1. Right Click: Compute Elementary Statistics
+1. Select: Visualize # Verify that the mean output is reasonable
+1. Click: Close
+1. Click: SAVE AS
+1. Type: Experiment name: Ratings
+1. Click: SET UP WEB SERVICE
+1. Click: NEXT > NEXT > NEXT > FINISH
+1. Click: RUN
+1. Click: DEPLOY WEB SERVICE
+1. Click: TEST # Verify that request/response works
+1. Click: DATABASE QUERY:
+       SELECT
+       CAST(Rating AS INT) AS Rating
+       FROM Ratings
+       WHERE EventId = 1
+1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
+1. Click: DATABASE NAME: personalDB
+1. Click: SERVER USER ACCOUNT NAME: personaluser
+1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
+1. Click: OK
 
 ## Undeploy
