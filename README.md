@@ -204,3 +204,8 @@ Screenshots on how to set parameters.
 1. Click: OK
 
 ## Undeploy
+1. Browse: https://portal.azure.com
+1. Expand: Resource groups
+1. Select: your resource group
+1. Click: ...
+1. Select: Delete
