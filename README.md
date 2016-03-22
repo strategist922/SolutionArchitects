@@ -152,17 +152,17 @@ Screenshots on how to set parameters.
 
 ## Create the AML service
 
-Browse: https://studio.azureml.net
-Click: Sign In
-Click: Experiments > NEW
-Click: Blank Experiment
-Expand: Data Input and Output
-Drag: Reader: To: Canvas
-Select: Data source: Azure SQL Database
-Type: Database server name: rbasqlserver.database.windows.net
-Type: Database name: AdventureWorksDW
-Type: Server user account name: madman
-Type: Server user account password: v4PLScyHyDQs
-Uncheck: Accept any server certificate (insecure): No # Default
+1. Browse: https://studio.azureml.net
+1. Click: Sign In
+1. Click: Experiments > NEW
+1. Click: Blank Experiment
+1. Expand: Data Input and Output
+1. Drag: Reader: To: Canvas
+1. Select: Data source: Azure SQL Database
+1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
+1. Type: Database name: AdventureWorksDW
+1. Type: Server user account name: madman
+1. Type: Server user account password: v4PLScyHyDQs
+1. Uncheck: Accept any server certificate (insecure): No # Default
 
 ## Undeploy
