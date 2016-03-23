@@ -19,9 +19,11 @@
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
 
+/*
 ## Use Case
 
 Fill in  - one paragraph
+*/
 
 ## Architecture
 
@@ -79,6 +81,13 @@ Screenshots on how to set parameters.
                DISTRIBUTION = HASH(DateTime),
                CLUSTERED COLUMNSTORE INDEX
 		    )
+            CREATE TABLE AverageRatings (
+	           EventId INT,
+	           AverageRating FLOAT
+            )
+            WITH (
+	           CLUSTERED COLUMNSTORE INDEX
+            )
      1. Click: **Execute**
 
 ### Edit and start the ASA job
