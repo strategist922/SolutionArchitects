@@ -25,7 +25,7 @@ Fill in  - one paragraph
 
 ## Architecture
 
-![architecture-image1](./media/architecture.png)
+![architecture-image1](./media/architecture2.png)
 
 ## Prerequisites
 
@@ -150,7 +150,7 @@ Screenshots on how to set parameters.
 1. Type: Name: **personalDB**
 1. Click: **Pin**
 
-## Create the AML service
+### Create the AML service
 
 1. Browse: https://studio.azureml.net
 1. Click: **Sign** In # Login with your credentials
@@ -202,6 +202,20 @@ Screenshots on how to set parameters.
 1. Click: SERVER USER ACCOUNT NAME: personaluser
 1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
 1. Click: OK
+
+### Create the ADF
+
+Browse: https://portal.azure.com
+Click: Data factories
+Click: Add
+Type: Name: datafactory-rba10
+Select: Subscription: Boston Engineering
+Select: Resource group name: rba10
+Select: Region name: West US
+Check: Pin to dashboard # The default
+Click: Create
+Click: Author and deploy
+
 
 ## Undeploy
 1. Browse: https://portal.azure.com
