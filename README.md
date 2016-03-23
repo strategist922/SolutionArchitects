@@ -19,11 +19,11 @@
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
 
-/*
+<!--
 ## Use Case
 
 Fill in  - one paragraph
-*/
+-->
 
 ## Architecture
 
