@@ -19,13 +19,34 @@
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
 
-<!--
+## Azure SQL Data Warehouse
+
+Microsoft has been hard at work creating a set of compelling technologies to allow easy and affordable cloud services. Collectively known as Azure, this cloud computing platform is used for building, deploying, and managing applications and services through a global network of Microsoft-managed data centers. The relational database, especially Microsoft Azure SQL Server, is one of the key services offered on this stack. And now, based on the proven relational database engine of Microsoft Azure SQL Server, Microsoft offers an enterprise data warehouse: Microsoft SQL Data Warehouse.   
+
+Microsoft SQL Data Warehouse is an elastic petabyte-scale, data warehouse-as-a-service offering. It can grow and shrink in minutes, works in Azure or on-premise, and uses T-SQL. Because it separates compute and storage, users only pay for the queries they need. It supports full indexing, partitions and columnar indexing. It is integrated with PowerBI for visualizing data, Azure Machine Learning for predictions, Azure Data Factory for event processing, and Azure HDInsight Hadoop-based big data analytics service.
+
+![architecture-image1](./media/dwarchitecture.png)
+
+
+
+
+
+
+elastically scale up and down
+connect to Microsoft's Azure Machine Learning libraries
+connects to Azure Data Lake (which integrates with Hadoop systems from Cloudera and Hortonworks)
+	while support Microsoft's Hadoop tooling such as Azure HDInsight
+
+the landing page in gallery should talk about:
+1) the usecase and why we have solved it using SQL DW.
+2) the contents of the git repo
+3) success criteria.
+
+The blog should talk about:
+1) the industry (somewhat in the lines details of the text Jack’s original document under use case)
+2) cloud / Microsoft, 3) what and why? (maybe uses the architecture diagram), 4) business impact.
+
 ## Use Case
-
-Fill in  - one paragraph
--->
-
-## Architecture
 
 ![architecture-image1](./media/architecture2.png)
 
