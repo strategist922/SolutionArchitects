@@ -223,7 +223,7 @@
                     "name": "ProcessSampleData",
                     "properties": {
                         "streamingUnits": 1,
-						"query": "select DateTime, EventId, Rating into OutputSQL from InputHub;SELECT CAST(DateTime AS DATETIME) AS DateTime, CAST(EventId AS BIGINT) AS EventId, CAST(Rating AS BIGINT) AS Rating INTO OutputPowerBI FROM InputHub"
+						"query": "SELECT DateTime, EventId, Rating, DeviceId, Lat, Lon INTO OutputSQL FROM InputHub;SELECT CAST(DateTime AS DATETIME) AS DateTime, CAST(EventId AS BIGINT) AS EventId, CAST(Rating AS BIGINT) AS Rating, CAST(DeviceId AS BIGINT) AS DeviceId, CAST(Lat AS FLOAT) AS Lat, CAST(Lon AS FLOAT) AS Lon INTO OutputPowerBI FROM InputHub"
                     }
                 },
                 "outputs": [

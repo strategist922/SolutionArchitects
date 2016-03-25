@@ -246,6 +246,92 @@ Check: Pin to dashboard # The default
 Click: Create
 Click: Author and deploy
 
+Click: New data store
+Select: Azure SQL Data Warehouse
+Replace: <servername>: With: personal-rba10
+Replace: <databasename>: With: personalDB
+Replace: <username>: With: personaluser
+Replace: <servername>: With: personal-rba10
+Replace: <password>: With: pass@word1
+Click: Deploy
+
+Browse: https://studio.azureml.net
+Click: Sign In # Login with your credentials
+Click: WEB SERVICES
+Click: Ratings
+Click: Copy # APIKEY
+Click: BATCH EXECUTION
+Copy: https://...jobs # BESURL
+Click: New compute
+Select: Azure ML
+Replace: <Specify the batch scoring URL>: With: BESURL
+Replace: <Specify the published workspace model's API key>: With: APIKEY
+Remove: Line: Containing: updateResourceEndpoint
+Remove: comma from preceding line
+Click: Deploy
+	
+Click: New dataset
+Select: Azure SQL Data Warehouse
+Edit: linkedServiceName: AzureSqlDWLinkedService
+Edit: tableName: Ratings
+Edit: frequency: Minute
+Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
+Click: Deploy
+
+Click: New dataset
+Select: Azure SQL Data Warehouse
+Edit: name: AzureSqlDWOutput
+Edit: linkedServiceName: AzureSqlDWLinkedService
+Edit: tableName: AverageRatings
+Edit: frequency: Minute
+Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
+Click: Deploy
+
+Click: More commands
+Click: New pipeline
+Edit:
+{
+    "name": "SQL-to-AML-to-SQL",
+    "properties": {
+        "description": "SQL to AML to SQL",
+        "activities": [
+            {
+                "type": "AzureMLBatchScoring",
+                "typeProperties": {
+                    "webServiceParameters": {
+						"Database server name": "personal-rba10.database.windows.net",
+						"Database name": "personalDB",
+						"Server user account name": "personaluser",
+						"Server user account password": "pass@word1",
+                        "Database query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "AzureSqlDWInput"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "AzureSqlDWOutput"
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:05:00",
+                    "concurrency": 1,
+                    "retry": 3
+                },
+                "name": "MLActivity",
+                "description": "prediction analysis on batch input",
+                "linkedServiceName": "AzureMLLinkedService"
+            }
+        ],	
+        "start": "2016-03-24T00:00:00Z",
+        "end": "2016-03-25T00:00:00Z",
+        "isPaused": false
+    }
+}
+Click: Deploy
 
 ## Undeploy
 1. Browse: https://portal.azure.com
