@@ -58,8 +58,8 @@
                     }
                 },
                 "azureMLSettings": {
-                    "azureMLEndpoint": "https://ussouthcentral.services.azureml.net/workspaces/bc14f3c64e8443a0af02b86aa1c4bbb2/services/d75d1a8f9fe2490b8f37ce509384ac4e/jobs",
-                    "azureMLApiKey": "YPl/gAYPIF+BHV8LRRV22JnR0HWI03zNMj/KbZZH4ui4dpIAwZvy9D48xT3LdUag6pATQz6rLxPa1jNWmsH0lw=="
+                    "azureMLEndpoint": "https://ussouthcentral.services.azureml.net/workspaces/1cb6843a931244a08611cf85ab3455d4/services/7adcfa540a56493dacbadeb9340ad3d3/jobs",
+                    "azureMLApiKey": "oop61dNlOmFiN/FH1SbllC2eQo6Cv42QYufnufePtkwx55xJPJETsj6oWIy8W+lktVHHUwteiwjauec+bq7rdg=="
                 }
             }
 		},
@@ -83,6 +83,18 @@
                 "asaLocation": "[parameters('location')]",
                 "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
                 "asaBlobPathPattern": "rawdata/{date}/{time}"
+            },
+            "datafactorySettings": {
+                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
+                "dataFactoryLocation": "westus",
+                "linkedServiceNames": {
+                    "azureSqlDWLinkedServiceName": "AzureSqlDWLinkedService",
+                    "azureMLLinkedServiceName": "AzureMLLinkedService"
+                },
+                "datasetNames": {
+					"azureSqlDWInputDatasetName": "AzureSqlDWInput",
+					"azureSqlDWOutputDatasetName": "AzureSqlDWOutput"
+                }
             },
             "sqlSettings": {
                 "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
@@ -109,144 +121,139 @@
     },
     "resources": [
         {
-            "apiVersion": "[variables('settings')['apiVersion'].storageAccountApiVersion]",
-            "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "name": "[variables('settings')['storageSettings'].storageAccountName]",
-            "location": "[parameters('storagelocation')]",
-            "properties": {
-                "accountType": "[variables('paramVars').accountType]"
-            },
-            "metadata": {
-                "description": "Create the Azure Storage Account"
-            }
-        },
-        {
-            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
-            "type": "Microsoft.EventHub/namespaces",
-            "name": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "region": "[parameters('location')]"
-            },
+            "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+            "type": "Microsoft.DataFactory/datafactories",
+            "name": "[variables('settings')['datafactorySettings'].dataFactoryName]",
+            "location": "[variables('settings')['datafactorySettings'].dataFactoryLocation]",
             "resources": [
                 {
-                    "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
-                    "type": "eventHubs",
-                    "name": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [ "[concat('Microsoft.EventHub/namespaces/', variables('settings')['serviceBusSettings'].serviceBusNamespaceName)]" ],
-                    "properties": {
-                        "path": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
-                    },
-                    "metadata": {
-                        "description": "Create the Event Hub"
-                    }
-                }
-            ],
-            "metadata": {
-                "description": "Create the Event Hub Namespace"
-            }
-        },
-        {
-            "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
-            "type": "Microsoft.Sql/servers",
-            "name": "[variables('settings')['sqlSettings'].sqlServerName]",
-            "location": "[variables('settings')['sqlSettings'].sqlLocation]",
-            "properties": {
-                "administratorLogin": "[variables('settings')['sqlSettings'].sqlServerUserName]",
-                "administratorLoginPassword": "[variables('settings')['sqlSettings'].sqlServerPassword]",
-				"version": "12.0"
-            },
-            "resources": [
-                {
-                    "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
-                    "name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
-                    "type": "databases",
-                    "location": "[variables('settings')['sqlSettings'].sqlLocation]",
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlDWLinkedServiceName]",
                     "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', variables('settings')['sqlSettings'].sqlServerName)]"
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
                     ],
                     "properties": {
-                        "edition": "[variables('settings')['sqlSettings'].sqlEdition]",
-                        "collation": "[variables('settings')['sqlSettings'].sqlCollation]"
-                    }
-                },
-                {
-                    "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
-                    "name": "AllowAllWindowsAzureIps",
-                    "type": "firewallrules",
-                    "location": "[variables('settings')['sqlSettings'].sqlLocation]",
-                    "dependsOn": [
-                        "[concat('Microsoft.Sql/servers/', variables('settings')['sqlSettings'].sqlServerName)]"
-                    ],
-                    "properties": {
-                        "startIpAddress": "[variables('settings')['sqlSettings'].sqlStartIpAddress]",
-                        "endIpAddress": "[variables('settings')['sqlSettings'].sqlEndIpAddress]"
-                    }
-                }
-            ],
-            "metadata": {
-                "description": "Create the SQL Database"
-            }
-        },
-        {
-            "apiVersion": "[variables('settings')['apiVersion'].asaApiVersion]",
-            "type": "Microsoft.StreamAnalytics/streamingJobs",
-            "name": "[variables('settings')['asaSettings'].asaJobName]",
-            "location": "[variables('settings')['asaSettings'].asaLocation]",
-            "properties": {
-                "sku": {
-                    "name": "standard"
-                },
-                "EventsOutOfOrderMaxDelayInSeconds": 10,
-                "EventsOutOfOrderPolicy": "Adjust",
-                "inputs": [
-                    {
-                        "name": "InputHub",
-                        "properties": {
-                            "type": "stream",
-                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].inputSerilization]",
-                            "datasource": {
-                                "type": "Microsoft.ServiceBus/EventHub",
-                                "properties": {
-                                    "EventHubName": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
-                                    "ServiceBusNamespace": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
-                                    "SharedAccessPolicyName": "[variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName]",
-                                    "SharedAccessPolicyKey": "[listKeys(resourceid('Microsoft.Eventhub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName ), variables('settings')['apiVersion'].serviceBusApiVersion).primaryKey]",
-                                    "SourcePartitionCount": 16
-                                }
-                            }
+                        "type": "AzureSqlDW",
+                        "typeProperties": {
+                            "connectionString": "[concat('Server=tcp:',variables('settings')['sqlSettings'].sqlServerName,'.database.windows.net,1433;Initial Catalog=',variables('settings')['sqlSettings'].sqlDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings'].sqlServerUserName,';Password=',variables('settings')['sqlSettings'].sqlServerPassword,';Encrypt=True;Connection Timeout=30')]"
                         }
                     }
-                ],
-                "transformation": {
-                    "name": "ProcessSampleData",
+                },
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].azureMLApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                    ],
                     "properties": {
-                        "streamingUnits": 1,
-						"query": "SELECT DateTime, EventId, Rating, DeviceId, Lat, Lon INTO OutputSQL FROM InputHub;SELECT CAST(DateTime AS DATETIME) AS DateTime, CAST(EventId AS BIGINT) AS EventId, CAST(Rating AS BIGINT) AS Rating, CAST(DeviceId AS BIGINT) AS DeviceId, CAST(Lat AS FLOAT) AS Lat, CAST(Lon AS FLOAT) AS Lon INTO OutputPowerBI FROM InputHub"
+                        "type": "AzureML",
+                        "typeProperties": {
+                            "mlEndpoint": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLEndpoint]",
+                            "apiKey": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLApiKey]"
+                        }
                     }
                 },
-                "outputs": [
-					{
-						"Name": "OutputSQL",
-						"Properties": {
-							"DataSource": {
-								"Properties": {
-									"Database": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
-									"Password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
-									"Server": "[variables('settings')['sqlSettings'].sqlServerName]",
-									"Table": "Ratings",
-									"User": "[variables('settings')['sqlSettings'].sqlServerUserName]"
-								},
-								"Type": "Microsoft.Sql/Server/Database"
-                            }
-						}
+                {
+					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+					"type": "datasets",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlDWLinkedServiceName)]"
+                    ],
+                    "name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWInputDatasetName]",
+                    "properties": {
+                        "published": false,
+                        "type": "AzureSqlDWTable",
+                        "linkedServiceName": "AzureSqlDWLinkedService",
+                        "typeProperties": {
+                            "tableName": "Ratings"
+                        },
+                        "availability": {
+                            "frequency": "Minute",
+                            "interval": 15
+                        },
+						"external": true
                     }
-                ]
-            },
-            "metadata": {
-                "description": "Create the Stream Analytics Resource"
-            }
+                },
+                {
+					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+					"type": "datasets",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlDWLinkedServiceName)]"
+                    ],
+                    "name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWOutputDatasetName]",
+                    "properties": {
+                        "published": false,
+                        "type": "AzureSqlDWTable",
+                        "linkedServiceName": "AzureSqlDWLinkedService",
+                        "typeProperties": {
+                            "tableName": "AverageRatings"
+                        },
+                        "availability": {
+                            "frequency": "Minute",
+                            "interval": 15
+                        }
+                    }
+                },
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "name": "SQL-to-AML-to-SQL",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlDWLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWInputDatasetName)]",
+						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWOutputDatasetName)]"
+                    ],
+                    "type": "datapipelines",
+                    "properties": {
+                        "description": "SQL to AML to SQL",
+                        "activities": [
+                            {
+								"type": "AzureMLBatchScoring",
+								"typeProperties": {
+									"webServiceParameters": {
+										"Database server name": "[concat(variables('settings')['sqlSettings'].sqlServerName,'.database.windows.net')]",
+										"Database name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
+										"Server user account name": "[variables('settings')['sqlSettings'].sqlServerUserName]",
+										"Server user account password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
+										"Data query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
+									}
+								},
+								"inputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWInputDatasetName]"
+									}
+								],
+								"outputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlDWOutputDatasetName]"
+									}
+								],
+								"policy": {
+									"timeout": "00:05:00",
+									"concurrency": 1,
+									"retry": 3
+								},
+								"scheduler": {
+									"frequency": "Minute",
+									"interval": 15
+								},
+								"name": "MLActivity",
+								"description": "prediction analysis on batch input",
+								"linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName]"
+							}
+						],
+						"start": "2016-03-25T15:00:00Z",
+						"end": "2016-03-25T16:00:00Z",
+						"isPaused": false,
+						"pipelineMode": "Scheduled"
+                    }
+                }
+            ]
         }
     ]
 }
