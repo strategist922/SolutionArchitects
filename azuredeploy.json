@@ -220,7 +220,7 @@
 										"Database name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
 										"Server user account name": "[variables('settings')['sqlSettings'].sqlServerUserName]",
 										"Server user account password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
-										"Data query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
+										"Database query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
 									}
 								},
 								"inputs": [
