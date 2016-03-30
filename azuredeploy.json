@@ -495,11 +495,11 @@
                     "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
                     "name": "SQLDB-to-SQLDW-pipeline",
                     "dependsOn": [
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName)]",
-						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName)]"
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName)]",
+						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName)]"
                     ],
                     "type": "datapipelines",
                     "properties": {
@@ -520,12 +520,12 @@
 								},
 								"inputs": [
 									{
-										"name": "[variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName]"
+										"name": "[variables('settings')['datafactorySettings2']['datasetNames'].sqlServerDBInputDatasetName]"
 									}
 								],
 								"outputs": [
 									{
-										"name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName]"
+										"name": "[variables('settings')['datafactorySettings2']['datasetNames'].azureSqlServerDWOutputDatasetName]"
 									}
 								],
 								"policy": {
