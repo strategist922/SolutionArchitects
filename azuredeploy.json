@@ -142,7 +142,7 @@
                     "properties": {
                         "type": "OnPremisesSqlServer",
                         "typeProperties": {
-                            "connectionString": "[concat('Server=tcp:',variables('settings')['sqlSettings2'].sqlServerName,';Initial Catalog=',variables('settings')['sqlSettings2'].sqlDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings2'].sqlServerUserName,';Password=',variables('settings')['sqlSettings2'].sqlServerPassword')]"
+                            "connectionString": "[concat('Server=tcp:',variables('settings')['sqlSettings2'].sqlServerName,';Initial Catalog=',variables('settings')['sqlSettings2'].sqlDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings2'].sqlServerUserName,';Password=',variables('settings')['sqlSettings2'].sqlServerPassword)]"
                         }
                     }
                 },
