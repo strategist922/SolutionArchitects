@@ -114,7 +114,7 @@
 				"sqlServerDatabaseName": "personalDB",
 				"sqlServerUserName": "sqluser1",
 				"sqlServerPassword": "EY65t3yBn4se"
-			}
+			},
             "storageSettings": {
                 "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
             },
