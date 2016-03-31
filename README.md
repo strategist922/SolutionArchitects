@@ -300,5 +300,3 @@ This will create a new "blade" in the Azure portal.
 1. Select: your resource group
 1. Click: ...
 1. Select: Delete
-
-## In Progress
