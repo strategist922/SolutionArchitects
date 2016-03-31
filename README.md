@@ -21,70 +21,64 @@
 
 ## Azure SQL Data Warehouse
 
-Microsoft has been hard at work creating a set of compelling technologies to allow easy and affordable cloud services. Collectively known as Azure, this cloud computing platform is used for building, deploying, and managing applications and services through a global network of Microsoft-managed data centers. The relational database, especially Microsoft Azure SQL Server, is one of the key services offered on this stack. And now, based on the proven relational database engine of Microsoft Azure SQL Server, Microsoft offers an enterprise data warehouse: Microsoft SQL Data Warehouse.   
-
-Microsoft SQL Data Warehouse is an elastic petabyte-scale, data warehouse-as-a-service offering. It can grow and shrink in minutes, works in Azure or on-premise, and uses T-SQL. Because it separates compute and storage, users only pay for the queries they need. It supports full indexing, partitions and columnar indexing. It is integrated with PowerBI for visualizing data, Azure Machine Learning for predictions, Azure Data Factory for event processing, and Azure HDInsight Hadoop-based big data analytics service.
-
-![architecture-image1](./media/dwarchitecture.png)
-
-
-
-
-
-
-elastically scale up and down
-connect to Microsoft's Azure Machine Learning libraries
-connects to Azure Data Lake (which integrates with Hadoop systems from Cloudera and Hortonworks)
-	while support Microsoft's Hadoop tooling such as Azure HDInsight
-
-the landing page in gallery should talk about:
-1) the usecase and why we have solved it using SQL DW.
-2) the contents of the git repo
-3) success criteria.
-
-The blog should talk about:
-1) the industry (somewhat in the lines details of the text Jack’s original document under use case)
-2) cloud / Microsoft, 3) what and why? (maybe uses the architecture diagram), 4) business impact.
+ <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a> is a cloud-based, scalable database capable of processing massive volumes of data. It is ideally suited for storing structured data with a defined schema. Due to it's <a href="https://technet.microsoft.com/en-us/library/hh393582%28v=sql.110%29.aspx"/>MPP</a> architecture and use of Azure storage, it provides optimized query performance along with the ability to grow or shrink storage and compute independently. SQL Data Warehouse uses SQL Server's Transact-SQL (<a href="https://msdn.microsoft.com/en-us/library/mt243830.aspx"/>TSQL</a>) syntax for many operations and supports a broad set of traditional SQL constructs such as stored procedures, user-defined functions, table partitioning, indexes, and collations. It is integrated with traditional SQL Server and third party tools, along with many services in Azure such as <a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a>, <a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a>, <a href="https://azure.microsoft.com/en-us/services/machine-learning/">Machine Learning</a>, and <a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a>.
 
 ## Use Case
 
-![architecture-image1](./media/architecture2.png)
+To demonstrate the power of Azure SQL Data Warehouse we will examine a sample use case that integrates SQL Data Warehouse with a number of Azure components, namely Event Hub, Stream Analytics, Machine Learning, and Power BI - as well as an on-prem SQL Server via a Data Management Gateway. At the end of this gallery we will include the steps to deploy this use case in your Azure subscription.
 
-## Prerequisites
+The architecture is described in detail below.
+
+![architecture-usecase-image](./media/architecture-usecase.png)
+
+The use case is a rating system that allows users to rate an event (such as a conference talk) and visualize the results in real time (currently 5 second intervals). Ratings are also stored in a data warehouse and sent to machine learning for near real time predictions (currently 15 minute intervals). Lastly, historical ratings can be bulk-loaded from an on-prem database.
+
+Real time ratings are generated via a data generator deployed as an <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure Web Job</a>. New ratings are randomly generated every 5 seconds for four fictitious devices (and one fictitious event) and sent to an Event Hub. An Azure Stream Analytics job then sends the ratings to a) Power BI for real time visualization and b) SQL Data Warehouse for storage and predictive analytics
+
+Predictive analytics is done by sending the ratings from SQL Data Warehouse to the batch endpoint of an experiment published as a web service in the Azure Machine Learning Studio, where the results are written back to SQL Data Warehouse. An Azure Data Factory orchestrates these operations. Note that for the purposes of this gallery sample we are not using a trained model in the experiment. For now, the experiment simply returns the average rating for the event. Going forward, we will improve this sample to compute the average in Stream Analytics and do predictions based on location, event type, and device counts.
+
+Bulk-loading is done by creating the schema in an on-prem SQL Server and populating the table with sample ratings data (downloadable from GitHub). A Data Management Gateway is used in the on-prem environment to connect the SQL Server to Azure SQL Data Warehouse. A Data Factory schedules the copying of the data from on-prem SQL Server to SQL Data Warehouse.
+
+When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all four devices.
+
+Here is a screenshot of a sample dashboard.
+
+![dashboard-usecase-image](./media/dashboard-usecase.png)
+
+## Requirements
 
 - Microsoft Azure subscription with login credentials
 - PowerBI subscription with login credentials
-- SQL client (Example: Microsoft SQL Server Management Studio)
+- A local environment with
+    - SQL Server
+    - Data Management Gateway
+    - A SQL client (Example: Microsoft SQL Server Management Studio)
 
 ## Deploy
 
-### AML (needed before ADF can be deployed - need endpoint and api key)
+### Service Bus, Event Hub, Stream Analytics Job, SQL Server, and SQL Data Warehouse
 
-### Resources
-
-Many of the resources (SQL Server V12, SQL Warehouse, Service Bus, Event Hub, Stream Analytics Job) are deployed automatically when you click the **Deploy to Azure button**.
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-parts 1 and 2
+Click this button
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart2.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
+This will create a new "blade" in the Azure portal.
 
-Screenshots on how to set parameters.
+![arm1-image](./media/arm1.png)
 
-<!--
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
--->
+1. Parameters
+   1. Type: UNIQUE (string): **[*UNIQUE*]** # Select a globally unique string
+   1. Select: LOCATION: **[*LOCATION*]** # The region where everything will be deployed
+   1. Click: **OK**
+1. Select: Subscription: **[*SUBSCRIPTION*]** # Name of the Azure subscription you want to use
+1. Resource group
+   1. Select: **New**
+   1. Type: New resource group name: **[*UNIQUE*]** # Same as above
+1. Select: Resource group location: **[*LOCATION*]** # Same as above
+1. Check: **Pin to dashboard** # If you want it on your dashboard
+1. Click: **Create**
 
 ### Create Azure SQL Data Warehouse tables
 
@@ -122,6 +116,59 @@ Screenshots on how to set parameters.
 	           CLUSTERED COLUMNSTORE INDEX
             )
      1. Click: **Execute**
+
+### Create the AML service
+
+1. Browse: https://studio.azureml.net
+1. Click: **Sign** In # Login with your credentials
+1. Click: Experiments > NEW
+1. Click: Blank Experiment
+1. Expand: Data Input and Output
+1. Drag: Reader: To: Canvas
+1. Select: Data source: Azure SQL Database
+1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
+1. Type: Database name: personalDB
+1. Type: Server user account name: personaluser
+1. Type: Server user account password: pass@word1
+1. Uncheck: Accept any server certificate (insecure): No # Default
+1. Type: Database query:
+      SELECT
+      CAST(Rating AS INT) AS Rating
+      FROM Ratings
+      WHERE EventId = 1
+1. Click: Database server name: web service parameter
+1. Click: Database name: web service parameter
+1. Click: Server user account name: web service parameter
+1. Click: Server user account password: web service parameter
+1. Click: Database query: web service parameter
+1. Expand: Statistical Functions
+1. Drag: Compute Elementary Statistics: To: Canvas
+1. Select: Method: Mean
+1. Connect: Reader: With: Compute Elementary Statistics
+1. Expand: Web Service
+1. Drag: Output: To: Canvas
+1. Connect: Compute Elementary Statistics: Web service output
+1. Click: RUN
+1. Right Click: Compute Elementary Statistics
+1. Select: Visualize # Verify that the mean output is reasonable
+1. Click: Close
+1. Click: SAVE AS
+1. Type: Experiment name: Ratings
+1. Click: SET UP WEB SERVICE
+1. Click: NEXT > NEXT > NEXT > FINISH
+1. Click: RUN
+1. Click: DEPLOY WEB SERVICE
+1. Click: TEST # Verify that request/response works
+1. Click: DATABASE QUERY:
+      SELECT
+      CAST(Rating AS INT) AS Rating
+      FROM Ratings
+      WHERE EventId = 1
+1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
+1. Click: DATABASE NAME: personalDB
+1. Click: SERVER USER ACCOUNT NAME: personaluser
+1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
+1. Click: OK
 
 ### Edit and start the ASA job
 
@@ -174,59 +221,6 @@ Screenshots on how to set parameters.
 	      select * from Ratings order by DateTime desc;
    1. Click: **Execute**
 
-### Create the AML service
-
-1. Browse: https://studio.azureml.net
-1. Click: **Sign** In # Login with your credentials
-1. Click: Experiments > NEW
-1. Click: Blank Experiment
-1. Expand: Data Input and Output
-1. Drag: Reader: To: Canvas
-1. Select: Data source: Azure SQL Database
-1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
-1. Type: Database name: personalDB
-1. Type: Server user account name: personaluser
-1. Type: Server user account password: pass@word1
-1. Uncheck: Accept any server certificate (insecure): No # Default
-1. Type: Database query:
-       SELECT
-       CAST(Rating AS INT) AS Rating
-       FROM Ratings
-       WHERE EventId = 1
-1. Click: Database server name: web service parameter
-1. Click: Database name: web service parameter
-1. Click: Server user account name: web service parameter
-1. Click: Server user account password: web service parameter
-1. Click: Database query: web service parameter
-1. Expand: Statistical Functions
-1. Drag: Compute Elementary Statistics: To: Canvas
-1. Select: Method: Mean
-1. Connect: Reader: With: Compute Elementary Statistics
-1. Expand: Web Service
-1. Drag: Output: To: Canvas
-1. Connect: Compute Elementary Statistics: Web service output
-1. Click: RUN
-1. Right Click: Compute Elementary Statistics
-1. Select: Visualize # Verify that the mean output is reasonable
-1. Click: Close
-1. Click: SAVE AS
-1. Type: Experiment name: Ratings
-1. Click: SET UP WEB SERVICE
-1. Click: NEXT > NEXT > NEXT > FINISH
-1. Click: RUN
-1. Click: DEPLOY WEB SERVICE
-1. Click: TEST # Verify that request/response works
-1. Click: DATABASE QUERY:
-       SELECT
-       CAST(Rating AS INT) AS Rating
-       FROM Ratings
-       WHERE EventId = 1
-1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
-1. Click: DATABASE NAME: personalDB
-1. Click: SERVER USER ACCOUNT NAME: personaluser
-1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
-1. Click: OK
-
 ### Create the realtime ADF
 
 Browse: https://portal.azure.com
@@ -263,7 +257,7 @@ Replace: <Specify the published workspace model's API key>: With: APIKEY
 Remove: Line: Containing: updateResourceEndpoint
 Remove: comma from preceding line
 Click: Deploy
-	
+
 Click: New dataset
 Select: Azure SQL Data Warehouse
 Edit: linkedServiceName: AzureSqlDWLinkedService
@@ -500,3 +494,35 @@ Click: Deploy
 1. Select: your resource group
 1. Click: ...
 1. Select: Delete
+
+## In Progress
+
+## Deploy
+
+### AML (needed before ADF can be deployed - need endpoint and api key)
+
+### Resources
+
+Many of the resources (SQL Server V12, SQL Warehouse, Service Bus, Event Hub, Stream Analytics Job) are deployed automatically when you click the **Deploy to Azure button**.
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+parts 1 and 2
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart2.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+Screenshots on how to set parameters.
+
+<!--
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
+    <img src="http://armviz.io/visualizebutton.png"/>
+</a>
+-->
