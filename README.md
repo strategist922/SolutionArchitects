@@ -221,222 +221,28 @@ This will create a new "blade" in the Azure portal.
 	      select * from Ratings order by DateTime desc;
    1. Click: **Execute**
 
-### Create the realtime ADF
+## Create the Data factories
 
-Browse: https://portal.azure.com
-Click: Data factories
-Click: Add
-Type: Name: datafactory-rba10
-Select: Subscription: Boston Engineering
-Select: Resource group name: rba10
-Select: Region name: West US
-Check: Pin to dashboard # The default
-Click: Create
-Click: Author and deploy
+Click this button
 
-Click: New data store
-Select: Azure SQL Data Warehouse
-Replace: <servername>: With: personal-rba10
-Replace: <databasename>: With: personalDB
-Replace: <username>: With: personaluser
-Replace: <servername>: With: personal-rba10
-Replace: <password>: With: pass@word1
-Click: Deploy
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart2.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
 
-Browse: https://studio.azureml.net
-Click: Sign In # Login with your credentials
-Click: WEB SERVICES
-Click: Ratings
-Click: Copy # APIKEY
-Click: BATCH EXECUTION
-Copy: https://...jobs # BESURL
-Click: New compute
-Select: Azure ML
-Replace: <Specify the batch scoring URL>: With: BESURL
-Replace: <Specify the published workspace model's API key>: With: APIKEY
-Remove: Line: Containing: updateResourceEndpoint
-Remove: comma from preceding line
-Click: Deploy
+This will create a new "blade" in the Azure portal.
 
-Click: New dataset
-Select: Azure SQL Data Warehouse
-Edit: linkedServiceName: AzureSqlDWLinkedService
-Edit: tableName: Ratings
-Edit: frequency: Minute
-Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
-Click: Deploy
+![arm1-image](./media/arm2.png)
 
-Click: New dataset
-Select: Azure SQL Data Warehouse
-Edit: name: AzureSqlDWOutput
-Edit: linkedServiceName: AzureSqlDWLinkedService
-Edit: tableName: AverageRatings
-Edit: frequency: Minute
-Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
-Click: Deploy
+1. Parameters
+   1. Type: UNIQUE (string): **[*UNIQUE*]** # Use the one previously entered
+   1. Select: LOCATION: **[*LOCATION*]** # Use the one previously selected
+   1. Click: **OK**
+1. Select: Subscription: **[*SUBSCRIPTION*]** # Use the one previously selected
+1. Select: Resource group: **[*UNIQUE*]** # Use the one previously selected
+1. Check: **Pin to dashboard** # If you want it on your dashboard
+1. Click: **Create**
 
-Click: More commands
-Click: New pipeline
-Edit:
-{
-    "name": "SQL-to-AML-to-SQL",
-    "properties": {
-        "description": "SQL to AML to SQL",
-        "activities": [
-            {
-                "type": "AzureMLBatchScoring",
-                "typeProperties": {
-                    "webServiceParameters": {
-                        "Database server name": "personal-rba10.database.windows.net",
-                        "Database name": "personalDB",
-                        "Server user account name": "personaluser",
-                        "Server user account password": "pass@word1",
-                        "Database query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
-                    }
-                },
-                "inputs": [
-                    {
-                        "name": "AzureSqlDWInput"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "AzureSqlDWOutput"
-                    }
-                ],
-                "policy": {
-                    "timeout": "00:05:00",
-                    "concurrency": 1,
-                    "retry": 3
-                },
-                "scheduler": {
-                    "frequency": "Minute",
-                    "interval": 15
-                },
-                "name": "MLActivity",
-                "description": "prediction analysis on batch input",
-                "linkedServiceName": "AzureMLLinkedService"
-            }
-        ],
-        "start": "2016-03-25T15:00:00Z",
-        "end": "2016-03-25T16:00:00Z",
-        "isPaused": false,
-        "pipelineMode": "Scheduled"
-    }
-}
-Click: Deploy
-
-### Create the batch ADF
-
-Browse: https://portal.azure.com
-Click: Data factories
-Click: Add
-Type: Name: datafactory-sqldb-sqldw-rba10
-Select: Subscription: Boston Engineering
-Select: Resource group name: rba10
-Select: Region name: West US
-Check: Pin to dashboard # The default
-Click: Create
-Click: Author and deploy
-
-Click:More commands
-Click:New data gateway
-Type:Data gateway name:datagateway-rba10
-Click:OK
-	KEY:ADF#41571b47-fd2a-4daa-b54b-7f6e69a6b71c@bc4170f0-cc6e-49d2-ba65-bc00a7a4df6b@7be89d3f-00b8-453f-9bd6-ddc98e58de74@wu#JIYIGu+q4+T0aHA1WEyKhbzNSHahQet4rLNKd0jpk0A=
-
-Click: New data store
-Select: SQL Server
-Replace: <servername>: With: WIN-DIFB3TPU2L9
-Replace: <databasename>: With: personalDB
-Replace: <username>: With: sqluser1
-Replace: <servername>: With: personal-rba10
-Replace: <password>: With: EY65t3yBn4se
-Replace: <gateway>: With: datagateway-rba10
-Remove: <user name>
-Remove: <password>
-Click: Deploy
-
-Add: # After availability
-        "external": true,
-        "policy": {}
-
-Click: New data store
-Select: Azure SQL Data Warehouse
-Replace: <servername>: With: personal-rba10
-Replace: <databasename>: With: personalDB
-Replace: <username>: With: personaluser
-Replace: <servername>: With: personal-rba10
-Replace: <password>: With: pass@word1
-Click: Deploy
-
-Click: New dataset
-Select: SQL Server table
-Edit: linkedServiceName: SqlServerLinkedService
-Edit: tableName: Ratings
-Edit: frequency: Minute
-Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
-Click: Deploy
-
-Click: New dataset
-Select: Azure SQL Data Warehouse
-Edit: linkedServiceName: AzureSqlDWLinkedService
-Edit: tableName: Ratings
-Edit: frequency: Minute
-Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
-Click: Deploy
-
-Click: More commands
-Click: New pipeline
-Edit:
-{
-    "name": "SQLDB-to-SQLDW-pipeline",
-    "properties": {
-        "description": "On Prem SQL Server DB to Azure SQL Server Data Warehouse",
-        "activities": [
-            {
-                "type": "Copy",
-                "typeProperties": {
-                    "source": {
-                        "type": "SqlSource",
-                        "sqlReaderQuery": "select * from Ratings"
-                    },
-                    "sink": {
-                        "type": "SqlSink",
-                        "writeBatchSize": 1000,
-                        "writeBatchTimeout": "00:30:00"
-                    }
-                },
-                "inputs": [
-                    {
-                        "name": "SQLServerDatasetTemplate"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "AzureSqlDWInput"
-                    }
-                ],
-                "policy": {
-                    "timeout": "01:00:00",
-                    "concurrency": 1,
-			             "executionPriorityOrder": "NewestFirst",
-			             "style": "StartOfInterval",
-			             "retry": 0
-                },
-                "scheduler": {
-                    "frequency": "Minute",
-                    "interval": 15
-                },
-                "name": "Activity-OnPremSQLToAzureSQL"
-            }
-        ],
-        "start": "2015-11-05T05:00:00Z",
-        "end": "2015-11-05T06:00:00Z",
-        "isPaused": false
-    }
-}
-Click: Deploy
+**TODO** Must also pass in AML endpoint and API key!
 
 ### Create the PBI dashboard
 
@@ -496,33 +302,3 @@ Click: Deploy
 1. Select: Delete
 
 ## In Progress
-
-## Deploy
-
-### AML (needed before ADF can be deployed - need endpoint and api key)
-
-### Resources
-
-Many of the resources (SQL Server V12, SQL Warehouse, Service Bus, Event Hub, Stream Analytics Job) are deployed automatically when you click the **Deploy to Azure button**.
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-parts 1 and 2
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart2.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>
-
-Screenshots on how to set parameters.
-
-<!--
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
--->
