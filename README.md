@@ -58,11 +58,23 @@ The blog should talk about:
 
 ## Deploy
 
+### AML (needed before ADF can be deployed - need endpoint and api key)
+
 ### Resources
 
 Many of the resources (SQL Server V12, SQL Warehouse, Service Bus, Event Hub, Stream Analytics Job) are deployed automatically when you click the **Deploy to Azure button**.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+parts 1 and 2
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json" target="_blank">
+    <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart2.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
@@ -162,24 +174,6 @@ Screenshots on how to set parameters.
 	      select * from Ratings order by DateTime desc;
    1. Click: **Execute**
 
-### Create the PBI dashboard
-
-1. Browse: https://powerbi.microsoft.com
-1. Click: **Sign in** # Login with your credentials
-1. Show: The navigation pane
-1. Click: **personalDB** # Under the Datasets folder
-1. Click: **Line chart** # Under Visualizations
-1. Drag: **datetime**: To: **Axis**
-1. Drag: **deviceid**: To: **Legend**
-1. Drag: **rating**: To: **Values**
-1. Click: **Save**
-1. Type: Name: **personalDB**
-1. Click: **Save**
-1. Click: **Pin visual** # pin icon on upper-right
-1. Select: **New dashboard**
-1. Type: Name: **personalDB**
-1. Click: **Pin**
-
 ### Create the AML service
 
 1. Browse: https://studio.azureml.net
@@ -233,7 +227,7 @@ Screenshots on how to set parameters.
 1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
 1. Click: OK
 
-### Create the ADF
+### Create the realtime ADF
 
 Browse: https://portal.azure.com
 Click: Data factories
@@ -299,10 +293,10 @@ Edit:
                 "type": "AzureMLBatchScoring",
                 "typeProperties": {
                     "webServiceParameters": {
-						"Database server name": "personal-rba10.database.windows.net",
-						"Database name": "personalDB",
-						"Server user account name": "personaluser",
-						"Server user account password": "pass@word1",
+                        "Database server name": "personal-rba10.database.windows.net",
+                        "Database name": "personalDB",
+                        "Server user account name": "personaluser",
+                        "Server user account password": "pass@word1",
                         "Database query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
                     }
                 },
@@ -321,17 +315,184 @@ Edit:
                     "concurrency": 1,
                     "retry": 3
                 },
+                "scheduler": {
+                    "frequency": "Minute",
+                    "interval": 15
+                },
                 "name": "MLActivity",
                 "description": "prediction analysis on batch input",
                 "linkedServiceName": "AzureMLLinkedService"
             }
-        ],	
-        "start": "2016-03-24T00:00:00Z",
-        "end": "2016-03-25T00:00:00Z",
+        ],
+        "start": "2016-03-25T15:00:00Z",
+        "end": "2016-03-25T16:00:00Z",
+        "isPaused": false,
+        "pipelineMode": "Scheduled"
+    }
+}
+Click: Deploy
+
+### Create the batch ADF
+
+Browse: https://portal.azure.com
+Click: Data factories
+Click: Add
+Type: Name: datafactory-sqldb-sqldw-rba10
+Select: Subscription: Boston Engineering
+Select: Resource group name: rba10
+Select: Region name: West US
+Check: Pin to dashboard # The default
+Click: Create
+Click: Author and deploy
+
+Click:More commands
+Click:New data gateway
+Type:Data gateway name:datagateway-rba10
+Click:OK
+	KEY:ADF#41571b47-fd2a-4daa-b54b-7f6e69a6b71c@bc4170f0-cc6e-49d2-ba65-bc00a7a4df6b@7be89d3f-00b8-453f-9bd6-ddc98e58de74@wu#JIYIGu+q4+T0aHA1WEyKhbzNSHahQet4rLNKd0jpk0A=
+
+Click: New data store
+Select: SQL Server
+Replace: <servername>: With: WIN-DIFB3TPU2L9
+Replace: <databasename>: With: personalDB
+Replace: <username>: With: sqluser1
+Replace: <servername>: With: personal-rba10
+Replace: <password>: With: EY65t3yBn4se
+Replace: <gateway>: With: datagateway-rba10
+Remove: <user name>
+Remove: <password>
+Click: Deploy
+
+Add: # After availability
+        "external": true,
+        "policy": {}
+
+Click: New data store
+Select: Azure SQL Data Warehouse
+Replace: <servername>: With: personal-rba10
+Replace: <databasename>: With: personalDB
+Replace: <username>: With: personaluser
+Replace: <servername>: With: personal-rba10
+Replace: <password>: With: pass@word1
+Click: Deploy
+
+Click: New dataset
+Select: SQL Server table
+Edit: linkedServiceName: SqlServerLinkedService
+Edit: tableName: Ratings
+Edit: frequency: Minute
+Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
+Click: Deploy
+
+Click: New dataset
+Select: Azure SQL Data Warehouse
+Edit: linkedServiceName: AzureSqlDWLinkedService
+Edit: tableName: Ratings
+Edit: frequency: Minute
+Edit: interval: 15 # Remove surround double quotes. 15 minutes is the minimum allowed.
+Click: Deploy
+
+Click: More commands
+Click: New pipeline
+Edit:
+{
+    "name": "SQLDB-to-SQLDW-pipeline",
+    "properties": {
+        "description": "On Prem SQL Server DB to Azure SQL Server Data Warehouse",
+        "activities": [
+            {
+                "type": "Copy",
+                "typeProperties": {
+                    "source": {
+                        "type": "SqlSource",
+                        "sqlReaderQuery": "select * from Ratings"
+                    },
+                    "sink": {
+                        "type": "SqlSink",
+                        "writeBatchSize": 1000,
+                        "writeBatchTimeout": "00:30:00"
+                    }
+                },
+                "inputs": [
+                    {
+                        "name": "SQLServerDatasetTemplate"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "AzureSqlDWInput"
+                    }
+                ],
+                "policy": {
+                    "timeout": "01:00:00",
+                    "concurrency": 1,
+			             "executionPriorityOrder": "NewestFirst",
+			             "style": "StartOfInterval",
+			             "retry": 0
+                },
+                "scheduler": {
+                    "frequency": "Minute",
+                    "interval": 15
+                },
+                "name": "Activity-OnPremSQLToAzureSQL"
+            }
+        ],
+        "start": "2015-11-05T05:00:00Z",
+        "end": "2015-11-05T06:00:00Z",
         "isPaused": false
     }
 }
 Click: Deploy
+
+### Create the PBI dashboard
+
+#### Realtime pipeline
+
+1. Browse: https://powerbi.microsoft.com
+1. Click: **Sign in** # Login with your credentials
+1. Show: The navigation pane
+1. Click: **personalDB** # Under the Datasets folder
+1. Click: **Line chart** # Under Visualizations
+1. Drag: **datetime**: To: **Axis**
+1. Drag: **deviceid**: To: **Legend**
+1. Drag: **rating**: To: **Values**
+1. Click: **Save**
+1. Type: Name: **personalDB**
+1. Click: **Save**
+1. Click: **Pin visual** # pin icon on upper-right
+1. Select: **New dashboard**
+1. Type: Name: **personalDB**
+1. Click: **Pin**
+
+#### Predictive pipeline
+
+1. Browse: https://powerbi.microsoft.com
+1. Click: **Sign in** # Login with your credentials
+1. Show: The navigation pane
+1. Click: Get Data
+1. Click: Databases: Get
+1. Click: Azure SQL Data Warehouse
+1. Click: Connect
+1. Click: Server:**personal-[*UNIQUE*].database.windows.net**
+1. Click: Database: personalDB
+1. Click: Next
+1. Click: Username: **personaluser**
+1. Click: Password: **pass@word1**
+1. Click: Sign in
+1. Click: Datasets: personalDB
+1. Click: Visualizations: Card
+1. Expand: Fields: AverageRatings
+1. Check: AverageRating
+1. Click: Save
+1. Type: Name: personalDB2
+1. Click: Save
+1. Click: Reports: personalDB2
+1. Click: Pin icon
+1. Select: Existing dashboard
+1. Select: personalDB
+1. Click: Pin
+1. Select: Dashboards: personalDB
+1. Resize tiles
 
 ## Undeploy
 1. Browse: https://portal.azure.com
