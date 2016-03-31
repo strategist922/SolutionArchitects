@@ -29,16 +29,6 @@ To demonstrate the power of Azure SQL Data Warehouse we will examine a sample us
 
 The use case is a rating system that allows users to rate an event (such as a conference talk) and visualize the results in real time (currently 5 second intervals). Ratings are also stored in a data warehouse and sent to machine learning for near real time predictions (currently 15 minute intervals). Lastly, historical ratings are bulk-loaded from an on-prem database.
 
-The architecture is described in detail below.
-
-![architecture-usecase-image](./media/architecture-usecase.png)
-
-Real time ratings are generated via a data generator deployed as an <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure Web Job</a>. New ratings are randomly generated every 5 seconds for four fictitious devices (and one fictitious event) and sent to an Event Hub. An Azure Stream Analytics job then sends the ratings to a) Power BI for real time visualization and b) SQL Data Warehouse for storage and predictive analytics
-
-Predictive analytics is done by sending the ratings from SQL Data Warehouse to the batch endpoint of an experiment published as a web service in the Azure Machine Learning Studio, where the results are written back to SQL Data Warehouse. An Azure Data Factory orchestrates these operations. Note that for the purposes of this gallery sample we are not using a trained model in the experiment. For now, the experiment simply returns the average rating for the event. Going forward, we will improve this sample to compute the average in Stream Analytics and do predictions based on location, event type, and device counts.
-
-Bulk-loading is done by creating the schema in an on-prem SQL Server and populating the table with sample ratings data (downloadable from GitHub). A Data Management Gateway is used in the on-prem environment to connect the SQL Server to Azure SQL Data Warehouse. A Data Factory schedules the copying of the data from on-prem SQL Server to SQL Data Warehouse.
-
 When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all four devices.
 
 Here is a screenshot of a sample dashboard.
@@ -53,6 +43,18 @@ Here is a screenshot of a sample dashboard.
     - SQL Server
     - Data Management Gateway
     - A SQL client (Example: Microsoft SQL Server Management Studio)
+
+## Architecture
+
+The architecture is illustrated below.
+
+![architecture-usecase-image](./media/architecture-usecase.png)
+
+Real time ratings are generated via a data generator deployed as an <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure Web Job</a>. New ratings are randomly generated every 5 seconds for four fictitious devices (and one fictitious event) and sent to an Event Hub. An Azure Stream Analytics job then sends the ratings to a) Power BI for real time visualization and b) SQL Data Warehouse for storage and predictive analytics
+
+Predictive analytics is done by sending the ratings from SQL Data Warehouse to the batch endpoint of an experiment published as a web service in the Azure Machine Learning Studio, where the results are written back to SQL Data Warehouse. An Azure Data Factory orchestrates these operations. Note that for the purposes of this gallery sample we are not using a trained model in the experiment. For now, the experiment simply returns the average rating for the event. Going forward, we will improve this sample to compute the average in Stream Analytics and do predictions based on location, event type, and device counts.
+
+Bulk-loading is done by creating the schema in an on-prem SQL Server and populating the table with sample ratings data (downloadable from GitHub). A Data Management Gateway is used in the on-prem environment to connect the SQL Server to Azure SQL Data Warehouse. A Data Factory schedules the copying of the data from on-prem SQL Server to SQL Data Warehouse.
 
 ## Deploy
 
@@ -293,6 +295,10 @@ This will create a new "blade" in the Azure portal.
 1. Click: Pin
 1. Select: Dashboards: personalDB
 1. Resize tiles
+
+## Summary
+
+Congratulations! If you made it to this point, you should have a running sample with real time and predictive pipelines showcasing the power of Azure SQL Data Warehouse and its integration with many of the other Azure services. The final section lists the steps to tear things down when you are done.
 
 ## Undeploy
 1. Browse: https://portal.azure.com
