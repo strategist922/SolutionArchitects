@@ -201,7 +201,7 @@ This will create a new "blade" in the Azure portal.
 
 ### Create the PBI dashboard
 
-#### Realtime pipeline
+#### Realtime visualization
 
 ![dashboard-usecase-realtime](./media/dashboard-usecase-realtime.png)
 
@@ -221,7 +221,7 @@ This will create a new "blade" in the Azure portal.
 1. Type: Name: **personalDB**
 1. Click: **Pin**
 
-#### Predictive pipeline
+#### Predictive visualization
 
 ![dashboard-usecase-predictive](./media/dashboard-usecase-predictive.png)
 
