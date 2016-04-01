@@ -82,6 +82,22 @@ This will create a new "blade" in the Azure portal.
 1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
+### Create and populate on-prem SQL Server table
+
+1. Connect to the on-prem SQL Server using a SQL client of your choice.
+1. Create the table by running the following SQL:
+    CREATE TABLE Ratings (
+        DateTime DATETIME2,
+        EventId INT,
+        Rating INT,
+        DeviceId INT,
+        Lat DECIMAL(8,5),
+        Lon DECIMAL(8,5)
+        CONSTRAINT PK_Ratings PRIMARY KEY CLUSTERED(DateTime, EventId)
+    )
+1. Download sample data: https://github.com/roalexan/SolutionArchitects/blob/master/sampledata.csv
+1. Load sample data. For example using the SQL Server Import and Export Wizard	
+	
 ### Create Azure SQL Data Warehouse tables
 
 1. Connect to the Data Warehouse using a SQL client of your choice. For example:
@@ -92,8 +108,8 @@ This will create a new "blade" in the Azure portal.
    1. Select: Authentication: **SQL Server Authentication**
    1. Type: Login: **personaluser**
    1. Type: Password: **pass@word1**
-   1. Check: **Remember password** # Optional
-  1. Click: **Connect**
+   1. Check: **Remember password** # Up to you
+   1. Click: **Connect**
 1. Create the tables. For example:
 	 1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
 	 1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
@@ -121,33 +137,25 @@ This will create a new "blade" in the Azure portal.
 
 ### Create the AML service
 
-1. Browse: http://gallery.azureml.net/Details/359adba3520749f8bd78ce3fbdf4437a
+1. Browse: http://gallery.azureml.net/Details/359adba3520749f8bd78ce3fbdf4437a # copy this experiment from the gallery
 1. Click: Open in Studio
 1. Select: REGION: **[*REGION*]** # Up to you
 1. Select: WORKSPACE: **[*WORKSPACE*]** # Your workspace
 1. Click: OK
 1. Click: Reader
+1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
 1. Type: Server user account password: **pass@word1**
 1. Click: Writer
+1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
 1. Type: Server user account password: **pass@word1**
 1. Click: RUN
-1. Click: DEPLOY WEB SERVICE
-1. Click: TEST # Verify that request/response works
-1. Click: DATABASE QUERY:
-      SELECT
-      CAST(Rating AS INT) AS Rating
-      FROM Ratings
-      WHERE EventId = 1
-1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
-1. Click: DATABASE NAME: personalDB
-1. Click: SERVER USER ACCOUNT NAME: personaluser
-1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
-1. Click: OK
+1. Click: DEPLOY WEB SERVICE # See the debugging section for steps on how to test the service
 
 ### Edit and start the ASA job
 
 1. Browse: https://manage.windowsazure.com
-1. Click: **personalstreamanalytics<unique>**
+1. Click: STREAM ANALYTICS
+1. Click: **personalstreamanalytics[*unique*]**
 1. Click: **OUTPUTS**
 1. Click: **ADD OUTPUT**
 1. Select: **Power BI**
@@ -161,18 +169,33 @@ This will create a new "blade" in the Azure portal.
 1. Click: **Start**
 1. Click: **Finish** # You do not need to specify a custom time
 
-### Download and run the data generator
+### Deploy the data generator as a Web Job
 
-1. Download **debug.zip**
-1. Unzip
+1. Download data generator: https://github.com/roalexan/SolutionArchitects/blob/master/datagenerator.zip
+1. Unzip: **datagenerator.zip**
 1. Edit: **Rage.exe.config**
 1. Replace: EVENTHUBNAME: With: **personaleventhub[*UNIQUE*]**
-1. Browse: https://manage.windowsazure.com # Get the endpoint
-1. Click: SERVICE BUS
-1. Click: CONNECTION INFORMATION
-1. Copy: CONNECTION STRING
+1. Get CONNECTION STRING
+    1. Browse: https://manage.windowsazure.com # Get the endpoint
+    1. Click: SERVICE BUS
+    1. Select: **personalservicebus[*UNIQUE*]**
+    1. Click: CONNECTION INFORMATION
+    1. Copy: CONNECTION STRING
 1. Replace: ENDPOINT: With: CONNECTION STRING
-1. Double click: **Rage.exe** # Runs until you click any key on the console
+1. Zip: **datagenerator.zip**
+1. Browse: https://manage.windowsazure.com
+1. Click: NEW > COMPUTE > WEB APP > QUICK CREATE
+1. Type: **ratings[*UNIQUE*]**
+1. Select: APP SERVICE PLAN: From your subscription
+1. Click: CREATE WEB APP
+1. Click: WEB APPS
+1. Click: **ratings[*UNIQUE*]**
+1. Click: WEBJOBS
+1. Click: ADD A JOB
+1. Type: NAME: **ratings[*UNIQUE*]**
+1. Browse: datagenerator.zip
+1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds. 
+1. Click: Finish
 
 ## Create the Data factories
 
@@ -266,9 +289,27 @@ Congratulations! If you made it to this point, you should have a running sample 
 
 ## Debugging
 
-### Verify data being written
+### Verify AML web service is working
 
-##### From Portal
+1. Browse: https://studio.azureml.net
+1. Click: my experiments
+1. Click: WEB SERVICES
+1. Select: Ratings # Your web service
+1. Click: TEST # Verify that request/response works
+1. Click: DATABASE QUERY:
+      SELECT
+      CAST(Rating AS INT) AS Rating
+      FROM Ratings
+      WHERE EventId = 1
+1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
+1. Click: DATABASE NAME: personalDB
+1. Click: SERVER USER ACCOUNT NAME: personaluser
+1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
+1. Click: OK
+
+### Verify data generator is working
+
+#### From Portal
 
 1. Browse: https://manage.windowsazure.com
 1. Click: **personalstreamanalytics[*UNIQUE*]**
@@ -277,7 +318,7 @@ Congratulations! If you made it to this point, you should have a running sample 
 1. Select: a recent log
 1. Click: DETAILS
 
-##### From SQL Client
+#### From SQL Client
 
 1. Connect to the Data Warehouse using a SQL client of your choice
 1. Run SQL to view the latest entries. For example:
