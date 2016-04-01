@@ -50,9 +50,9 @@ The architecture is illustrated below.
 
 ![architecture-usecase-image](./media/architecture-usecase.png)
 
-Real time ratings are generated via a data generator deployed as an <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure Web Job</a>. New ratings are randomly generated every 5 seconds for four fictitious devices (and one fictitious event) and sent to an Event Hub. An Azure Stream Analytics job then sends the ratings to a) Power BI for real time visualization and b) SQL Data Warehouse for storage and predictive analytics
+Real time ratings are generated via a data generator deployed as an <a href="https://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Azure Web Job</a>. New ratings are generated every 5 seconds for four simulated devices (and one event) and sent to an Event Hub. An Azure Stream Analytics job then sends the ratings to a) Power BI for real time visualization and b) SQL Data Warehouse for storage and predictive analytics
 
-Predictive analytics is done by sending the ratings from SQL Data Warehouse to the batch endpoint of an experiment published as a web service in the Azure Machine Learning Studio, where the results are written back to SQL Data Warehouse. An Azure Data Factory orchestrates these operations. Note that for the purposes of this gallery sample we are not using a trained model in the experiment. For now, the experiment simply returns the average rating for the event. Going forward, we will improve this sample to compute the average in Stream Analytics and do predictions based on location, event type, and device counts.
+Predictive analytics is done by sending the ratings from SQL Data Warehouse to the batch endpoint of an experiment published as a web service in the Azure Machine Learning Studio, where the results are written back to SQL Data Warehouse. An Azure Data Factory orchestrates these operations. For now the experiment simply returns the average rating for the event, but you could consider doing more advanced analytics such as computing the average rating in Stream Analytics and doing predictions in AML based on location, event type, and device counts.
 
 Bulk-loading is done by creating the schema in an on-prem SQL Server and populating the table with sample ratings data (downloadable from GitHub). A Data Management Gateway is used in the on-prem environment to connect the SQL Server to Azure SQL Data Warehouse. A Data Factory schedules the copying of the data from on-prem SQL Server to SQL Data Warehouse.
 
@@ -121,43 +121,15 @@ This will create a new "blade" in the Azure portal.
 
 ### Create the AML service
 
-1. Browse: https://studio.azureml.net
-1. Click: **Sign** In # Login with your credentials
-1. Click: Experiments > NEW
-1. Click: Blank Experiment
-1. Expand: Data Input and Output
-1. Drag: Reader: To: Canvas
-1. Select: Data source: Azure SQL Database
-1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
-1. Type: Database name: personalDB
-1. Type: Server user account name: personaluser
-1. Type: Server user account password: pass@word1
-1. Uncheck: Accept any server certificate (insecure): No # Default
-1. Type: Database query:
-      SELECT
-      CAST(Rating AS INT) AS Rating
-      FROM Ratings
-      WHERE EventId = 1
-1. Click: Database server name: web service parameter
-1. Click: Database name: web service parameter
-1. Click: Server user account name: web service parameter
-1. Click: Server user account password: web service parameter
-1. Click: Database query: web service parameter
-1. Expand: Statistical Functions
-1. Drag: Compute Elementary Statistics: To: Canvas
-1. Select: Method: Mean
-1. Connect: Reader: With: Compute Elementary Statistics
-1. Expand: Web Service
-1. Drag: Output: To: Canvas
-1. Connect: Compute Elementary Statistics: Web service output
-1. Click: RUN
-1. Right Click: Compute Elementary Statistics
-1. Select: Visualize # Verify that the mean output is reasonable
-1. Click: Close
-1. Click: SAVE AS
-1. Type: Experiment name: Ratings
-1. Click: SET UP WEB SERVICE
-1. Click: NEXT > NEXT > NEXT > FINISH
+1. Browse: http://gallery.azureml.net/Details/359adba3520749f8bd78ce3fbdf4437a
+1. Click: Open in Studio
+1. Select: REGION: **[*REGION*]** # Up to you
+1. Select: WORKSPACE: **[*WORKSPACE*]** # Your workspace
+1. Click: OK
+1. Click: Reader
+1. Type: Server user account password: **pass@word1**
+1. Click: Writer
+1. Type: Server user account password: **pass@word1**
 1. Click: RUN
 1. Click: DEPLOY WEB SERVICE
 1. Click: TEST # Verify that request/response works
@@ -202,28 +174,9 @@ This will create a new "blade" in the Azure portal.
 1. Replace: ENDPOINT: With: CONNECTION STRING
 1. Double click: **Rage.exe** # Runs until you click any key on the console
 
-#### Verify data being written
-
-##### From Portal
-
-1. Browse: https://manage.windowsazure.com
-1. Click: **personalstreamanalytics[*UNIQUE*]**
-1. Click: DASHBOARD
-1. Click: **Operation Logs**
-1. Select: a recent log
-1. Click: DETAILS
-
-##### From SQL Client
-
-1. Connect to the Data Warehouse using a SQL client of your choice
-1. Run SQL to view the latest entries. For example:
-   1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
-   1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
-   1. Copy and Paste:
-	      select * from Ratings order by DateTime desc;
-   1. Click: **Execute**
-
 ## Create the Data factories
+
+At this point you are ready to connect everything together. You will create two data factories. The first data factory will orchestrate data to be read from the SQL Data Warehouse by Azure Machine Learning, at which point the average rating is computed and written back to the SQL Data Warehouse. The second data factory will orchestrate copying data from the on prem SQL Server to the SQL Data Warehouse.
 
 Click this button
 
@@ -250,6 +203,8 @@ This will create a new "blade" in the Azure portal.
 
 #### Realtime pipeline
 
+![dashboard-usecase-realtime](./media/dashboard-usecase-realtime.png)
+
 1. Browse: https://powerbi.microsoft.com
 1. Click: **Sign in** # Login with your credentials
 1. Show: The navigation pane
@@ -267,6 +222,8 @@ This will create a new "blade" in the Azure portal.
 1. Click: **Pin**
 
 #### Predictive pipeline
+
+![dashboard-usecase-predictive](./media/dashboard-usecase-predictive.png)
 
 1. Browse: https://powerbi.microsoft.com
 1. Click: **Sign in** # Login with your credentials
@@ -306,3 +263,26 @@ Congratulations! If you made it to this point, you should have a running sample 
 1. Select: your resource group
 1. Click: ...
 1. Select: Delete
+
+## Debugging
+
+### Verify data being written
+
+##### From Portal
+
+1. Browse: https://manage.windowsazure.com
+1. Click: **personalstreamanalytics[*UNIQUE*]**
+1. Click: DASHBOARD
+1. Click: **Operation Logs**
+1. Select: a recent log
+1. Click: DETAILS
+
+##### From SQL Client
+
+1. Connect to the Data Warehouse using a SQL client of your choice
+1. Run SQL to view the latest entries. For example:
+   1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
+   1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
+   1. Copy and Paste:
+	      select * from Ratings order by DateTime desc;
+   1. Click: **Execute**
