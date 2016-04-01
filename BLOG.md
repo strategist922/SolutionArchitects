@@ -27,8 +27,6 @@ The underlying architecture is as follows:
 
 When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all four devices.
 
-Here is a screenshot of a sample dashboard:
-
 ![dashboard-usecase-image](./media/dashboard-usecase.png)
 
 ## Azure SQL Data Warehouse
