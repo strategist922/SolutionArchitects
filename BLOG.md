@@ -25,7 +25,7 @@ The underlying architecture is as follows:
 
 ![architecture-usecase-image](./media/architecture-usecase.png)
 
-When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all four devices.
+When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all devices.
 
 ![dashboard-usecase-image](./media/dashboard-usecase.png)
 
