@@ -20,18 +20,6 @@
                 "description": "Location to deploy resources"
             }
         },
-        "azureMLEndpoint": {
-		    "type": "string",
-			"metadata": {
-			    "description": "URL of the AML BES web service"
-			}
-		},
-        "azureMLApiKey": {
-		    "type": "string",
-			"metadata": {
-			    "description": "API Key of the AML web service"
-			}
-		},
         "solAccType": {
             "type": "string",
             "defaultValue": "personal",
