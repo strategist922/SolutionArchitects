@@ -96,8 +96,8 @@ This will create a new "blade" in the Azure portal.
         CONSTRAINT PK_Ratings PRIMARY KEY CLUSTERED(DateTime, EventId)
     )
 1. Download sample data: https://github.com/roalexan/SolutionArchitects/blob/master/sampledata.csv
-1. Load sample data. For example using the SQL Server Import and Export Wizard	
-	
+1. Load sample data. For example using the SQL Server Import and Export Wizard
+
 ### Create Azure SQL Data Warehouse tables
 
 1. Connect to the Data Warehouse using a SQL client of your choice. For example:
@@ -194,7 +194,7 @@ This will create a new "blade" in the Azure portal.
 1. Click: ADD A JOB
 1. Type: NAME: **ratings[*UNIQUE*]**
 1. Browse: datagenerator.zip
-1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds. 
+1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds.
 1. Click: Finish
 
 ## Create the Data factories
@@ -220,7 +220,25 @@ This will create a new "blade" in the Azure portal.
 1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
-**TODO** Must also pass in AML endpoint and API key!
+## Update the Data Management Gateway registration key
+
+1. Create the ADF Data Management Gateway
+    1. Browse: https://portal.azure.com
+		1. Click: **Data factories**
+		1. Click: **personal2ADF[*UNIQUE*]**
+		1. Click: **Author and deploy**
+		1. Click: **More commands**
+		1. Click: **New data gateway**
+		1. Type: Data gateway name: **datagateway-[*UNIQUE*]**
+		1. Click: **OK**
+		1. Copy: **NEW KEY**
+1. Update the Data Management Gateway with the ADF registration key
+    1. Start: Microsoft Data Management Gateway Configuration manager
+		1. Click: **Change Key**
+		1. Check: Show gateway key # To verify the key is correct
+		1. Paste: **NEW KEY**
+		1. Click: **OK**
+
 
 ### Create the PBI dashboard
 
@@ -278,7 +296,7 @@ This will create a new "blade" in the Azure portal.
 
 ## Summary
 
-Congratulations! If you made it to this point, you should have a running sample with real time and predictive pipelines showcasing the power of Azure SQL Data Warehouse and its integration with many of the other Azure services. The final section lists the steps to tear things down when you are done.
+Congratulations! If you made it to this point, you should have a running sample with real time and predictive pipelines showcasing the power of Azure SQL Data Warehouse and its integration with many of the other Azure services. The next section lists the steps to tear things down when you are done.
 
 ## Undeploy
 1. Browse: https://portal.azure.com

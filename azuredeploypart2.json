@@ -4,9 +4,8 @@
     "parameters": {
         "unique": {
             "type": "string",
-            "defaultValue": "rba8",
             "metadata": {
-                "description": "Suffix for deployed resources"
+                "description": "Globally unique string appended to resources"
             }
         },
         "location": {
@@ -21,9 +20,17 @@
                 "description": "Location to deploy resources"
             }
         },
-		"storagelocation": {
-			"type": "string",
-			"defaultValue": "centralus"
+        "azureMLEndpoint": {
+		    "type": "string",
+			"metadata": {
+			    "description": "URL of the AML BES web service"
+			}
+		},
+        "azureMLApiKey": {
+		    "type": "string",
+			"metadata": {
+			    "description": "API Key of the AML web service"
+			}
 		},
         "solAccType": {
             "type": "string",
@@ -41,7 +48,6 @@
             "personal": {
                 "title": "personal",
                 "datafactorySettings": {
-                    "ETLHiveActivityQuery": "ETLQuery.hql",
                     "inputSerilization": {
 						"type": "CSV",
                         "properties": {
@@ -56,10 +62,6 @@
                             "encoding": "UTF8"
                         }
                     }
-                },
-                "azureMLSettings": {
-                    "azureMLEndpoint": "https://ussouthcentral.services.azureml.net/workspaces/1cb6843a931244a08611cf85ab3455d4/services/7adcfa540a56493dacbadeb9340ad3d3/jobs",
-                    "azureMLApiKey": "oop61dNlOmFiN/FH1SbllC2eQo6Cv42QYufnufePtkwx55xJPJETsj6oWIy8W+lktVHHUwteiwjauec+bq7rdg=="
                 }
             }
 		},
@@ -168,8 +170,8 @@
                     "properties": {
                         "type": "AzureML",
                         "typeProperties": {
-                            "mlEndpoint": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLEndpoint]",
-                            "apiKey": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLApiKey]"
+                            "mlEndpoint": "[parameters('azureMLEndpoint')]",
+                            "apiKey": "[parameters('azureMLApiKey')]"
                         }
                     }
                 },
@@ -238,7 +240,7 @@
 										"Database name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
 										"Server user account name": "[variables('settings')['sqlSettings'].sqlServerUserName]",
 										"Server user account password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
-										"Database query": "SELECT CAST(Rating AS INT) AS Rating FROM Ratings WHERE EventId = 1"
+										"Database query": "SELECT EventId, AVG(Rating) AS AverageRating FROM Ratings GROUP BY EventId;"
 									}
 								},
 								"inputs": [
