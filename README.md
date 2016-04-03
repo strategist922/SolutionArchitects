@@ -137,7 +137,7 @@ This will create a new "blade" in the Azure portal.
 
 ### Create the AML service
 
-1. Browse: http://gallery.azureml.net/Details/359adba3520749f8bd78ce3fbdf4437a # copy this experiment from the gallery
+1. Browse: http://gallery.azureml.net/Details/bd7a5b1bae0042b9964d37f7c57db714 # copy this experiment from the gallery
 1. Click: Open in Studio
 1. Select: REGION: **[*REGION*]** # Up to you
 1. Select: WORKSPACE: **[*WORKSPACE*]** # Your workspace
