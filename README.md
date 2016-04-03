@@ -74,7 +74,7 @@ This will create a new "blade" in the Azure portal.
    1. Type: UNIQUE (string): **[*UNIQUE*]** # Select a globally unique string
    1. Select: LOCATION: **[*LOCATION*]** # The region where everything will be deployed
    1. Click: **OK**
-1. Select: Subscription: **[*SUBSCRIPTION*]** # Name of the Azure subscription you want to use
+1. Select: Subscription: **[*SUBSCRIPTION*]** # Azure subscription you want to use
 1. Resource group
    1. Select: **New**
    1. Type: New resource group name: **[*UNIQUE*]** # Same as above
@@ -86,15 +86,15 @@ This will create a new "blade" in the Azure portal.
 
 1. Connect to the on-prem SQL Server using a SQL client of your choice.
 1. Create the table by running the following SQL:
-    CREATE TABLE Ratings (
-        DateTime DATETIME2,
-        EventId INT,
-        Rating INT,
-        DeviceId INT,
-        Lat DECIMAL(8,5),
-        Lon DECIMAL(8,5)
-        CONSTRAINT PK_Ratings PRIMARY KEY CLUSTERED(DateTime, EventId)
-    )
+        CREATE TABLE Ratings (
+            DateTime DATETIME2,
+            EventId INT,
+            Rating INT,
+            DeviceId INT,
+            Lat DECIMAL(8,5),
+            Lon DECIMAL(8,5)
+            CONSTRAINT PK_Ratings PRIMARY KEY CLUSTERED(DateTime, EventId)
+        )
 1. Download sample data: https://github.com/roalexan/SolutionArchitects/blob/master/sampledata.csv
 1. Load sample data. For example using the SQL Server Import and Export Wizard
 
