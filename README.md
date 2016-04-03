@@ -193,7 +193,7 @@ This will create a new "blade" in the Azure portal.
 1. Click: WEBJOBS
 1. Click: ADD A JOB
 1. Type: NAME: **ratings[*UNIQUE*]**
-1. Browse: datagenerator.zip
+1. Browse: **datagenerator.zip**
 1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds.
 1. Click: Finish
 
@@ -214,13 +214,15 @@ This will create a new "blade" in the Azure portal.
 1. Parameters
    1. Type: UNIQUE (string): **[*UNIQUE*]** # Use the one previously entered
    1. Select: LOCATION: **[*LOCATION*]** # Use the one previously selected
+   1. URL
+   1. API KEY
    1. Click: **OK**
 1. Select: Subscription: **[*SUBSCRIPTION*]** # Use the one previously selected
 1. Select: Resource group: **[*UNIQUE*]** # Use the one previously selected
 1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
-## Update the Data Management Gateway registration key
+## Create and Register the Data Management Gateway registration key
 
 1. Create the ADF Data Management Gateway
     1. Browse: https://portal.azure.com
