@@ -1,6 +1,6 @@
 <properties
-	pageTitle="ADF Data Movement from IaaS AWS SQLServer to Azure Blob and SQLServer | Microsoft Azure"
-	description="Describes the steps needed to copy data from an IaaS AWS/EC2 SQLServer to Azure Blob and SQLServer."
+	pageTitle="Setting up predictive analytics pipelines using Azure SQL Data Warehouse | Microsoft Azure"
+	description="Setting up predictive analytics pipelines using Azure SQL Data Warehouse."
 	keywords="adf, azure data factory"
 	services="datafactory"
 	documentationCenter=""
@@ -14,7 +14,7 @@
 	ms.tgt_pltfrm="na"
 	ms.devlang="na"
 	ms.topic="article"
-	ms.date="02/23/2016"
+	ms.date="04/14/2016"
 	ms.author="roalexan" />
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
@@ -242,9 +242,9 @@ This will create a new "blade" in the Azure portal.
 		1. Click: **OK**
 
 
-### Create the PBI dashboard
+## Create the PBI dashboard
 
-#### Realtime visualization
+### Realtime visualization
 
 ![dashboard-usecase-realtime](./media/dashboard-usecase-realtime.png)
 
@@ -264,7 +264,7 @@ This will create a new "blade" in the Azure portal.
 1. Type: Name: **personalDB**
 1. Click: **Pin**
 
-#### Predictive visualization
+### Predictive visualization
 
 ![dashboard-usecase-predictive](./media/dashboard-usecase-predictive.png)
 

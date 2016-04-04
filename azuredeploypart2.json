@@ -240,7 +240,7 @@
 										"Database name": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
 										"Server user account name": "[variables('settings')['sqlSettings'].sqlServerUserName]",
 										"Server user account password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
-										"Database query": "SELECT EventId, AVG(Rating) AS AverageRating FROM Ratings GROUP BY EventId;"
+										"Database query": "$$Text.Format('SELECT \\'{0:yyyy-MM-dd HH:mm:ss}\\' AS DateTimeStart, \\'{1:yyyy-MM-dd HH:mm:ss}\\' AS DateTimeStop, EventId, AVG(CAST(Rating AS FLOAT)) AS AverageRating FROM Ratings WHERE DateTime >= \\'{0:yyyy-MM-dd HH:mm:ss}\\' AND DateTime < \\'{1:yyyy-MM-dd HH:mm:ss}\\' GROUP BY EventId', WindowStart, WindowEnd)"
 									}
 								},
 								"inputs": [
