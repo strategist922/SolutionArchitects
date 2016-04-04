@@ -33,7 +33,7 @@ When everything is successfully deployed and running, the final result will be a
 
 Here is a screenshot of a sample dashboard.
 
-![dashboard-usecase-image](./media/dashboard-usecase.png)
+![dashboard-usecase-image](./media/dashboard-realtime-and-predictive.png)
 
 ## Requirements
 
