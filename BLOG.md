@@ -45,7 +45,7 @@ The underlying architecture is as follows:
 
 This tutorial will cover several useful design patterns that you can use. It consists of a real time and a predictive pipeline. For the real time pipeline, you will see how Stream Analytics can read from an EventHub and send the data to PowerBI for visualization. For the predictive pipeline, you will see how Stream Analytics can also send the data to Azure SQL Data Warehouse, where an Azure Data Factory will call Azure Machine Learning to read the data from the warehouse and send the aggregated results back to the warehouse for visualization in PowerBI. In addition, you will see how historical batch data can be ingested from an on-prem SQL Server via Data Management Gateway to Azure SQL Data Warehouse.
 
-This tutorial simulates four different devices sending their rating of an event (e.g. every few seconds. When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in real time and the average rating for all devices every few minutes.
+This tutorial simulates four different devices sending their rating of an event every few seconds. When everything is successfully deployed and running, the final result will be a PowerBI dashboard showing the ratings of each individual device in seconds and the average rating for all devices every few minutes.
 
 ![dashboard-usecase-image](./media/dashboard-realtime-and-predictive.png)
 
