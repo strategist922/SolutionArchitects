@@ -2,19 +2,19 @@
 	pageTitle="Setting up predictive analytics pipelines using Azure SQL Data Warehouse | Microsoft Azure"
 	description="Setting up predictive analytics pipelines using Azure SQL Data Warehouse."
 	keywords="adf, azure data factory"
-	services="datafactory"
+	services="sql-data-warehouse,data-factory,event-hubs,machine-learning,service-bus,stream-analytics"
 	documentationCenter=""
 	authors="roalexan"
 	manager="paulettm"
 	editor=""/>
 
 <tags
-	ms.service="datafactory"
+	ms.service="sql-data-warehouse"
 	ms.workload="data-services"
 	ms.tgt_pltfrm="na"
 	ms.devlang="na"
 	ms.topic="article"
-	ms.date="04/14/2016"
+	ms.date="04/04/2016"
 	ms.author="roalexan" />
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
