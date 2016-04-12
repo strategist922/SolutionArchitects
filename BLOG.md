@@ -23,9 +23,9 @@
 
 Big data is big and it's getting bigger. Better get used to a whole new set of <a href="https://en.wikipedia.org/wiki/Metric_prefix">prefixes</a> beyond peta such as exa, zetta, and yotta. The amount of data is projected to increase until by 2020 there will be about 50 zettabytes of data - nearly as many bits as there are stars in the universe.
 
-![datagrowth](./media/datagrowth.png)
+![datagrowth](./media/datagrowth-small.png)
 
-The sheer size of these data presents both immense opportunities and real challenges to businesses. Having access to these mountains of data - from the internet of things, from applications in the cloud, from mobile devices - will enable businesses to transform data into faster and better decisions. The result? more real-time and user-specific actions, lower costs, lower risks, new products and services - even entirely new businesses.
+The sheer size of these data presents both immense opportunities and real challenges to businesses. Having access to  mountains of data - from the internet of things, from applications in the cloud, from mobile devices - will enable businesses to transform data into faster and better decisions. The result? more real-time and user-specific actions, lower costs, lower risks, new products and services - even entirely new businesses.
 
 Managing such a vast amount of data is no trivial matter. How to securely and reliably store the data. How to quickly move and collate data across organization boundaries. How to efficiently analyze the data. Finding the right talent and technologies to handle the quickly evolving technological landscape. Creating the right architecture that fits within the IT budget. These are just some of the questions that must be answered.
 
