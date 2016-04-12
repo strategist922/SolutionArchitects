@@ -53,6 +53,10 @@ So again, click <a href="https://github.com/Azure/CAS-Gallery-Content/tree/maste
 
 These are all the Cortana Intelligence Suite services used by the tutorial:
 
+| 1 | 2 | 3 | 4 | 5 | 6 |
+| 1 | 2 | 3 | 4 | 5 | 6 |
+
+
 ![azuresql-image](./media/azuresql.png)
 <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/> Azure SQL Data Warehouse</a>
 
