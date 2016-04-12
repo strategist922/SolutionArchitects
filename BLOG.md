@@ -29,7 +29,7 @@ The sheer size of these data presents both immense opportunities and real challe
 
 Managing such a vast amount of data is no trivial matter. How to securely and reliably store the data. How to quickly move and collate data across organization boundaries. How to efficiently analyze the data. Finding the right talent and technologies to handle the quickly evolving technological landscape. Creating the right architecture that fits within the IT budget. These are just some of the questions that must be answered.
 
-Microsoft has been hard at work building solutions in the big data space. The <a href="https://www.microsoft.com/en-us/server-cloud/cortana-intelligence-suite/what-is-cortana-intelligence.aspx">Cortana Intelligence Suite</a> allows businesses to manage and make use of data at such scale. As a fully managed big data and advanced analytics suite, Cortana Intelligence is a powerful solution to transform your data into intelligent action.
+Microsoft has been hard at work building services and infrastructure in the big data space. The <a href="https://www.microsoft.com/en-us/server-cloud/cortana-intelligence-suite/what-is-cortana-intelligence.aspx">Cortana Intelligence Suite</a> allows businesses to manage and make use of data at such scale. As a fully managed big data and advanced analytics suite, Cortana Intelligence is a powerful solution to transform your data into intelligent action.
 
 ![cortana-intelligence-suite](./media/cortana-intelligence-suite.png)
 
@@ -54,27 +54,27 @@ So again, click <a href="https://github.com/Azure/CAS-Gallery-Content/tree/maste
 These are all the Cortana Intelligence services used by the tutorial:
 
 ![azuresql-image](./media/azuresql.png)
-<a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a>
+<a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/> Azure SQL Data Warehouse</a>
 
 A cloud-based, scalable database capable of processing massive volumes of data. It is ideally suited for storing structured data with a defined schema. Due to it's <a href="https://technet.microsoft.com/en-us/library/hh393582%28v=sql.110%29.aspx"/>MPP</a> architecture and use of Azure storage, it provides optimized query performance along with the ability to grow or shrink storage and compute independently. SQL Data Warehouse uses SQL Server's Transact-SQL (<a href="https://msdn.microsoft.com/en-us/library/mt243830.aspx"/>TSQL</a>) syntax for many operations and supports a broad set of traditional SQL constructs such as stored procedures, user-defined functions, table partitioning, indexes, and collations.
 
-![aml-image](./media/aml.png)<a href="https://azure.microsoft.com/en-us/services/machine-learning/">Azure Machine Learning</a>
+![aml-image](./media/aml.png)<a href="https://azure.microsoft.com/en-us/services/machine-learning/"> Azure Machine Learning</a>
 
 A fully managed cloud service that enables you to easily build, deploy, and share predictive analytics solutions. You can deploy your model into production as a web service in minutes — a web service that can be called from any device, anywhere and that can use any data source.
 
-![eventhub-image](./media/eventhub.png)<a href="https://azure.microsoft.com/en-us/services/event-hubs/"/>Azure Event Hub</a>
+![eventhub-image](./media/eventhub.png)<a href="https://azure.microsoft.com/en-us/services/event-hubs/"/> Azure Event Hub</a>
 
 A highly scalable publish-subscribe service optimized for reliably ingesting high volumes of data.
 Event Hubs can process millions of events per second and stream them into multiple applications. This lets you analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, transform and store it by using any real-time analytics provider or with batching/storage adapters.
 
-![asa-image](./media/asa.png)<a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a>
+![asa-image](./media/asa.png)<a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/> Stream Analytics</a>
 
 Lets you rapidly develop and deploy low-cost solutions to gain real-time insights from streaming data from devices, sensors, infrastructure, and applications. Use it for Internet of Things (<a href="https://en.wikipedia.org/wiki/Internet_of_Things">IoT</a>) scenarios, such as real-time remote management and monitoring or gaining insights from devices like mobile phones and connected cars.
 
-![pbi-image](./media/pbi.png)<a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a>
+![pbi-image](./media/pbi.png)<a href="https://powerbi.microsoft.com/en-us/"/> Power BI</a>
 
 A cloud-based dashboard and visualization service that provides faster time to insight. It is used for visualizing, exploring, and extracting insights from data. It brings together data from diverse sources to deliver rich, comprehensive views of your business. With Power BI, you can see all of your data in one place and share reports.
 
-![adf-image](./media/adf.png)<a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a>
+![adf-image](./media/adf.png)<a href="https://azure.microsoft.com/en-us/services/data-factory/"/> Azure Data Factory</a>
 
 A globally deployed, fully managed data movement service in the cloud. It enables enterprises to ingest data from multiple on-premises and cloud sources easily, and gets your data where it needs to go. Prepare and partition your data as you ingest it, or apply pre-processing steps.
