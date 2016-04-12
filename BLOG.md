@@ -53,19 +53,6 @@ So again, click <a href="https://github.com/Azure/CAS-Gallery-Content/tree/maste
 
 These are all the Cortana Intelligence Suite services used by the tutorial:
 
-| 1 | 2 | 3 | 4 | 5 | 6 |
-| 1 | 2 | 3 | 4 | 5 | 6 |
-
-
-![azuresql-image](./media/azuresql.png)
-<a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/> Azure SQL Data Warehouse</a>
-
-![aml-image](./media/aml.png)<a href="https://azure.microsoft.com/en-us/services/machine-learning/"> Azure Machine Learning</a>
-
-![eventhub-image](./media/eventhub.png)<a href="https://azure.microsoft.com/en-us/services/event-hubs/"/> Azure Event Hub</a>
-
-![asa-image](./media/asa.png)<a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/> Stream Analytics</a>
-
-![pbi-image](./media/pbi.png)<a href="https://powerbi.microsoft.com/en-us/"/> Power BI</a>
-
-![adf-image](./media/adf.png)<a href="https://azure.microsoft.com/en-us/services/data-factory/"/> Azure Data Factory</a>
+| ![azuresql-image](./media/azuresql.png) | ![aml-image](./media/aml.png) | ![eventhub-image](./media/eventhub.png) | ![asa-image](./media/asa.png) | ![pbi-image](./media/pbi.png) | ![adf-image](./media/adf.png) |
+| --- | --- | --- | --- | --- | --- |
+| <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a> | <a href="https://azure.microsoft.com/en-us/services/machine-learning/">Azure Machine Learning</a> | <a href="https://azure.microsoft.com/en-us/services/event-hubs/"/>Azure Event Hub</a> | <a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a> | <a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a> | <a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a> |
