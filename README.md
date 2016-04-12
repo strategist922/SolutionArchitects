@@ -37,11 +37,11 @@ Here is a screenshot of a sample dashboard.
 
 ## Requirements
 
-- Microsoft Azure subscription with login credentials
-- PowerBI subscription with login credentials
+- Microsoft <a href="https://azure.microsoft.com/en-us/">Azure</a> subscription with login credentials
+- <a href="https://powerbi.microsoft.com/">PowerBI</a> subscription with login credentials
 - A local environment with
     - SQL Server
-    - Data Management Gateway
+    - <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx">Data Management Gateway</a>
     - A SQL client (Example: Microsoft SQL Server Management Studio)
 
 ## Architecture
