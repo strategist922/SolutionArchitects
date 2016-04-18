@@ -140,36 +140,28 @@ This will create a new "blade" in the Azure portal.
 ### Create the AML service
 
 1. Browse: http://gallery.azureml.net/Details/aec6df682abf4a149bd7f2299cf2902f # copy this experiment from the gallery
-1. Click: Open in Studio
+1. Click: **Open in Studio**
 1. Select: REGION: **[*REGION*]** # Up to you
 1. Select: WORKSPACE: **[*WORKSPACE*]** # Your workspace
-1. Click: OK
-1. Click: Reader
+1. Click: **OK** > **Reader**
 1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
 1. Type: Server user account password: **pass@word1**
-1. Click: Writer
+1. Click: **Writer**
 1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
 1. Type: Server user account password: **pass@word1**
-1. Click: RUN
-1. Click: DEPLOY WEB SERVICE # See the debugging section for steps on how to test the service
+1. Click: **RUN** > **DEPLOY WEB SERVICE** # See the debugging section for steps on how to test the service
 
 ### Edit and start the ASA job
 
 1. Browse: https://manage.windowsazure.com
-1. Click: STREAM ANALYTICS
-1. Click: **personalstreamanalytics[*unique*]**
-1. Click: **OUTPUTS**
-1. Click: **ADD OUTPUT**
+1. Click: **STREAM ANALYTICS** > **personalstreamanalytics[*unique*]** > **OUTPUTS** > **ADD OUTPUT**
 1. Select: **Power BI**
-1. Click: **Next**
-1. Click: **Authorize Now** # Login with your credentials
+1. Click: **Next** > **Authorize Now** # Login with your credentials
 1. Type: OUTPUT ALIAS: **OutputPowerBI**
 1. Type: DATASET NAME: **personalDB** # This dataset will be overwritten in PBI should it already exist
 1. Type: TABLE NAME: **personalDB**
 1. Select: WORKSPACE: **My Workspace** # Default
-1. Click: **Finish**
-1. Click: **Start**
-1. Click: **Finish** # You do not need to specify a custom time
+1. Click: **Finish** > **Start** > **Finish** # You do not need to specify a custom time
 
 ### Deploy the data generator as a Web Job
 
@@ -186,14 +178,10 @@ This will create a new "blade" in the Azure portal.
 1. Replace: ENDPOINT: With: CONNECTION STRING
 1. Zip: **datagenerator.zip**
 1. Browse: https://manage.windowsazure.com
-1. Click: NEW > COMPUTE > WEB APP > QUICK CREATE
+1. Click: **NEW** > **COMPUTE** > **WEB APP** > **QUICK CREATE**
 1. Type: **ratings[*UNIQUE*]**
 1. Select: APP SERVICE PLAN: From your subscription
-1. Click: CREATE WEB APP
-1. Click: WEB APPS
-1. Click: **ratings[*UNIQUE*]**
-1. Click: WEBJOBS
-1. Click: ADD A JOB
+1. Click: **CREATE WEB APP** > **WEB APPS** > **ratings[*UNIQUE*]** > **WEBJOBS** > **ADD A JOB**
 1. Type: NAME: **ratings[*UNIQUE*]**
 1. Browse: **datagenerator.zip**
 1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds.
@@ -228,11 +216,7 @@ This will create a new "blade" in the Azure portal.
 
 1. Create the ADF Data Management Gateway
     1. Browse: https://portal.azure.com
-		1. Click: **Data factories**
-		1. Click: **personal2ADF[*UNIQUE*]**
-		1. Click: **Author and deploy**
-		1. Click: **More commands**
-		1. Click: **New data gateway**
+		1. Click: **Data factories** > **personal2ADF[*UNIQUE*]** > **Author and deploy** > **More commands** > **New data gateway**
 		1. Type: Data gateway name: **datagateway-[*UNIQUE*]**
 		1. Click: **OK**
 		1. Copy: **NEW KEY**
@@ -253,15 +237,13 @@ This will create a new "blade" in the Azure portal.
 1. Browse: https://powerbi.microsoft.com
 1. Click: **Sign in** # Login with your credentials
 1. Show: The navigation pane
-1. Click: **personalDB** # Under the Datasets folder
-1. Click: **Line chart** # Under Visualizations
+1. Click: **personalDB** # Under the Datasets folder > **Line chart** # Under Visualizations
 1. Drag: **datetime**: To: **Axis**
 1. Drag: **deviceid**: To: **Legend**
 1. Drag: **rating**: To: **Values**
 1. Click: **Save**
 1. Type: Name: **personalDB**
-1. Click: **Save**
-1. Click: **Pin visual** # pin icon on upper-right
+1. Click: **Save** > **Pin visual** # pin icon on upper-right
 1. Select: **New dashboard**
 1. Type: Name: **personalDB**
 1. Click: **Pin**
@@ -273,29 +255,15 @@ This will create a new "blade" in the Azure portal.
 1. Browse: https://powerbi.microsoft.com
 1. Click: **Sign in** # Login with your credentials
 1. Show: The navigation pane
-1. Click: Get Data
-1. Click: Databases: Get
-1. Click: Azure SQL Data Warehouse
-1. Click: Connect
-1. Click: Server:**personal-[*UNIQUE*].database.windows.net**
-1. Click: Database: personalDB
-1. Click: Next
-1. Click: Username: **personaluser**
-1. Click: Password: **pass@word1**
-1. Click: Sign in
-1. Click: Datasets: personalDB
-1. Click: Visualizations: Card
-1. Expand: Fields: AverageRatings
-1. Check: AverageRating
-1. Click: Save
-1. Type: Name: personalDB2
-1. Click: Save
-1. Click: Reports: personalDB2
-1. Click: Pin icon
-1. Select: Existing dashboard
-1. Select: personalDB
-1. Click: Pin
-1. Select: Dashboards: personalDB
+1. Click: **Get Data** > Databases: **Get** > **Azure SQL Data Warehouse** > **Connect** > Server: **personal-[*UNIQUE*].database.windows.net** > Database: **personalDB** > **Next** > Username: **personaluser** > Password: **pass@word1** > **Sign in** > Datasets: **personalDB** > Visualizations: **Card**
+1. Expand: Fields: **AverageRatings**
+1. Check: **AverageRating**
+1. Click: **Save**
+1. Type: Name: **personalDB2**
+1. Click: **Save** > Reports: **personalDB2** > **Pin icon**
+1. Select: **Existing dashboard** > **personalDB**
+1. Click: **Pin**
+1. Select: Dashboards: **personalDB**
 1. Resize tiles
 
 ## Summary
@@ -314,29 +282,22 @@ Congratulations! If you made it to this point, you should have a running sample 
 ### Verify AML web service is working
 
 1. Browse: https://studio.azureml.net
-1. Click: my experiments
-1. Click: WEB SERVICES
-1. Select: Ratings # Your web service
-1. Click: TEST # Verify that request/response works
-1. Click: DATABASE QUERY:
+1. Click: **my experiments** > **WEB SERVICES**
+1. Select: **Ratings** # Your web service
+1. Click: **TEST** # Verify that request/response works
+1. Click: **DATABASE QUERY**:
       SELECT
       CAST(Rating AS INT) AS Rating
       FROM Ratings
       WHERE EventId = 1
-1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net**
-1. Click: DATABASE NAME: personalDB
-1. Click: SERVER USER ACCOUNT NAME: personaluser
-1. Click: SERVER USER ACCOUNT PASSWORD: pass@word1
-1. Click: OK
+1. Click: DATABASE SERVER NAME: **personal-[*UNIQUE*].database.windows.net** > DATABASE NAME: **personalDB** > SERVER USER ACCOUNT NAME: **personaluser** > SERVER USER ACCOUNT PASSWORD: **pass@word1** > **OK**
 
 ### Verify data generator is working
 
 #### From Portal
 
 1. Browse: https://manage.windowsazure.com
-1. Click: **personalstreamanalytics[*UNIQUE*]**
-1. Click: DASHBOARD
-1. Click: **Operation Logs**
+1. Click: **personalstreamanalytics[*UNIQUE*]** > **DASHBOARD** > **Operation Logs**
 1. Select: a recent log
 1. Click: DETAILS
 
