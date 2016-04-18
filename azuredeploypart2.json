@@ -489,7 +489,7 @@
 						],
 						"start": "2016-04-05T00:00:00Z",
 						"end": "2016-04-05T23:59:59Z",
-						"isPaused": false,
+						"isPaused": true,
 						"pipelineMode": "Scheduled"
 					}
 				}

@@ -227,6 +227,9 @@ This will create a new "blade" in the Azure portal.
 		1. Paste: **NEW KEY**
 		1. Click: **OK**
 
+## Start the on-prem pipelines
+
+
 
 ## Create the PBI dashboard
 
