@@ -42,7 +42,7 @@ Here is a screenshot of a sample dashboard.
 - A local environment with
     - SQL Server
     - <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx">Data Management Gateway</a>
-    - A SQL client (Example: Microsoft SQL Server Management Studio)
+    - <a href="https://msdn.microsoft.com/en-us/mt429383">SQL Server Data Tools Preview in Visual Studio 2015</a>
 
 ## Architecture
 
@@ -127,6 +127,8 @@ This will create a new "blade" in the Azure portal.
                CLUSTERED COLUMNSTORE INDEX
 		    )
             CREATE TABLE AverageRatings (
+               DateTimeStart DATETIME2,
+               DateTimeStop DATETIME2,			   
 	           EventId INT,
 	           AverageRating FLOAT
             )
