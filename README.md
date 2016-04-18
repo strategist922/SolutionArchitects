@@ -14,7 +14,7 @@
 	ms.tgt_pltfrm="na"
 	ms.devlang="na"
 	ms.topic="article"
-	ms.date="04/04/2016"
+	ms.date="04/18/2016"
 	ms.author="roalexan" />
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
@@ -238,9 +238,9 @@ This will create a new "blade" in the Azure portal.
 1. Click: **Sign in** # Login with your credentials
 1. Show: The navigation pane
 1. Click: **personalDB** # Under the Datasets folder > **Line chart** # Under Visualizations
-1. Drag: **datetime**: To: **Axis**
-1. Drag: **deviceid**: To: **Legend**
-1. Drag: **rating**: To: **Values**
+1. Drag: **DateTime**: To: **Axis**
+1. Drag: **DeviceId**: To: **Legend**
+1. Drag: **Rating**: To: **Values**
 1. Click: **Save**
 1. Type: Name: **personalDB**
 1. Click: **Save** > **Pin visual** # pin icon on upper-right
@@ -255,9 +255,15 @@ This will create a new "blade" in the Azure portal.
 1. Browse: https://powerbi.microsoft.com
 1. Click: **Sign in** # Login with your credentials
 1. Show: The navigation pane
-1. Click: **Get Data** > Databases: **Get** > **Azure SQL Data Warehouse** > **Connect** > Server: **personal-[*UNIQUE*].database.windows.net** > Database: **personalDB** > **Next** > Username: **personaluser** > Password: **pass@word1** > **Sign in** > Datasets: **personalDB** > Visualizations: **Card**
+1. Click: **Get Data** > Databases: **Get** > **Azure SQL Data Warehouse** > **Connect** > Server: **personal-[*UNIQUE*].database.windows.net** > Database: **personalDB** > **Next** > Username: **personaluser** > Password: **pass@word1** > **Sign in** > Datasets: **personalDB** > Visualizations: **Line Chart**
 1. Expand: Fields: **AverageRatings**
-1. Check: **AverageRating**
+1. Drag: **DateTimeStop**: To: **Axis**
+1. Drag: **AverageRating**: To: **Values**
+1. Expand: **DateTimeStop** # Under Filters
+1. Select: **Advanced Filtering**
+1. Select: **is on or after**
+1. Select: **Sat Apr 16 2016 00:00:00 GMT-0400 (Eastern Daylight Time)**
+1. Click: **Apply filter**
 1. Click: **Save**
 1. Type: Name: **personalDB2**
 1. Click: **Save** > Reports: **personalDB2** > **Pin icon**
@@ -265,6 +271,50 @@ This will create a new "blade" in the Azure portal.
 1. Click: **Pin**
 1. Select: Dashboards: **personalDB**
 1. Resize tiles
+
+### Using historical Data
+
+#### Realtime visualization
+
+1. Edit: **personalDB2**
+1. Click: **New page**
+1. Click: **Line Chart**
+1. Expand: **Ratings**
+1. Drag: **DateTime**: To: **Axis**
+1. Drag: **DeviceId**: To: **Legend**
+1. Drag: **Rating**: To: **Values**
+1. Expand: **DateTime** # Under Filters
+1. Select: **Advanced Filtering**
+1. Select: **is on or after**
+1. Select: **Tue Apr 05 2016**
+1. Select:  **5 PM**
+1. Select: **And**
+1. Select: **Tue Apr 05 2016**
+1. Select:  **10 PM**
+1. Click: **Apply filter**
+
+#### Predictive visualization
+
+1. Click: **Line Chart**
+1. Expand: Fields: **AverageRatings**
+1. Drag: **DateTimeStop**: To: **Axis**
+1. Drag: **AverageRating**: To: **Values**
+1. Expand: **DateTimeStop** # Under Filters
+1. Select: **Advanced Filtering**
+1. Select: **is on or after**
+1. Select: **Tue Apr 05 2016**
+1. Select:  **5 PM**
+1. Select: **And**
+1. Select: **Tue Apr 05 2016**
+1. Select:  **10 PM**
+1. Click: **Apply filter**
+
+1. Click: **Save**
+1. Select: **Existing dashboard** > **personalDB**
+1. Click: **Pin**
+1. Select: Dashboards: **personalDB**
+1. Resize tiles
+
 
 ## Summary
 
