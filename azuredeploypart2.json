@@ -321,28 +321,6 @@
                         "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
                         "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].sqlServerLinkedServiceName)]"
                     ],
-                    "name": "[variables('settings')['datafactorySettings2']['datasetNames'].sqlServerDBInputDatasetName]",
-                    "properties": {
-                        "published": false,
-                        "type": "SqlServerTable",
-                        "linkedServiceName": "[variables('settings')['datafactorySettings2']['linkedServiceNames'].sqlServerLinkedServiceName]",
-                        "typeProperties": {
-                            "tableName": "Ratings"
-                        },
-                        "availability": {
-                            "frequency": "Minute",
-                            "interval": 15
-                        },
-						"external": true
-                    }
-                },
-                {
-					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
-					"type": "datasets",
-                    "dependsOn": [
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].sqlServerLinkedServiceName)]"
-                    ],
                     "name": "[variables('settings')['datafactorySettings2']['datasetNames'].sqlServerDBInputDatasetName2]",
                     "properties": {
                         "published": false,
@@ -387,27 +365,6 @@
                         "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
                         "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].azureSqlServerLinkedServiceName)]"
                     ],
-                    "name": "[variables('settings')['datafactorySettings2']['datasetNames'].azureSqlServerDWOutputDatasetName]",
-                    "properties": {
-                        "published": false,
-                        "type": "AzureSqlDWTable",
-                        "linkedServiceName": "[variables('settings')['datafactorySettings2']['linkedServiceNames'].azureSqlServerLinkedServiceName]",
-                        "typeProperties": {
-                            "tableName": "Ratings"
-                        },
-                        "availability": {
-                            "frequency": "Minute",
-                            "interval": 15
-                        }
-                    }
-                },
-                {
-					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
-					"type": "datasets",
-                    "dependsOn": [
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].azureSqlServerLinkedServiceName)]"
-                    ],
                     "name": "[variables('settings')['datafactorySettings2']['datasetNames'].azureSqlServerDWOutputDatasetName2]",
                     "properties": {
                         "published": false,
@@ -443,62 +400,6 @@
                         }
                     }
                 },
-                {
-                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
-                    "name": "SQLDB-to-SQLDW-pipeline",
-                    "dependsOn": [
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].sqlServerLinkedServiceName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings2']['linkedServiceNames'].azureSqlServerLinkedServiceName)]",
-                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings2']['datasetNames'].sqlServerDBInputDatasetName)]",
-						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings2'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings2']['datasetNames'].azureSqlServerDWOutputDatasetName)]"
-                    ],
-                    "type": "datapipelines",
-                    "properties": {
-                        "description": "On Prem SQL Server DB to Azure SQL Server Data Warehouse",
-                        "activities": [
-                            {
-								"type": "Copy",
-								"typeProperties": {
-									"source": {
-										"type": "SqlSource",
-										"sqlReaderQuery": "select * from Ratings"
-									},
-									"sink": {
-										"type": "SqlSink",
-										"writeBatchSize": 1000,
-										"writeBatchTimeout": "00:30:00"
-									}
-								},
-								"inputs": [
-									{
-										"name": "[variables('settings')['datafactorySettings2']['datasetNames'].sqlServerDBInputDatasetName]"
-									}
-								],
-								"outputs": [
-									{
-										"name": "[variables('settings')['datafactorySettings2']['datasetNames'].azureSqlServerDWOutputDatasetName]"
-									}
-								],
-								"policy": {
-									"timeout": "01:00:00",
-									"concurrency": 1,
-									"executionPriorityOrder": "NewestFirst",
-									"style": "StartOfInterval"
-								},
-								"scheduler": {
-									"frequency": "Minute",
-									"interval": 15
-								},
-								"name": "Activity-OnPremSQLToAzureSQL"
-							}
-						],
-						"start": "2015-11-05T05:00:00Z",
-						"end": "2015-11-05T06:00:00Z",
-						"isPaused": false,
-						"pipelineMode": "Scheduled"
-					}
-				},
                 {
                     "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
                     "name": "SQLDB-to-SQLDW-pipeline2",
