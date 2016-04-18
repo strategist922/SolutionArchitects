@@ -229,7 +229,12 @@ This will create a new "blade" in the Azure portal.
 
 ## Start the on-prem pipelines
 
-
+1. Browse: https://portal.azure.com
+1. Click: **Data factories** > **personal2ADF[*UNIQUE*]** > **Author and deploy**
+1. Expand: **Pipelines**
+1. Select: **SQLDB-to-SQLDW-pipeline2**
+1. Edit: **"isPaused": true** : to **"isPaused": false**
+1. Click: **Deploy**
 
 ## Create the PBI dashboard
 
