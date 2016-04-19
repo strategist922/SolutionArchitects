@@ -39,10 +39,10 @@ Here is a screenshot of a sample dashboard.
 
 - Microsoft <a href="https://azure.microsoft.com/en-us/">Azure</a> subscription with login credentials
 - <a href="https://powerbi.microsoft.com/">PowerBI</a> subscription with login credentials
-- A local environment with
+- An environment that will host your "on-prem" database (your laptop, a virtual machine) with
     - SQL Server
     - <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx">Data Management Gateway</a>
-    - <a href="https://msdn.microsoft.com/en-us/mt429383">SQL Server Data Tools Preview in Visual Studio 2015</a>
+- A local <a href="https://msdn.microsoft.com/en-us/mt429383">SQL Server Data Tools Preview in Visual Studio 2015</a>
 
 ## Architecture
 
@@ -82,38 +82,22 @@ This will create a new "blade" in the Azure portal.
 1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
-### Create and populate on-prem SQL Server table
+### Create and populate on-prem SQL Server tables
 
-1. Connect to the on-prem SQL Server using a SQL client of your choice.
-1. Create the table by running the following SQL:
-        CREATE TABLE Ratings (
-            DateTime DATETIME2,
-            EventId INT,
-            Rating INT,
-            DeviceId INT,
-            Lat DECIMAL(8,5),
-            Lon DECIMAL(8,5)
-            CONSTRAINT PK_Ratings PRIMARY KEY CLUSTERED(DateTime, EventId)
-        )
-1. Download sample data: https://github.com/roalexan/SolutionArchitects/blob/master/sampledata.csv
-1. Load sample data. For example using the SQL Server Import and Export Wizard
+1. Connect to the on-prem SQL Server using a SQL client of your choice (such as SQL Server Management Studio)
+1. Download sample ratings: https://github.com/roalexan/SolutionArchitects/blob/master/historical-ratings.csv
+1. Download sample average ratings:
+https://github.com/roalexan/SolutionArchitects/blob/master/historical-averageratings.csv
+1. Load sample data. For example, by using the SQL Server Import and Export Wizard in the SQL Server Management Studio, it will both create the tables and load the data.
 
 ### Create Azure SQL Data Warehouse tables
 
-1. Connect to the Data Warehouse using a SQL client of your choice. For example:
-   1. Start: **Microsoft SQL Server Management Studio**
-   1. Click: **File** > **Connect Object Explorer...**
-   1. Select: Server type: **Database Engine**
-   1. Type: Server name: **personal-[*UNIQUE*].database.windows.net**
-   1. Select: Authentication: **SQL Server Authentication**
-   1. Type: Login: **personaluser**
-   1. Type: Password: **pass@word1**
-   1. Check: **Remember password** # Up to you
-   1. Click: **Connect**
-1. Create the tables. For example:
-	 1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
-	 1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
-	 1. Copy and Paste:
+Connect to the Data Warehouse using SQL Server Data Tools Preview in Visual Studio 2015 using the following settings:
+   - Server name: **personal-[*UNIQUE*].database.windows.net**
+   - Authentication: **SQL Server Authentication**
+   - Login: **personaluser**
+   - Password: **pass@word1**
+
             CREATE TABLE Ratings (
                DateTime DATETIME2,
                EventId INT,
@@ -135,7 +119,6 @@ This will create a new "blade" in the Azure portal.
             WITH (
 	           CLUSTERED COLUMNSTORE INDEX
             )
-     1. Click: **Execute**
 
 ### Create the AML service
 
@@ -187,7 +170,7 @@ This will create a new "blade" in the Azure portal.
 1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds.
 1. Click: **Finish**
 
-## Create the Data factories
+## Create the Data Factories
 
 At this point you are ready to connect everything together. You will create two data factories. The first data factory will orchestrate data to be read from the SQL Data Warehouse by Azure Machine Learning, at which point the average rating is computed and written back to the SQL Data Warehouse. The second data factory will orchestrate copying data from the on prem SQL Server to the SQL Data Warehouse.
 
@@ -280,7 +263,7 @@ This will create a new "blade" in the Azure portal.
 1. Select: Dashboards: **personalDB**
 1. Resize tiles
 
-### Using historical Data
+### Using historical data
 
 #### Realtime visualization
 
@@ -356,8 +339,4 @@ Congratulations! If you made it to this point, you should have a running sample 
 
 1. Connect to the Data Warehouse using a SQL client of your choice
 1. Run SQL to view the latest entries. For example:
-   1. Expand: **personal-[*UNIQUE*].database.windows.net** > Databases > **personalDB**
-   1. Click: **New Query** # You may safely ignore the warning concerning QueryGovernorCostLimit if you see it
-   1. Copy and Paste:
 	      select * from Ratings order by DateTime desc;
-   1. Click: **Execute**
