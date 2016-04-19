@@ -31,31 +31,21 @@
 			"metadata": {
 			    "description": "API Key of the AML web service"
 			}
-		},
-        "solAccType": {
-            "type": "string",
-            "defaultValue": "personal",
-            "allowedValues": [
-                "personal",
-                "predictive",
-                "mbl",
-				"other"
-            ]
-        }
+		}
     },
     "variables": {
         "solutionAccSettings": {
             "personal": {
                 "title": "personal",
                 "datafactorySettings": {
-                    "inputSerilization": {
+                    "inputSerialization": {
 						"type": "CSV",
                         "properties": {
 							"fieldDelimiter": ",",
                             "encoding": "UTF8"
                         }
                     },
-					"outputSerilization": {
+					"outputSerialization": {
                         "type": "CSV",
                         "properties": {
                             "fieldDelimiter": ",",
@@ -65,7 +55,7 @@
                 }
             }
 		},
-        "currentSolAccSettings": "[variables('solutionAccSettings')[parameters('solAccType')]]",
+		"currentSolAccSettings": "[variables('solutionAccSettings')['personal']]",
         "paramVars": {
             "location": "[parameters('location')]",
             "accountType": "Standard-GRS",

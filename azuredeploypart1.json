@@ -33,7 +33,7 @@
                             "encoding": "UTF8"
                         }
                     },
-					"outputSerilization": {
+					"outputSerialization": {
                         "type": "CSV",
                         "properties": {
                             "fieldDelimiter": ",",
