@@ -185,7 +185,7 @@ This will create a new "blade" in the Azure portal.
 1. Type: NAME: **ratings[*UNIQUE*]**
 1. Browse: **datagenerator.zip**
 1. Select: HOW TO RUN: **Run continuously** # The default. It generates new ratings every 5 seconds.
-1. Click: Finish
+1. Click: **Finish**
 
 ## Create the Data factories
 
@@ -267,10 +267,10 @@ This will create a new "blade" in the Azure portal.
 1. Expand: Fields: **AverageRatings**
 1. Drag: **DateTimeStop**: To: **Axis**
 1. Drag: **AverageRating**: To: **Values**
-1. Expand: **DateTimeStop** # Under Filters
-1. Select: **Advanced Filtering**
-1. Select: **is on or after**
-1. Select: **Sat Apr 16 2016 00:00:00 GMT-0400 (Eastern Daylight Time)**
+1. Drag: **EventId**: To: **Visual Level Filters**
+1. Expand: **EventId**
+1. Select: **Is**
+1. Type: **1**
 1. Click: **Apply filter**
 1. Click: **Save**
 1. Type: Name: **personalDB2**
@@ -291,15 +291,11 @@ This will create a new "blade" in the Azure portal.
 1. Drag: **DateTime**: To: **Axis**
 1. Drag: **DeviceId**: To: **Legend**
 1. Drag: **Rating**: To: **Values**
-1. Expand: **DateTime** # Under Filters
-1. Select: **Advanced Filtering**
-1. Select: **is on or after**
-1. Select: **Tue Apr 05 2016**
-1. Select:  **5 PM**
-1. Select: **And**
-1. Select: **Tue Apr 05 2016**
-1. Select:  **10 PM**
-1. Click: **Apply filter**
+1. Drag: **EventId**: To: **Visual Level Filters**
+1. Expand: **EventId**
+1. Select: **Is**
+1. Type: **2**
+1. Click: **Apply filter** > **Save**
 
 #### Predictive visualization
 
@@ -307,22 +303,19 @@ This will create a new "blade" in the Azure portal.
 1. Expand: Fields: **AverageRatings**
 1. Drag: **DateTimeStop**: To: **Axis**
 1. Drag: **AverageRating**: To: **Values**
-1. Expand: **DateTimeStop** # Under Filters
-1. Select: **Advanced Filtering**
-1. Select: **is on or after**
-1. Select: **Tue Apr 05 2016**
-1. Select:  **5 PM**
-1. Select: **And**
-1. Select: **Tue Apr 05 2016**
-1. Select:  **10 PM**
-1. Click: **Apply filter**
+1. Drag: **EventId**: To: **Visual Level Filters**
+1. Expand: **EventId**
+1. Select: **Is**
+1. Type: **2**
+1. Click: **Apply filter** > **Save**
+
+#### Update dashboard
 
 1. Click: **Save**
 1. Select: **Existing dashboard** > **personalDB**
 1. Click: **Pin**
 1. Select: Dashboards: **personalDB**
 1. Resize tiles
-
 
 ## Summary
 
