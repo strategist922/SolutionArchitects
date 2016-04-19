@@ -14,7 +14,7 @@
 	ms.tgt_pltfrm="na"
 	ms.devlang="na"
 	ms.topic="article"
-	ms.date="04/04/2016"
+	ms.date="04/19/2016"
 	ms.author="roalexan" />
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
@@ -35,7 +35,7 @@ Microsoft has been hard at work building services and infrastructure in the big 
 
 The Cortana Intelligence Suite consists of a number of services that can be used to create predictive analytics pipelines. <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a> is a service that provides a cloud-based, scalable database capable of processing massive volumes of data. <a href="https://azure.microsoft.com/en-us/services/machine-learning/">Azure Machine Learning</a> provides a fully managed cloud service that enables you to easily build, deploy, and share predictive analytics solutions. In addition to these key services, there are several others that are used to ingest, orchestrate, and visualize the data such as <a href="https://azure.microsoft.com/en-us/services/event-hubs/"/>Azure Event Hub</a>, <a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a>, <a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a>, and <a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a>.
 
-Used together these services can create powerful fully managed end-to-end data pipelines for ingesting, storing, analyzing, and visualizing vast amounts of data. Real time pipelines can be created to allow data to be moved and analyzed in seconds where it can be used for alerting and operational statistics. Predictive pipelines can be created to allow data to be moved and analyzed in minutes where it can be used for insights.
+Used together these services can create powerful fully managed end-to-end data pipelines for ingesting, storing, analyzing, and visualizing vast amounts of data. Real time pipelines can be created to allow data to be moved and analyzed in seconds where it can be used for alerting and operational statistics.  Predictive pipelines can be created to allow large batches of data to be moved and analyzed in minutes where it can be used for insights.
 
 To demonstrate the power of the Cortana Intelligence Suite we have published a <a href="https://github.com/Azure/CAS-Gallery-Content/tree/master/Tutorials/SQL-Data-Warehouse"/>tutorial</a> that shows how to deploy an end-to-end fully operational real time and predictive pipeline in your Azure subscription. Along the way you will see in use all of the services listed above - as well as an on-prem SQL Server via a <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx"/>Data Management Gateway</a>. Go check it out! You will learn how to add predictive pipelines to a data warehouse augmented with machine learning. At the end of this tutorial you will have a full end-to-end solution deployed in your Azure subscription.
 
@@ -53,6 +53,4 @@ So again, click <a href="https://github.com/Azure/CAS-Gallery-Content/tree/maste
 
 These are all the Cortana Intelligence Suite services used by the tutorial:
 
-| ![azuresql-image](./media/azuresql.png) | ![aml-image](./media/aml.png) | ![eventhub-image](./media/eventhub.png) | ![asa-image](./media/asa.png) | ![pbi-image](./media/pbi.png) | ![adf-image](./media/adf.png) |
-| --- | --- | --- | --- | --- | --- |
-| <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a> | <a href="https://azure.microsoft.com/en-us/services/machine-learning/">Azure Machine Learning</a> | <a href="https://azure.microsoft.com/en-us/services/event-hubs/"/>Azure Event Hub</a> | <a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a> | <a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a> | <a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a> |
+<a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-overview-what-is"/>Azure SQL Data Warehouse</a> | <a href="https://azure.microsoft.com/en-us/services/machine-learning/">Azure Machine Learning</a> | <a href="https://azure.microsoft.com/en-us/services/event-hubs/"/>Azure Event Hub</a> | <a href="https://azure.microsoft.com/en-us/services/stream-analytics/"/>Stream Analytics</a> | <a href="https://powerbi.microsoft.com/en-us/"/>Power BI</a> | <a href="https://azure.microsoft.com/en-us/services/data-factory/"/>Azure Data Factory</a>
