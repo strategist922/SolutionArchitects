@@ -19,16 +19,6 @@
             "metadata": {
                 "description": "Location to deploy resources"
             }
-        },
-        "solAccType": {
-            "type": "string",
-            "defaultValue": "personal",
-            "allowedValues": [
-                "personal",
-                "predictive",
-                "mbl",
-				"other"
-            ]
         }
     },
     "variables": {
@@ -36,7 +26,7 @@
             "personal": {
                 "title": "personal",
                 "datafactorySettings": {
-                    "inputSerilization": {
+                    "inputSerialization": {
 						"type": "CSV",
                         "properties": {
 							"fieldDelimiter": ",",
@@ -53,7 +43,7 @@
                 }
             }
 		},
-        "currentSolAccSettings": "[variables('solutionAccSettings')[parameters('solAccType')]]",
+        "currentSolAccSettings": "[variables('solutionAccSettings')['personal']]",
         "paramVars": {
             "location": "[parameters('location')]",
             "accountType": "Standard-GRS",
@@ -213,7 +203,7 @@
                         "name": "InputHub",
                         "properties": {
                             "type": "stream",
-                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].inputSerilization]",
+                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].inputSerialization]",
                             "datasource": {
                                 "type": "Microsoft.ServiceBus/EventHub",
                                 "properties": {
