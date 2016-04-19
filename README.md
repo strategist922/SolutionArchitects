@@ -148,7 +148,7 @@ Connect to the Data Warehouse using SQL Server Data Tools Preview in Visual Stud
 
 ### Deploy the data generator as a Web Job
 
-1. Download data generator: https://github.com/roalexan/SolutionArchitects/blob/master/datagenerator.zip
+1. Download data generator: https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/datagenerator.zip
 1. Unzip: **datagenerator.zip**
 1. Edit: **Rage.exe.config**
 1. Replace: EVENTHUBNAME: With: **personaleventhub[*UNIQUE*]**
