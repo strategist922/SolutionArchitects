@@ -60,7 +60,7 @@ Bulk-loading is done by creating the schema in an on-prem SQL Server and populat
 
 ### Service Bus, Event Hub, Stream Analytics Job, SQL Server, and SQL Data Warehouse
 
-Click this button
+To get started, click the below button.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
@@ -80,6 +80,7 @@ This will create a new "blade" in the Azure portal.
    1. Type: New resource group name: **[*UNIQUE*]** # Same as above
 1. Select: Resource group location: **[*LOCATION*]** # Same as above
 1. Check: **Pin to dashboard** # If you want it on your dashboard
+1. Click: **Review legal terms** > **Create**
 1. Click: **Create**
 
 ### Create and populate on-prem SQL Server tables
