@@ -85,9 +85,9 @@ This will create a new "blade" in the Azure portal.
 ### Create and populate on-prem SQL Server tables
 
 1. Connect to the on-prem SQL Server using a SQL client of your choice (such as SQL Server Management Studio)
-1. Download sample ratings: https://github.com/roalexan/SolutionArchitects/blob/master/historical-ratings.csv
+1. Download sample ratings: https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-ratings.csv
 1. Download sample average ratings:
-https://github.com/roalexan/SolutionArchitects/blob/master/historical-averageratings.csv
+https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-averageratings.csv
 1. Load sample data. For example, by using the SQL Server Import and Export Wizard in the SQL Server Management Studio, it will both create the tables and load the data.
 
 ### Create Azure SQL Data Warehouse tables
