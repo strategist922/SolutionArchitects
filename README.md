@@ -79,8 +79,8 @@ This will create a new "blade" in the Azure portal.
    1. Select: **New**
    1. Type: New resource group name: **[*UNIQUE*]** # Same as above
 1. Select: Resource group location: **[*LOCATION*]** # Same as above
-1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Review legal terms** > **Create**
+1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
 ### Create and populate on-prem SQL Server tables
@@ -193,6 +193,7 @@ This will create a new "blade" in the Azure portal.
    1. Click: **OK**
 1. Select: Subscription: **[*SUBSCRIPTION*]** # Use the one previously selected
 1. Select: Resource group: **[*UNIQUE*]** # Use the one previously selected
+1. Click: **Review legal terms** > **Create**
 1. Check: **Pin to dashboard** # If you want it on your dashboard
 1. Click: **Create**
 
