@@ -261,8 +261,7 @@
 								"linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName]"
 							}
 						],
-						"start": "2016-04-16T00:00:00Z",
-						"end": "9999-09-09T00:00:00Z",
+						"start": "2016-05-05T00:00:00Z",
 						"isPaused": false,
 						"pipelineMode": "Scheduled"
                     }
