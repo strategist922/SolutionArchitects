@@ -42,7 +42,7 @@ Here is a screenshot of a sample dashboard.
 - An environment that will host your "on-prem" database (your laptop, a virtual machine) with
     - SQL Server
     - <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx">Data Management Gateway</a>
-- A local <a href="https://msdn.microsoft.com/en-us/mt429383">SQL Server Data Tools Preview in Visual Studio 2015</a>
+- A local installation of <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-install-visual-studio/">Visual Studio with SQL Server Data Tools (SSDT)</a>
 
 ## Architecture
 
@@ -57,6 +57,15 @@ Predictive analytics is done by sending the ratings from SQL Data Warehouse to t
 Bulk-loading is done by creating the schema in an on-prem SQL Server and populating the table with sample ratings data (downloadable from GitHub). A Data Management Gateway is used in the on-prem environment to connect the SQL Server to Azure SQL Data Warehouse. A Data Factory schedules the copying of the data from on-prem SQL Server to SQL Data Warehouse.
 
 ## Deploy
+
+Below are the steps to deploy the use case into your Azure subscription. Note that to condense the steps somewhat, a **>** is used between repeated actions. For example:
+
+1. Click: **Button A**
+1. Click: **Button B**
+
+is written as
+
+1. Click: **Button A** > **Button B**  
 
 ### Service Bus, Event Hub, Stream Analytics Job, SQL Server, and SQL Data Warehouse
 
