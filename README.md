@@ -40,7 +40,7 @@ Here is a screenshot of a sample dashboard.
 - Microsoft <a href="https://azure.microsoft.com/en-us/">Azure</a> subscription with login credentials
 - <a href="https://powerbi.microsoft.com/">PowerBI</a> subscription with login credentials
 - An environment that will host your "on-prem" database (your laptop, a virtual machine) with
-    - SQL Server
+    - SQL Server with a database and login credentials
     - <a href="https://msdn.microsoft.com/en-us/library/dn879362.aspx">Data Management Gateway</a>
 - A local installation of <a href="https://azure.microsoft.com/en-us/documentation/articles/sql-data-warehouse-install-visual-studio/">Visual Studio with SQL Server Data Tools (SSDT)</a>
 
@@ -58,7 +58,7 @@ Bulk-loading is done by creating the schema in an on-prem SQL Server and populat
 
 ## Deploy
 
-Below are the steps to deploy the use case into your Azure subscription. Note that to condense the steps somewhat, a **>** is used between repeated actions. For example:
+Below are the steps to deploy the use case into your Azure subscription. Note that to condense the steps somewhat, **>** is used between repeated actions. For example:
 
 1. Click: **Button A**
 1. Click: **Button B**
@@ -92,11 +92,26 @@ This will create a new "blade" in the Azure portal.
 
 ### Create and populate on-prem SQL Server tables
 
-1. Connect to the on-prem SQL Server using a SQL client of your choice (such as SQL Server Management Studio)
-1. Download sample ratings: https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-ratings.csv
-1. Download sample average ratings:
-https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-averageratings.csv
-1. Load sample data. For example, by using the SQL Server Import and Export Wizard in the SQL Server Management Studio, it will both create the tables and load the data.
+Now you need to create two tables in your on-prem SQL Server and populate them with sample data. You can do this via SQL Server Management Studio by following these steps:
+
+1. Log into your on-prem environment
+1. Download sample data files:
+   1.      https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-ratings.csv
+   1. https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-averageratings.csv
+1. Open SQL Server Management Studio
+1. Click: File > **Connect Object Explorer...**
+   1. Select: Server type: **Database Engine**
+   1. Select: Your server name, authentication type, and credentials
+   1. Click: **Connect**
+1. Right Click: Your database > **TASKS** > **Import Data...**
+1. Click: **Next**
+1. Select: Data source: **Flat File Source**
+1. Click: File name: Browse: **Ratings.csv**
+1. Click: **Next** > **Next**
+1. Select: **SQL Server Native Client 11.0**
+1. Select: Your server name, authentication type, credentials, and database name
+1. Click: **Next** > **Next** > **Finish** > **Finish** > **Close**
+1. Repeat steps 5 - 12 for **AverageRatings.csv**
 
 ### Create Azure SQL Data Warehouse tables
 
