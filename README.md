@@ -92,7 +92,7 @@ This will create a new "blade" in the Azure portal.
 
 ### Create and populate on-prem SQL Server tables
 
-Now you need to create two tables in your on-prem SQL Server and populate them with sample data. You can do this via SQL Server Management Studio by following these steps:
+Now you need to create two tables in your on-prem SQL Server and populate them with sample data. You can do this by using <a href="https://msdn.microsoft.com/en-us/library/mt238290.aspx">SQL Server Management Studio (SSMS)</a> or SQL Server Data Tools if you already have it (you will use it in the next section when you create the corresponding SQL Data Warehouse tables). Here are the steps using SQL Server Management Studio:
 
 1. Log into your on-prem environment
 1. Download sample data files:
@@ -115,7 +115,9 @@ Now you need to create two tables in your on-prem SQL Server and populate them w
 
 ### Create Azure SQL Data Warehouse tables
 
-Connect to the Data Warehouse using SQL Server Data Tools Preview in Visual Studio 2015 using the following settings:
+Next you need to create the matching tables in the SQL Data Warehouse. You can do this by following these steps:
+
+1. Start Visual Studio. Note that you must have installed the SQL Server Data Tools. Connect to the Data Warehouse using SQL Server Data Tools Preview in Visual Studio 2015 using the following settings:
    - Server name: **personal-[*UNIQUE*].database.windows.net**
    - Authentication: **SQL Server Authentication**
    - Login: **personaluser**
