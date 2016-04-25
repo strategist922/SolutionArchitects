@@ -96,8 +96,8 @@ Now you need to create two tables in your on-prem SQL Server and populate them w
 
 1. Log into your on-prem environment
 1. Download sample data files:
-   1.      https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-ratings.csv
-   1. https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/historical-averageratings.csv
+   1.      https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/Ratings.csv
+   1. https://github.com/Azure/Cortana-Intelligence-Gallery-Content/blob/master/Tutorials/SQL-Data-Warehouse/AverageRatings.csv
 1. Open SQL Server Management Studio
 1. Click: File > **Connect Object Explorer...**
    1. Select: Server type: **Database Engine**
