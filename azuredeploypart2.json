@@ -78,7 +78,7 @@
             },
             "datafactorySettings": {
                 "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
-                "dataFactoryLocation": "westus",
+                "dataFactoryLocation": "[parameters('location')]",
                 "linkedServiceNames": {
                     "azureSqlDWLinkedServiceName": "AzureSqlDWLinkedService",
                     "azureMLLinkedServiceName": "AzureMLLinkedService"
@@ -90,7 +90,7 @@
             },
             "datafactorySettings2": {
                 "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'2ADF',parameters('unique'))]",
-                "dataFactoryLocation": "westus",
+                "dataFactoryLocation": "[parameters('location')]",
                 "linkedServiceNames": {
                     "sqlServerLinkedServiceName": "SqlServerLinkedService",
                     "azureSqlServerLinkedServiceName": "AzureSqlServerLinkedService"
