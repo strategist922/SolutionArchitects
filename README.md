@@ -78,10 +78,10 @@ This will create a new "blade" in the Azure portal.
 ![arm1-image](./media/arm1.png)
 
 1. Parameters
-   1. Type: UNIQUE (string): **[*UNIQUE*]** (Note: select a globally unique string)
+   1. Type: UNIQUE (string): **[*UNIQUE*]** (You need to select a globally unique string)
    1. Select: LOCATION: **[*LOCATION*]** (The region where everything will be deployed)
    1. Click: **OK**
-1. Select: Subscription: **[*SUBSCRIPTION*]** (Azure subscription you want to use)
+1. Select: Subscription: **[*SUBSCRIPTION*]** (The Azure subscription you want to use)
 1. Resource group
    1. Select: **New**
    1. Type: New resource group name: **[*UNIQUE*]** (Same as above)
@@ -127,7 +127,7 @@ Next you need to create the matching tables in the SQL Data Warehouse. You can d
 1. Type: Password: **pass@word1**
 1. Select: Database Name: **personalDB**
 1. Click: **Connect**
-1. Right click: **personal-[*UNIQUE*].database.windows.net**
+1. Right click: **personalDB**
 1. Select: **New Query...**
 1. Copy and paste:
 
@@ -154,17 +154,17 @@ Next you need to create the matching tables in the SQL Data Warehouse. You can d
 
 ### Create the AML service
 
-1. Browse: http://gallery.azureml.net/Details/aec6df682abf4a149bd7f2299cf2902f # copy this experiment from the gallery
+1. Browse: http://gallery.azureml.net/Details/aec6df682abf4a149bd7f2299cf2902f # You will copy this experiment from the gallery
 1. Click: **Open in Studio**
 1. Select: REGION: **[*REGION*]** (Up to you)
 1. Select: WORKSPACE: **[*WORKSPACE*]** (Your workspace)
-1. Click: **OK** > **Reader**
+1. Click: **Import Data**
+1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
+1. Type: Password: **pass@word1**
+1. Click: **Export Data**
 1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
 1. Type: Server user account password: **pass@word1**
-1. Click: **Writer**
-1. Type: Database server name: **personal-[*UNIQUE*].database.windows.net**
-1. Type: Server user account password: **pass@word1**
-1. Click: **RUN** > **DEPLOY WEB SERVICE** (See the debugging section for steps on how to test the service)
+1. Click: **RUN** > **DEPLOY WEB SERVICE**
 
 ### Edit and start the ASA job
 
@@ -201,7 +201,6 @@ Next you need to create the matching tables in the SQL Data Warehouse. You can d
 1. Browse: **datagenerator.zip**
 1. Select: HOW TO RUN: **Run continuously**
 1. Click: **Finish**
-1. Click: **RUN ONCE**
 
 ## Create the Data Factories
 
