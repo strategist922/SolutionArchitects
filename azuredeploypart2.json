@@ -263,7 +263,6 @@
 							}
 						],
 						"start": "2016-05-01T00:00:00Z",
-						"end": "2016-05-01T23:59:59Z",
 						"isPaused": false,
 						"pipelineMode": "Scheduled"
                     }
