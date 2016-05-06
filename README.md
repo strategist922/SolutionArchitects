@@ -234,6 +234,15 @@ This will create a new "blade" in the Azure portal.
 1. Check: **Pin to dashboard** (If you want it on your dashboard)
 1. Click: **Create**
 
+## Start the predictive pipeline
+1. Browse: https://portal.azure.com
+1. Click: **Data factories** > **personalADF[*UNIQUE*]** > **Author and deploy**
+1. Expand: **Pipelines**
+1. Select: **SQL-to-AML-to-SQL**
+1. Edit: start: **2016-05-01T00:00:00Z**: to: Your current time in UTC 24 hour clock (for example http://www.timeanddate.com/worldclock/timezone/utc)
+1. Edit: **"isPaused": true** : to **"isPaused": false**
+1. Click: **Deploy**
+
 ## Create and Register the Data Management Gateway registration key
 
 1. Create the ADF Data Management Gateway
