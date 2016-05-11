@@ -14,7 +14,7 @@
 	ms.tgt_pltfrm="na"
 	ms.devlang="na"
 	ms.topic="article"
-	ms.date="04/18/2016"
+	ms.date="05/10/2016"
 	ms.author="roalexan" />
 
 # Setting up predictive analytics pipelines using Azure SQL Data Warehouse
@@ -304,8 +304,7 @@ This will create a new "blade" in the Azure portal.
 1. Expand: **EventId**
 1. Select: **Is**
 1. Type: **1**
-1. Click: **Apply filter**
-1. Click: **Save**
+1. Click: **Apply filter** > **Save**
 1. Type: Name: **personalDB2**
 1. Click: **Save** > Reports: **personalDB2** > **Pin icon**
 1. Select: **Existing dashboard** > **personalDB**
@@ -357,11 +356,32 @@ The real time and especially the predictive visualizations will take a long whil
 Congratulations! If you made it to this point, you should have a running sample with real time and predictive pipelines showcasing the power of Azure SQL Data Warehouse and its integration with many of the other Azure services. The next section lists the steps to tear things down when you are done.
 
 ## Undeploy
-1. Browse: https://portal.azure.com
-1. Expand: Resource groups
-1. Select: your resource group
-1. Click: ...
-1. Select: Delete
+1. Delete Resources (Service Bus, Event Hub, SQL Data Warehouse, Data Factories)
+    1. Browse: https://portal.azure.com
+    1. Click: **Resource groups**
+    1. Right click: **[*UNIQUE*]** (your resource group)
+    1. Select: **Delete**
+1. Delete WebApp (data generator)
+    1. Browse: https://manage.windowsazure.com
+    1. Click: **WEB APPS**
+    1. Select: **ratings[*UNIQUE*]** (Your web app)
+    1. Click: **DELETE**
+1. Delete AML Service
+    1. Browse: **https://studio.azureml.net**
+		1. Click: **WEB SERVICES**
+		1. Select: **Ratings**
+		1. Click: **DELETE** > **EXPERIMENTS**
+		1. Select: **Ratings**
+		1. Click: **DELETE**
+1. Delete PBI dashboard
+    1. Browse: https://powerbi.microsoft.com
+		1. Select: **Dashboards**
+		1. Right click: **personalDB**
+		1. Select: **REMOVE** > **Reports**
+		1. Right click: **personalDB**
+		1. Select: **REMOVE** > **Datasets**
+		1. Right click: **personalDB**
+		1. Select: **REMOVE**
 
 ## Debugging
 
