@@ -367,21 +367,21 @@ Congratulations! If you made it to this point, you should have a running sample 
     1. Select: **ratings[*UNIQUE*]** (Your web app)
     1. Click: **DELETE**
 1. Delete AML Service
-    1. Browse: **https://studio.azureml.net**
-		1. Click: **WEB SERVICES**
-		1. Select: **Ratings**
-		1. Click: **DELETE** > **EXPERIMENTS**
-		1. Select: **Ratings**
-		1. Click: **DELETE**
+    1. Browse: https://studio.azureml.net
+    1. Click: **WEB SERVICES**
+    1. Select: **Ratings**
+    1. Click: **DELETE** > **EXPERIMENTS**
+    1. Select: **Ratings**
+    1. Click: **DELETE**
 1. Delete PBI dashboard
     1. Browse: https://powerbi.microsoft.com
-		1. Select: **Dashboards**
-		1. Right click: **personalDB**
-		1. Select: **REMOVE** > **Reports**
-		1. Right click: **personalDB**
-		1. Select: **REMOVE** > **Datasets**
-		1. Right click: **personalDB**
-		1. Select: **REMOVE**
+    1. Select: **Dashboards**
+    1. Right click: **personalDB**
+    1. Select: **REMOVE** > **Reports**
+    1. Right click: **personalDB**
+    1. Select: **REMOVE** > **Datasets**
+    1. Right click: **personalDB**
+    1. Select: **REMOVE**
 
 ## Debugging
 
