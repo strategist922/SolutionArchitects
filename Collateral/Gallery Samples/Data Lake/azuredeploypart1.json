@@ -5,7 +5,7 @@
         "unique": {
             "type": "string",
             "metadata": {
-                "description": "Globally unique string appended to resources"
+                "description": "A globally unique string appended to all the resources"
             }
         },
         "location": {
@@ -17,9 +17,21 @@
 				"West US"
             ],
             "metadata": {
-                "description": "Location to deploy resources"
+                "description": "The location to deploy all the resources"
             }
-        }
+        },
+		"adlAnalyticsName": {
+			"type": "string",
+			"metadata": {
+				"description": "The name of the Data Lake Analytics account to create."
+			}
+		},
+		"adlStoreName": {
+			"type": "string",
+			"metadata": {
+				"description": "The name of the Data Lake Store account to create."
+			}
+		}
     },
     "variables": {
         "solutionAccSettings": {
@@ -63,30 +75,6 @@
                 "asaLocation": "[parameters('location')]",
                 "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
                 "asaBlobPathPattern": "rawdata/{date}/{time}"
-            },
-            "datafactorySettings": {
-                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
-                "dataFactoryLocation": "westus",
-                "linkedServiceNames": {
-                    "azureSqlDWLinkedServiceName": "AzureSqlDWLinkedService",
-                    "azureMLLinkedServiceName": "AzureMLLinkedService"
-                },
-                "datasetNames": {
-					"azureSqlDWInputDatasetName": "AzureSqlDWInput",
-					"azureSqlDWOutputDatasetName": "AzureSqlDWOutput"
-                }
-            },
-            "datafactorySettings2": {
-                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'2ADF',parameters('unique'))]",
-                "dataFactoryLocation": "westus",
-                "linkedServiceNames": {
-                    "sqlServerLinkedServiceName": "SqlServerLinkedService",
-                    "azureSqlServerLinkedServiceName": "AzureSqlServerLinkedService"
-                },
-                "datasetNames": {
-					"sqlServerDBInputDatasetName": "SqlServerDBInput",
-					"azureSqlServerDWOutputDatasetName": "AzureSqlServerDWOutput"
-                }
             },
             "sqlSettings": {
                 "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
@@ -245,6 +233,38 @@
             "metadata": {
                 "description": "Create the Stream Analytics Resource"
             }
-        }
-    ]
+        },
+		{
+			"name": "[parameters('adlStoreName')]",
+			"type": "Microsoft.DataLakeStore/accounts",
+			"location": "[parameters('location')]",
+			"apiVersion": "2015-10-01-preview",
+			"dependsOn": [ ],
+			"tags": { }
+		},
+		{
+			"name": "[parameters('adlAnalyticsName')]",
+			"type": "Microsoft.DataLakeAnalytics/accounts",
+			"location": "[parameters('location')]",
+			"apiVersion": "2015-10-01-preview",
+			"dependsOn": [ "[concat('Microsoft.DataLakeStore/accounts/',parameters('adlStoreName'))]" ],
+			"tags": { },
+			"properties": {
+				"defaultDataLakeStoreAccount": "[parameters('adlStoreName')]",
+				"dataLakeStoreAccounts": [
+					{ "name": "[parameters('adlStoreName')]" }
+				]
+			}
+		}
+    ],
+	"outputs": {
+		"adlAnalyticsAccount": {
+			"type": "object",
+			"value": "[reference(resourceId('Microsoft.DataLakeAnalytics/accounts',parameters('adlAnalyticsName')))]"
+		},
+		"adlStoreAccount": {
+			"type": "object",
+			"value": "[reference(resourceId('Microsoft.DataLakeStore/accounts',parameters('adlStoreName')))]"
+		}
+	}
 }
