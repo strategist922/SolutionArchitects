@@ -1,0 +1,1595 @@
+{
+    "contentVersion": "1.0.0.0",
+    "$schema": "httpmarketingRawTable://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "parameters": {
+        "unique": {
+            "type": "string",
+            "defaultValue": "1",
+            "metadata": {
+                "description": "Suffix for deployed resources"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "South Central US",
+                "West Europe",
+				"West US"
+            ],
+            "metadata": {
+                "description": "Location to deploy resources"
+            }
+        },
+		"storagelocation": {
+			"type": "string",
+			"defaultValue": "centralus"
+		},
+        "solAccType": {
+            "type": "string",
+            "defaultValue": "personal",
+            "allowedValues": [
+                "personal",
+                "predictive",
+                "mbl",
+				"other"
+            ]
+        }
+    },
+    "variables": {
+        "solutionAccSettings": {
+            "personal": {
+                "title": "personal",
+                "datafactorySettings": {
+                    "ETLHiveActivityQuery": "ETLQuery.hql",
+                    "inputSerilization": {
+                        "type": "json",
+                        "properties": {
+                            "encoding": "UTF8"
+                        }
+                    },
+					"outputSerilization": {
+                        "type": "CSV",
+                        "properties": {
+                            "fieldDelimiter": ",",
+                            "encoding": "UTF8"
+                        }
+                    },
+                    "rawDataStructure": [
+                        {
+                            "name": "user_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "state",
+                            "type": "String"
+                        },
+                        {
+                            "name": "product_id",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product_name",
+                            "type": "String"
+                        },
+                        {
+                            "name": "product_category",
+                            "type": "String"
+                        },
+                        {
+                            "name": "product_price",
+                            "type": "Decimal"
+                        },
+                        {
+                            "name": "ad_id",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "ad_name",
+                            "type": "String"
+                        },
+                        {
+                            "name": "ad_category",
+                            "type": "String"
+                        },
+                        {
+                            "name": "ad_price",
+                            "type": "Decimal"
+                        },
+                        {
+                            "name": "click",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "sampletime",
+                            "type": "Datetime"
+                        },
+						{
+						    "name": "EventProcessedUtcTime",
+                            "type": "Datetime"
+						},
+						{
+						    "name": "PartitionId",
+                            "type": "Int32"
+						},
+						{
+						    "name": "EventEnqueuedUtcTime",
+                            "type": "Datetime"
+						}
+                    ],
+                    "amlDataStructure": [
+                        {
+                            "name": "user_id",
+                            "type": "String"
+                        },
+						{
+                            "name": "product1countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product2countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product3countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product4countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product5countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product6countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product7countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product8countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product9countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product10countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product11countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product12countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product13countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product14countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product15countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product16countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product17countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product18countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product19countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product20countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product21countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product22countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product23countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product24countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product25countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product26countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product27countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product28countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product29countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product30countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product31countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product32countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product33countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product34countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product35countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product36countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product37countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product38countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product39countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product40countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product41countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product42countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product43countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product44countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product45countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product46countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product47countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product48countm",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product49countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product50countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product51countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product52countm",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product53countm",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product1countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product2countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product3countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product4countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product5countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product6countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product7countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product8countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product9countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product10countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product11countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product12countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product13countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product14countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product15countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product16countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product17countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product18countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product19countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product20countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product21countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product22countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product23countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product24countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product25countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product26countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product27countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product28countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product29countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product30countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product31countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product32countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product33countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product34countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product35countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product36countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product37countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product38countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product39countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product40countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product41countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product42countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product43countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product44countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product45countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product46countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product47countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product48countw",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product49countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product50countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product51countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product52countw",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product53countw",
+                            "type": "Int32"
+                        },
+			            {
+                            "name": "product1countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product2countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product3countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product4countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product5countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product6countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product7countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product8countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product9countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product10countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product11countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product12countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product13countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product14countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product15countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product16countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product17countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product18countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product19countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product20countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product21countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product22countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product23countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product24countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product25countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product26countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product27countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product28countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product29countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product30countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product31countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product32countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product33countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product34countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product35countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product36countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product37countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product38countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product39countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product40countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product41countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product42countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product43countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product44countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product45countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product46countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product47countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product48countd",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product49countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product50countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product51countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product52countd",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product53countd",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product1counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product2counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product3counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product4counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product5counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product6counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product7counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product8counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product9counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product10counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product11counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product12counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product13counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product14counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product15counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product16counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product17counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product18counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product19counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product20counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product21counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product22counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product23counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product24counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product25counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product26counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product27counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product28counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product29counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product30counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product31counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product32counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product33counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product34counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product35counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product36counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product37counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product38counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product39counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product40counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product41counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product42counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product43counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product44counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product45counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product46counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product47counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product48counth",
+                            "type": "Int32"
+                        },
+						{
+                            "name": "product49counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product50counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product51counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product52counth",
+                            "type": "Int32"
+                        },
+                        {
+                            "name": "product53counth",
+                            "type": "Int32"
+                        }
+                    ],
+                    "sqlDataStructure": [
+                        {
+                            "name": "email",
+                            "type": "String"
+                        },
+                        {
+                            "name": "ordered_ad_list",
+                            "type": "String"
+                        }
+                    ]
+                },
+                "azureMLSettings": {
+                    "azureMLEndpoint": "https://ussouthcentral.services.azureml.net/workspaces/bc14f3c64e8443a0af02b86aa1c4bbb2/services/d75d1a8f9fe2490b8f37ce509384ac4e/jobs",
+                    "azureMLApiKey": "YPl/gAYPIF+BHV8LRRV22JnR0HWI03zNMj/KbZZH4ui4dpIAwZvy9D48xT3LdUag6pATQz6rLxPa1jNWmsH0lw=="
+                }
+            }
+		},
+        "currentSolAccSettings": "[variables('solutionAccSettings')[parameters('solAccType')]]",
+        "paramVars": {
+            "location": "[parameters('location')]",
+            "accountType": "Standard-GRS",
+            "scriptContainer": "scriptcontainer",
+            "ETLHiveActivityQuery": "[variables('currentSolAccSettings')['datafactorySettings'].ETLHiveActivityQuery]"
+        },
+        "settings": {
+            "apiVersion": {
+                "storageAccountApiVersion": "2014-06-01",
+                "serviceBusApiVersion": "2014-09-01",
+                "sqlApiVersion": "2.0",
+                "asaApiVersion": "2015-09-01",
+                "azureMLApiVersion": "2015-09-01",
+                "dataFactoryApiVersion": "2015-09-01"
+            },
+            "asaSettings": {
+                "asaJobName": "[concat(variables('currentSolAccSettings').title,'streamanalytics',parameters('unique'))]",
+                "asaLocation": "[parameters('location')]",
+                "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
+                "asaBlobPathPattern": "rawdata/{date}/{time}"
+            },
+            "datafactorySettings": {
+                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
+                "dataFactoryLocation": "westus",
+                "ETLHiveActivityQuery": "[variables('currentSolAccSettings')['datafactorySettings']].ETLHiveActivityQuery",
+                "linkedServiceNames": {
+                    "hdInsightLinkedServiceName": "HDInsightLinkedService",
+                    "hdInsightStorageLinkedServiceName": "HDInsightStorageLinkedService",
+                    "storageLinkedServiceName": "StorageLinkedService",
+                    "azureSqlLinkedServiceName": "AzureSqlLinkedService",
+                    "azureMLLinkedServiceName": "AzureMLLinkedService"
+                },
+                "adfTableNames": {
+                    "RawTableName": "RawTable",
+                    "ScoredResultADFTableName": "ScoredResultADFTable",
+                    "ConsolidatedCSVTableName": "ConsolidatedCSVTable",
+                    "SQLScoredResultTableName": "SQLScoredResultTable",
+                    "ConsolidatedADFTableName": "ConsolidatedADFTable"
+                },
+                "dataNames": {
+                    "RawDataName": "rawdata",
+					"ADFTableName": "mladfdata",
+                    "CSVTableName": "mlcsvdata",
+                    "MLRESULTTableName": "mlresult",
+					"SQLTableName": "MLResult"
+                }
+
+            },
+            "sqlSettings": {
+                "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
+                "sqlLocation": "[parameters('location')]",
+                "sqlServerUserName": "[concat(variables('currentSolAccSettings').title,'user')]",
+                "sqlServerPassword": "pass@word1",
+                "sqlDatabaseName": "[concat(variables('currentSolAccSettings').title,'DB')]",
+                "sqlMaxSizeBytes": "2147483648",
+                "sqlStartIpAddress": "0.0.0.0",
+                "sqlEndIpAddress": "255.255.255.255",
+                "sqlEdition": "Basic",
+                "sqlCollation": "SQL_Latin1_General_CP1_CI_AS"
+            },
+            "storageSettings": {
+                "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
+            },
+            "serviceBusSettings": {
+                "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
+                "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
+                /*"serviceBusPublishEventHubName": "[concat(variables('currentSolAccSettings').title,'publish',parameters('unique'))]",*/
+                "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
+                /*"consumerGroupName": "streamConsumerGroup",*/
+                /*"powerBIConsumerGroupName": "PowerBIConsumerGroup",*/
+            }
+        }
+    },
+    "resources": [
+        /* Azure Stream Analytics */ {
+            "apiVersion": "[variables('settings')['apiVersion'].asaApiVersion]",
+            "type": "Microsoft.StreamAnalytics/streamingJobs",
+            "name": "[variables('settings')['asaSettings'].asaJobName]",
+            "location": "[variables('settings')['asaSettings'].asaLocation]",
+            "properties": {
+                "sku": {
+                    "name": "standard"
+                },
+                "EventsOutOfOrderMaxDelayInSeconds": 10,
+                "EventsOutOfOrderPolicy": "Adjust",
+                "inputs": [
+                    {
+                        "name": "InputHub",
+                        "properties": {
+                            "type": "stream",
+                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].inputSerilization]",
+                            "datasource": {
+                                "type": "Microsoft.ServiceBus/EventHub",
+                                "properties": {
+                                    "EventHubName": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
+                                    "ServiceBusNamespace": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
+                                    "SharedAccessPolicyName": "[variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName]",
+                                    "SharedAccessPolicyKey": "[listKeys(resourceid('Microsoft.Eventhub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName ), variables('settings')['apiVersion'].serviceBusApiVersion).primaryKey]",
+                                    "SourcePartitionCount": 16
+                                    /*"consumerGroupName": "[variables('settings')['serviceBusSettings'].consumerGroupName]"*/
+                                }
+                            }
+                        }
+                    }
+                ],
+                "transformation": {
+                    "name": "ProcessSampleData",
+                    "properties": {
+                        "streamingUnits": 1,
+                        "query": "Select * into OutputBlob from InputHub; select user_id, state, product_id, product_name as 'product viewed', product_category,product_price as 'product price', ad_id, ad_name as 'ad shown', ad_category, ad_price as 'ad price', click, sampletime, EventProcessedUtcTime, PartitionId, EventEnqueuedUtcTime into OutputSQL from InputHub"
+                    }
+                },
+                "outputs": [
+                    {
+                        "name": "OutputBlob",
+                        "properties": {
+                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].outputSerilization]",
+                            "datasource": {
+                                "type": "Microsoft.Storage/Blob",
+                                "properties": {
+                                    "storageAccounts": [
+                                        {
+                                            "accountName": "[variables('settings')['storageSettings'].storageAccountName]",
+                                            "accountKey": "[listKeys(concat('Microsoft.ClassicStorage/storageAccounts/', variables('settings')['storageSettings'].storageAccountName), '2014-06-01').primaryKey]"
+                                        }
+                                    ],
+                                    "container": "[variables('settings')['asaSettings'].asaBlobContainer]",
+                                    "PathPattern": "[variables('settings')['asaSettings'].asaBlobPathPattern]",
+									"DateFormat": "yyyy-MM-dd",
+                                    "TimeFormat": "HH"
+                                }
+                            }
+                        }
+                    },
+					{
+						"Name": "OutputSQL",
+						"Properties": {
+							"DataSource": {
+								"Properties": {
+									"Database": "[variables('settings')['sqlSettings'].sqlDatabaseName]",
+									"Password": "[variables('settings')['sqlSettings'].sqlServerPassword]",
+									"Server": "[variables('settings')['sqlSettings'].sqlServerName]",
+									"Table": "streamdata",
+									"User": "[variables('settings')['sqlSettings'].sqlServerUserName]"
+								},
+								"Type": "Microsoft.Sql/Server/Database"
+                            }
+						}
+                    }
+                ]
+            },
+            "metadata": {
+                "description": "Create the Stream Analtyics Resource"
+            }
+        },
+        /* Azure Stream Analytics 2*/ {
+            "apiVersion": "[variables('settings')['apiVersion'].asaApiVersion]",
+            "type": "Microsoft.StreamAnalytics/streamingJobs",
+            "name": "[concat(variables('settings')['asaSettings'].asaJobName,'pbi')]",
+            "location": "[variables('settings')['asaSettings'].asaLocation]",
+            "properties": {
+                "sku": {
+                    "name": "standard"
+                },
+                "EventsOutOfOrderMaxDelayInSeconds": 10,
+                "EventsOutOfOrderPolicy": "Adjust",
+                "inputs": [
+                    {
+                        "name": "InputHub",
+                        "properties": {
+                            "type": "stream",
+                            "serialization": "[variables('currentSolAccSettings')['datafactorySettings'].inputSerilization]",
+                            "datasource": {
+                                "type": "Microsoft.ServiceBus/EventHub",
+                                "properties": {
+                                    "EventHubName": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
+                                    "ServiceBusNamespace": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
+                                    "SharedAccessPolicyName": "[variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName]",
+                                    "SharedAccessPolicyKey": "[listKeys(resourceid('Microsoft.Eventhub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,variables('settings')['serviceBusSettings'].serviceBusSharedAccessPolicyName ), variables('settings')['apiVersion'].serviceBusApiVersion).primaryKey]",
+                                    "SourcePartitionCount": 16
+                                    /*"consumerGroupName": "[variables('settings')['serviceBusSettings'].powerBIConsumerGroupName]"*/
+                                }
+                            }
+                        }
+                    }
+                ],
+                "transformation": {
+                    "name": "ProcessSampleData",
+                    "properties": {
+                        "streamingUnits": 1,
+                        "query": "SELECT System.TimeStamp AS OutTime, product_category, COUNT(*) into OutputPBI FROM InputHub TIMESTAMP BY [sampletime] GROUP BY product_category, TumblingWindow(minute,1)"
+                    }
+                }
+            },
+            "metadata": {
+                "description": "Create the Stream Analtyics Resource"
+            }
+        },
+        /* Azure Data Factory */ {
+            "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+            "type": "Microsoft.DataFactory/datafactories",
+            "name": "[variables('settings')['datafactorySettings'].dataFactoryName]",
+            "location": "[variables('settings')['datafactorySettings'].dataFactoryLocation]",
+            "resources": [
+                /*
+                Links
+                Azure Storage Link*/
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                        /*"[concat('Microsoft.ClassicStorage/StorageAccounts/', variables('settings')['storageSettings'].storageAccountName)]"*/
+                    ],
+                    "properties": {
+                        "type": "AzureStorage",
+                        "typeProperties": {
+                            "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('settings')['storageSettings'].storageAccountName,';AccountKey=', listKeys(concat('Microsoft.ClassicStorage/storageAccounts/', variables('settings')['storageSettings'].storageAccountName), variables('settings')['apiVersion'].storageAccountApiVersion).primaryKey)]"
+                        }
+                    }
+                },
+                /* hdInsightStorage Link*/
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightStorageLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                        /*"[concat('Microsoft.ClassicStorage/StorageAccounts/', variables('settings')['storageSettings'].storageAccountName)]"*/
+                    ],
+                    "properties": {
+                        "type": "AzureStorage",
+                        "typeProperties": {
+                            "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('settings')['storageSettings'].storageAccountName,';AccountKey=', listKeys(concat('Microsoft.ClassicStorage/storageAccounts/', variables('settings')['storageSettings'].storageAccountName), variables('settings')['apiVersion'].storageAccountApiVersion).primaryKey)]"
+                        }
+                    }
+                },
+                /* hdInsight Link*/
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedservices/', variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightStorageLinkedServiceName)]"
+                    ],
+                    "properties": {
+                        "type": "HDInsightOnDemand",
+                        "typeProperties": {
+                            "clusterSize": "1",
+                            /*"jobsContainer": "adfjobs",*/
+                            "timeToLive": "00:05:00",
+                            "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightStorageLinkedServiceName]"
+                        }
+                    }
+                },
+                /* Azure ML Link */
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].azureMLApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                    ],
+                    "properties": {
+                        "type": "AzureML",
+                        "typeProperties": {
+                            "mlEndpoint": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLEndpoint]",
+                            "apiKey": "[variables('currentSolAccSettings')['azureMLSettings'].azureMLApiKey]"
+                        }
+                    }
+                },
+                /* Azure SQL Link*/
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                        /*"[concat('Microsoft.Sql/servers/', variables('settings')['sqlSettings'].sqlServerName)]"*/
+                    ],
+                    "properties": {
+                        "type": "AzureSqlDatabase",
+                        "typeProperties": {
+                            "connectionString": "[concat('Server=tcp:',variables('settings')['sqlSettings'].sqlServerName,'.database.windows.net,1433;Initial Catalog=',variables('settings')['sqlSettings'].sqlDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings'].sqlServerUserName,';Password=',variables('settings')['sqlSettings'].sqlServerPassword,';Encrypt=True;Connection Timeout=30')]"
+                        }
+                    }
+                },
+                /* 
+                Datasets
+                Raw Data Table */
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "name": "[variables('settings')['datafactorySettings']['adfTableNames'].RawTableName]",
+                    "type": "datasets",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName)]"
+                    ],
+                    "properties": {
+                        "linkedServiceName": "StorageLinkedService",
+                        "type": "AzureBlob",
+                        "structure": "[variables('currentSolAccSettings')['datafactorySettings'].rawDataStructure]",
+                        "typeProperties": {
+                            "folderPath": "[concat(variables('settings')['asaSettings'].asaBlobContainer,'/', variables('settings')['datafactorySettings']['dataNames'].RawDataName,'/')]"
+                        },
+                        "availability": {
+                            "frequency": "Hour",
+                            "interval": 1,
+                            /*"offset": "00:05:00",*/
+                            "style": "startofinterval"
+                        },
+                        "external": true,
+                        "policy": {
+                            "externalData": {
+                                "retryInterval": "00:01:00",
+                                "retryTimeout": "00:20:00",
+                                "maximumRetry": 3
+                            }
+                        }
+                    },
+                    "metadata": {
+                        "description": "RawTable"
+                    }
+                },
+				/* Consolidated ADF Table*/
+                {
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName)]"
+                    ],
+                    "type": "datasets",
+                    "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedADFTableName]",
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "properties": {
+                        "structure": "[variables('currentSolAccSettings')['datafactorySettings'].amlDataStructure]",
+                        "published": false,
+                        "type": "AzureBlob",
+                        "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName]",
+                        "typeProperties": {
+                            "folderPath": "[concat(variables('settings')['asaSettings'].asaBlobContainer,'/', variables('settings')['datafactorySettings']['dataNames'].ADFTableName,'/')]",
+                            "format": {
+                                "type": "TextFormat",
+                                "columnDelimiter": ","
+                            }
+                        },
+                        "availability": {
+                            "frequency": "Hour",
+                            "interval": 1,
+                            "style": "StartOfInterval"
+                        }
+                    }
+                },
+                /* Consolidated CSV Table*/
+                {
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName)]"
+                    ],
+                    "type": "datasets",
+                    "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedCSVTableName]",
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "properties": {
+                        "structure": "[variables('currentSolAccSettings')['datafactorySettings'].amlDataStructure]",
+                        "published": false,
+                        "type": "AzureBlob",
+                        "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName]",
+                        "typeProperties": {
+                            "folderPath": "[concat(variables('settings')['asaSettings'].asaBlobContainer,'/', variables('settings')['datafactorySettings']['dataNames'].CSVTableName,'/')]",
+                            "fileName": "[concat(variables('settings')['datafactorySettings']['dataNames'].CSVTableName,'.csv')]",
+                            "format": {
+                                "type": "TextFormat",
+                                "columnDelimiter": ","
+                            }
+                        },
+                        "availability": {
+                            "frequency": "Hour",
+                            "interval": 1,
+                            "style": "StartOfInterval"
+                        }
+                    }
+                },
+                /* Scored Result ADF Table */
+                {
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName)]"
+                    ],
+                    "type": "datasets",
+                    "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ScoredResultADFTableName]",
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "properties": {
+                        "structure": "[variables('currentSolAccSettings')['datafactorySettings'].sqlDataStructure]",
+                        "type": "AzureBlob",
+                        "linkedServiceName": "StorageLinkedService",
+                        "typeProperties": {
+                            "folderPath": "[concat(variables('settings')['asaSettings'].asaBlobContainer,'/', variables('settings')['datafactorySettings']['dataNames'].MLRESULTTableName,'/')]",
+                            "filename": "[concat(variables('settings')['datafactorySettings']['dataNames'].MLRESULTTableName,'.csv')]",
+                            "format": {
+                                "type": "TextFormat",
+                                "columnDelimiter": ","
+                            }
+                        },
+                        "availability": {
+                            "frequency": "Hour",
+                            "interval": 1,
+                            "style": "startofinterval"
+                        }
+                    }
+                },
+                /* SQL Scored Result Table */
+                {
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlLinkedServiceName)]"
+                    ],
+                    "type": "datasets",
+                    "name": "[variables('settings')['datafactorySettings']['adfTableNames'].SQLScoredResultTableName]",
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "properties": {
+                        "structure": "[variables('currentSolAccSettings')['datafactorySettings'].sqlDataStructure]",
+                        "published": false,
+                        "type": "AzureSqlTable",
+                        "linkedServiceName": "AzureSqlLinkedService",
+                        "typeProperties": {
+                            "tableName": "[variables('settings')['datafactorySettings']['dataNames'].SQLTableName]"
+                        },
+                        "availability": {
+                            "frequency": "Hour",
+                            "interval": 1,
+                            "style": "StartOfInterval"
+                        }
+                    }
+                },
+                /* Pipelines */
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "name": "MLScoringPipeline",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].storageLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['adfTableNames'].RawTableName)]",
+						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedADFTableName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedCSVTableName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['adfTableNames'].ScoredResultADFTableName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['adfTableNames'].SQLScoredResultTableName)]"
+                    ],
+                    "type": "datapipelines",
+                    "properties": {
+                        "description": "This is pipeline call ML scoring to make prediction",
+                        "activities": [
+                            /* ETL Data for AML*/
+                            {
+                                "name": "BlobConsolidationHiveActivity",
+                                "inputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].RawTableName]"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedADFTableName]"
+                                    }
+
+                                ],
+                                "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].hdInsightLinkedServiceName]",
+                                "type": "HDInsightHive",
+                                "typeProperties": {
+                                    "scriptPath": "[concat(variables('paramVars').scriptContainer,'/', variables('paramVars').ETLHiveActivityQuery)]",
+                                    "scriptLinkedService": "StorageLinkedService",
+                                    "defines": {
+                                        "Input": "[concat('wasb://',variables('settings')['asaSettings'].asaBlobContainer,'@',variables('settings')['storageSettings'].storageAccountName,'.blob.core.windows.net/',variables('settings')['datafactorySettings']['dataNames'].RawDataName)]",
+										"Output": "[concat('wasb://',variables('settings')['asaSettings'].asaBlobContainer,'@',variables('settings')['storageSettings'].storageAccountName,'.blob.core.windows.net/',variables('settings')['datafactorySettings']['dataNames'].ADFTableName)]"
+                                    }
+                                },
+								"scheduler": {
+									"frequency": "Hour",
+									"interval": 1,
+									"style": "StartOfInterval"
+								},
+                                "policy": {
+                                    "concurrency": 1,
+                                    /*"executionPriorityOrder": "NewestFirst",*/
+                                    "retry": 3,
+                                    "timeout": "01:00:00"
+                                }
+                            },
+							{
+								"type": "Copy",
+								"typeProperties": {
+									"source": {
+										"type": "BlobSource"
+									},
+									"sink": {
+										"type": "BlobSink",
+										"writeBatchSize": 10000,
+										"writeBatchTimeout": "01:00:00"
+									}
+								},
+								"inputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedADFTableName]"
+									}
+								],
+								"outputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedCSVTableName]"
+									}
+								],
+								"policy": {
+									"timeout": "02:00:00",
+									"concurrency": 1,
+									"retry": 3
+								},
+								"scheduler": {
+									"frequency": "Hour",
+									"interval": 1,
+									"style": "StartOfInterval"
+								},
+								"name": "FileExtensionPrepforMLActivity"
+							},
+                            /* AzureML Batch Scoring */
+                            {
+                                "name": "AMLBatchScoring",
+                                "inputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ConsolidatedCSVTableName]"
+                                    }
+
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ScoredResultADFTableName]"
+                                    }
+
+                                ],
+                                "type": "AzureMLBatchScoring",
+                                "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureMLLinkedServiceName]",
+                                "scheduler": {
+									"frequency": "Hour",
+									"interval": 1,
+									"style": "StartOfInterval"
+								},
+								"policy": {
+                                    "concurrency": 1,
+                                    /*"executionPriorityOrder": "NewestFirst",*/
+                                    "retry": 3,
+                                    "timeout": "02:00:00"
+                                }
+                            },
+                            /* Load Data to SQL */
+                            {
+                                "type": "Copy",
+                                "typeProperties": {
+                                    "source": {
+                                        "type": "BlobSource",
+                                        "treatEmptyAsNull": true,
+										"skipHeaderLineCount": 1
+                                    },
+                                    "sink": {
+                                        "type": "SqlSink",
+										"sqlWriterStoredProcedureName": "loadScoreResult",
+										"sqlWriterTableType": "MLResultType",
+                                        "writeBatchSize": 0,
+                                        "writeBatchTimeout": "01:00:00"
+                                    }
+                                },
+                                "inputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].ScoredResultADFTableName]"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "[variables('settings')['datafactorySettings']['adfTableNames'].SQLScoredResultTableName]"
+                                    }
+                                ],
+                                "policy": {
+                                    "timeout": "02:00:00",
+                                    "concurrency": 1,
+                                    /*"executionPriorityOrder": "NewestFirst",*/
+                                    "retry": 3
+                                },
+								"scheduler": {
+									"frequency": "Hour",
+									"interval": 1,
+									"style": "StartOfInterval"
+								},
+                                "name": "CopyMLResulttoSqlAzure",
+                                "description": "Copy ML result table to Sql Azure"
+                            }
+                        ],
+						"start": "2016-02-11T00:00:00Z",
+						"end": "2016-02-14T00:00:00Z",
+						"isPaused": false,
+						"pipelineMode": "Scheduled"
+                    }
+                }
+            ]
+        }
+    ]
+}

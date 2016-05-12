@@ -1,0 +1,192 @@
+{
+    "contentVersion": "1.0.0.0",
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "unique": {
+            "type": "string",
+            "defaultValue": "rba",
+            "metadata": {
+                "description": "Suffix for deployed resources"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "South Central US",
+                "West Europe",
+				"West US"
+            ],
+            "metadata": {
+                "description": "Location to deploy resources"
+            }
+        },
+		"storagelocation": {
+			"type": "string",
+			"defaultValue": "centralus"
+		},
+        "solAccType": {
+            "type": "string",
+            "defaultValue": "personal",
+            "allowedValues": [
+                "personal",
+                "predictive",
+                "mbl",
+				"other"
+            ]
+        }
+    },
+    "variables": {
+        "solutionAccSettings": {
+            "personal": {
+                "title": "personal"
+            }
+		},
+        "currentSolAccSettings": "[variables('solutionAccSettings')[parameters('solAccType')]]",
+        "paramVars": {
+            "location": "[parameters('location')]",
+            "accountType": "Standard-GRS",
+            "scriptContainer": "scriptcontainer"
+        },
+        "settings": {
+            "apiVersion": {
+                "storageAccountApiVersion": "2014-06-01",
+                "serviceBusApiVersion": "2014-09-01",
+                "sqlApiVersion": "12.0",
+                "asaApiVersion": "2015-09-01",
+                "azureMLApiVersion": "2015-09-01",
+                "dataFactoryApiVersion": "2015-09-01"
+            },
+            "sqlSettings": {
+                "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
+                "sqlLocation": "[parameters('location')]",
+                "sqlServerUserName": "[concat(variables('currentSolAccSettings').title,'user')]",
+                "sqlServerPassword": "pass@word1",
+                "sqlDatabaseName": "[concat(variables('currentSolAccSettings').title,'DB')]",
+                "sqlMaxSizeBytes": "2147483648",
+                "sqlStartIpAddress": "0.0.0.0",
+                "sqlEndIpAddress": "255.255.255.255",
+                "sqlEdition": "Basic",
+                "sqlCollation": "SQL_Latin1_General_CP1_CI_AS"
+            },
+            "storageSettings": {
+                "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
+            },
+            "serviceBusSettings": {
+                "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
+                "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
+                /*"serviceBusPublishEventHubName": "[concat(variables('currentSolAccSettings').title,'publish',parameters('unique'))]",*/
+                "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
+                /*"consumerGroupName": "streamConsumerGroup",*/
+                /*"powerBIConsumerGroupName": "PowerBIConsumerGroup",*/
+            }
+        }
+    },
+    "resources": [
+        /* Azure Storage Account */ {
+            "apiVersion": "[variables('settings')['apiVersion'].storageAccountApiVersion]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "name": "[variables('settings')['storageSettings'].storageAccountName]",
+            "location": "[parameters('storagelocation')]",
+            "properties": {
+                "accountType": "[variables('paramVars').accountType]"
+            },
+            "metadata": {
+                "description": "Create the Azure Storage Account"
+            }
+        },
+        /* Azure Service Bus */ {
+            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
+            "type": "Microsoft.EventHub/namespaces",
+            "name": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "region": "[parameters('location')]"
+            },
+            "resources": [
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
+                    "type": "eventHubs",
+                    "name": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [ "[concat('Microsoft.EventHub/namespaces/', variables('settings')['serviceBusSettings'].serviceBusNamespaceName)]" ],
+                    "properties": {
+                        "path": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
+                    },
+                    /*"resources": [
+                        {
+                            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
+                            "type": "ConsumerGroups",
+                            "name": "[variables('settings')['serviceBusSettings'].consumerGroupName]",
+                            "dependsOn": [
+                                "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
+                            ],
+                            "properties": {
+                                "enableCheckpoint": "false"
+                            }
+                        },
+                        {
+                            "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
+                            "type": "ConsumerGroups",
+                            "name": "[variables('settings')['serviceBusSettings'].powerBIConsumerGroupName]",
+                            "dependsOn": [
+                                "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
+                            ],
+                            "properties": {
+                                "enableCheckpoint": "false"
+                            }
+                        }
+                    ],*/
+                    "metadata": {
+                        "description": "Create the Event Hub"
+                    }
+                }
+                /*{
+                    "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
+                    "type": "eventHubs",
+                    "name": "[variables('settings')['serviceBusSettings'].serviceBusPublishEventHubName]",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [ "[concat('Microsoft.EventHub/namespaces/', variables('settings')['serviceBusSettings'].serviceBusNamespaceName)]" ],
+                    "properties": {
+                        "path": "[variables('settings')['serviceBusSettings'].serviceBusPublishEventHubName]"
+                    },
+                    "metadata": {
+                        "description": "Create the Publish Event Hub"
+                    }
+                }*/
+            ],
+            "metadata": {
+                "description": "Create the Event Hub Namespace"
+            }
+        },
+        /* Azure SQL */ {
+            "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
+            "type": "Microsoft.Sql/servers",
+            "name": "[variables('settings')['sqlSettings'].sqlServerName]",
+            "location": "[variables('settings')['sqlSettings'].sqlLocation]",
+            "properties": {
+                "administratorLogin": "[variables('settings')['sqlSettings'].sqlServerUserName]",
+                "administratorLoginPassword": "[variables('settings')['sqlSettings'].sqlServerPassword]",
+				"version": "12.0"
+            },
+            "resources": [
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].sqlApiVersion]",
+                    "name": "AllowAllWindowsAzureIps",
+                    "type": "firewallrules",
+                    "location": "[variables('settings')['sqlSettings'].sqlLocation]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', variables('settings')['sqlSettings'].sqlServerName)]"
+                    ],
+                    "properties": {
+                        "startIpAddress": "[variables('settings')['sqlSettings'].sqlStartIpAddress]",
+                        "endIpAddress": "[variables('settings')['sqlSettings'].sqlEndIpAddress]"
+                    }
+                }
+            ],
+            "metadata": {
+                "description": "Create the SQL Database"
+            }
+        }
+    ]
+}
