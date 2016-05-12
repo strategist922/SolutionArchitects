@@ -33,7 +33,7 @@
 
 To get started, click the below button.
 
-<a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2FCollateral%2FGallery%2FSamples%2FData%20Lake%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2FCollateral%2FGallerySamples%2FDataLake%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 
 This will create a new "blade" in the Azure portal.
 
