@@ -4,7 +4,7 @@
 	keywords="adf, azure data factory"
 	services="sql-data-warehouse,data-factory,event-hubs,machine-learning,service-bus,stream-analytics"
 	documentationCenter=""
-	authors="roalexan"
+	authors="daden"
 	manager="paulettm"
 	editor=""/>
 
