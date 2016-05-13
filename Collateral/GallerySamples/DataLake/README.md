@@ -56,6 +56,20 @@ This will create a new "blade" in the Azure portal.
 
 ### Edit and start the ASA job
 
+1. Click: **ADD OUTPUT**
+1. Select: **Data Lake Store**
+1. Click: **Next**
+1. Click: **Authorize Now**
+1. Type: OUTPUT ALIAS: **OutputDataLake**
+1. Select: DATA LAKE STORE ACCOUNT: **[*UNIQUE*]adls**
+1. Type: PATH PREFIX PATTERN: **/cdrdata/input/{date}/{time}**
+1. Select: DATE FORMAT: **YYYY/MM/DD**
+1. Select: TIME FORMAT: **HH**
+1. Select: EVENT SERIALIZATION FORMAT: **CSV**
+1. Select: DELIMITER: **comma(,)**
+1. Select: ENCODING: **UTF8**
+1. Click: **Finish**
+
 ### Deploy the data generator as a Web Job
 
 ## Create the Data Factories
