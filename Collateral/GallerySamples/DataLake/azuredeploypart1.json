@@ -241,7 +241,7 @@
 		{
 			"name": "[parameters('adlStoreName')]",
 			"type": "Microsoft.DataLakeStore/accounts",
-			"location": "[dataLakeSettings('location')]",
+			"location": "[variables('dataLakeSettings').location]",
 			"apiVersion": "2015-10-01-preview",
 			"dependsOn": [ ],
 			"tags": { }
@@ -249,7 +249,7 @@
 		{
 			"name": "[parameters('adlAnalyticsName')]",
 			"type": "Microsoft.DataLakeAnalytics/accounts",
-			"location": "[dataLakeSettings('location')]",
+			"location": "[variables('dataLakeSettings').location]",
 			"apiVersion": "2015-10-01-preview",
 			"dependsOn": [ "[concat('Microsoft.DataLakeStore/accounts/',parameters('adlStoreName'))]" ],
 			"tags": { },
