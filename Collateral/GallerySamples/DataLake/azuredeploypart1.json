@@ -18,7 +18,7 @@
 				"West US"
             ],
             "metadata": {
-                "description": "The location to deploy all the resources"
+                "description": "The location to deploy all the resources (except the Data Lake Storage and Analytics accounts, which must be created in East US 2)"
             }
         },
 		"adlAnalyticsName": {
@@ -35,6 +35,9 @@
 		}
     },
     "variables": {
+		"dataLakeSettings": {
+			"location": "East US 2"
+		},
         "solutionAccSettings": {
             "personal": {
                 "title": "personal",
@@ -238,7 +241,7 @@
 		{
 			"name": "[parameters('adlStoreName')]",
 			"type": "Microsoft.DataLakeStore/accounts",
-			"location": "[parameters('location')]",
+			"location": "[dataLakeSettings('location')]",
 			"apiVersion": "2015-10-01-preview",
 			"dependsOn": [ ],
 			"tags": { }
@@ -246,7 +249,7 @@
 		{
 			"name": "[parameters('adlAnalyticsName')]",
 			"type": "Microsoft.DataLakeAnalytics/accounts",
-			"location": "[parameters('location')]",
+			"location": "[dataLakeSettings('location')]",
 			"apiVersion": "2015-10-01-preview",
 			"dependsOn": [ "[concat('Microsoft.DataLakeStore/accounts/',parameters('adlStoreName'))]" ],
 			"tags": { },
