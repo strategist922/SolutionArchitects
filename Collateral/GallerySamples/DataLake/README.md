@@ -56,6 +56,14 @@ This will create a new "blade" in the Azure portal.
 
 ### Edit and start the ASA job
 
+1. Browse: https://manage.windowsazure.com
+1. Click: **STREAM ANALYTICS** > **personalstreamanalytics[*unique*]** > **OUTPUTS** > **ADD OUTPUT**
+1. Select: **Power BI**
+1. Click: **Next** > **Authorize Now** (Login with your credentials)
+1. Type: OUTPUT ALIAS: **OutputPowerBI**
+1. Type: DATASET NAME: **[*UNIQUE*]** (This dataset will be overwritten in PBI should it already exist)
+1. Type: TABLE NAME: **[*UNIQUE*]**
+1. Select: WORKSPACE: **My Workspace** (Default)
 1. Click: **ADD OUTPUT**
 1. Select: **Data Lake Store**
 1. Click: **Next**
@@ -69,6 +77,25 @@ This will create a new "blade" in the Azure portal.
 1. Select: DELIMITER: **comma(,)**
 1. Select: ENCODING: **UTF8**
 1. Click: **Finish**
+1. Click: **Query**
+1. Paste:
+SELECT
+    System.TimeStamp AS [Time],
+    COUNT(*) as [CallCount],
+    SUM(CASE [Failed] WHEN 'True' THEN 1 ELSE 0 END) as [CallFailure]
+INTO
+    PowerBI
+FROM
+    InputHub TIMESTAMP BY [Date]
+    WHERE SwitchNum='US001'
+GROUP BY
+    TumblingWindow(minute, 1);
+SELECT
+     *
+INTO OutputDataLake
+FROM
+    InputHub TIMESTAMP BY [Date];
+1. Click: **Start** > **Finish** (You do not need to specify a custom time)
 
 ### Deploy the data generator as a Web Job
 
