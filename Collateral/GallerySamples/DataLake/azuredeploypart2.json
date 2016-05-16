@@ -62,7 +62,7 @@
             }
         },
         {
-            "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+            "apiVersion": "[variables('dataFactorySettings').dataFactoryApiVersion]",
             "type": "Microsoft.DataFactory/datafactories",
             "name": "[variables('dataFactorySettings')['dataFactorySettings1'].dataFactoryName]",
             "location": "[parameters('location')]",
