@@ -12,9 +12,9 @@
             "type": "string",
             "defaultValue": "West US",
             "allowedValues": [
-                "South Central US",
-                "West Europe",
-				"West US"
+                "West US",
+				"North Europe",
+				"East US"
             ],
             "metadata": {
                 "description": "Location to deploy resources"
