@@ -89,7 +89,7 @@
             "apiVersion": {
                 "storageAccountApiVersion": "2014-06-01",
                 "serviceBusApiVersion": "2014-09-01",
-                "sqlApiVersion": "12.0",
+                "sqlApiVersion": "2014-04-01",
                 "asaApiVersion": "2015-09-01",
                 "azureMLApiVersion": "2015-09-01",
                 "dataFactoryApiVersion": "2015-09-01"
