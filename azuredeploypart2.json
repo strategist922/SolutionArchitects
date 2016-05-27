@@ -31,6 +31,30 @@
 			"metadata": {
 			    "description": "API Key of the AML web service"
 			}
+		},
+		"onpremSQLServerName": {
+		    "type": "string",
+			"metadata": {
+			    "description": "SQL Server name"
+			}
+		},
+		"onpremSQLServerUserName": {
+		    "type": "string",
+			"metadata": {
+			    "description": "SQL Server user name"
+			}
+		},
+		"onpremSQLServerPassword": {
+		    "type": "string",
+			"metadata": {
+			    "description": "SQL Server password"
+			}
+		},
+		"onpremSQLServerDatabaseName": {
+		    "type": "string",
+			"metadata": {
+			    "description": "SQL Server database name"
+			}
 		}
     },
     "variables": {
@@ -118,10 +142,10 @@
 				"requestedServiceObjectiveName": "DW400"
             },
 			"sqlSettings2": {
-				"sqlServerName": "WIN-DIFB3TPU2L9",
-				"sqlServerDatabaseName": "personalDB",
-				"sqlServerUserName": "sqluser1",
-				"sqlServerPassword": "EY65t3yBn4se"
+				"sqlServerName": "[parameters('onpremSQLServerName')]",
+				"sqlServerDatabaseName": "[parameters('onpremSQLServerUserName')]",
+				"sqlServerUserName": "[parameters('onpremSQLServerPassword')]",
+				"sqlServerPassword": "[parameters('onpremSQLServerDatabaseName')]"
 			},
             "storageSettings": {
                 "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
