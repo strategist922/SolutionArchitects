@@ -143,9 +143,9 @@
             },
 			"sqlSettings2": {
 				"sqlServerName": "[parameters('onpremSQLServerName')]",
-				"sqlServerDatabaseName": "[parameters('onpremSQLServerUserName')]",
-				"sqlServerUserName": "[parameters('onpremSQLServerPassword')]",
-				"sqlServerPassword": "[parameters('onpremSQLServerDatabaseName')]"
+				"sqlServerDatabaseName": "[parameters('onpremSQLServerDatabaseName')]",
+				"sqlServerUserName": "[parameters('onpremSQLServerUserName')]",
+				"sqlServerPassword": "[parameters('onpremSQLServerPassword')]"
 			},
             "storageSettings": {
                 "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
