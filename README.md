@@ -333,7 +333,9 @@ The real time and especially the predictive visualizations will take a long whil
 1. Expand: **EventId**
 1. Select: **Is**
 1. Type: **2**
-1. Click: **Apply filter** > **Save**
+1. Click: **Apply filter** > **Save** > **Pin**
+1. Select: Dashboards: **personalDB**
+1. Click: **Pin**
 
 #### Predictive visualization
 
@@ -346,14 +348,8 @@ The real time and especially the predictive visualizations will take a long whil
 1. Select: **Is**
 1. Type: **2**
 1. Click: **Apply filter** > **Save**
-
-#### Update dashboard
-
-1. Click: **Save**
-1. Select: **Existing dashboard** > **personalDB**
-1. Click: **Pin**
 1. Select: Dashboards: **personalDB**
-1. Resize tiles
+1. Click: **Pin**
 
 ## Summary
 
