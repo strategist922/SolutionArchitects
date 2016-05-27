@@ -227,6 +227,10 @@ This will create a new "blade" in the Azure portal.
 	    1. Browse: https://studio.azureml.net
 	    1. Click: **WEB SERVICES** > **Ratings**
 	    1. Click: Copy: **API key**
+   1. Type: ONPREMSQLSERVERNAME: **[*ONPREMSQLSERVERNAME*]**
+   1. Type: ONPREMSQLSERVERUSERNAME: **[*ONPREMSQLSERVERUSERNAME*]**
+   1. Type: ONPREMSQLSERVERPASSWORD: **[*ONPREMSQLSERVERPASSWORD*]**
+   1. Type: ONPREMSQLSERVERDATABASENAME: **[*ONPREMSQLSERVERDATABASENAME*]**
    1. Click: **OK**
 1. Select: Subscription: **[*SUBSCRIPTION*]** (Use the one previously selected)
 1. Select: Resource group: **[*UNIQUE*]** (Use the one previously selected)
