@@ -133,25 +133,61 @@
         "capacity": "1"
       }
     },
-	{
-	  "apiVersion": "[variables('wsVersion')]",
-	  "name": "MSDeploy",
-	  "type": "extensions",
-	  "dependsOn": [
-		"[resourceId('Microsoft.Web/Sites', variables('webJobSiteName'))]"
-	  ],
-	  "properties": {
-		"packageUri": "[variables('webSitePackageUrl')]",
-		"dbType": "None",
-		"connectionString": "",
-		"setParameters": {
-		  "IIS Web Application Name": "[variables('webJobSiteName')]"
-		}
-	  }
-	}
-  ],
-  "tags": {
-	"[concat('hidden-related:', variables('sfResourceId'))]": "empty"
-  },
-  "type": "Microsoft.Web/Sites"
+    {
+      "apiVersion": "[variables('wsVersion')]",
+      "dependsOn": [
+        "[variables('sfResourceId')]"
+      ],
+      "location": "[variables('location')]",
+      "name": "[variables('webJobSiteName')]",
+      "properties": {
+        "name": "[variables('webJobSiteName')]",
+        "serverFarmId": "[variables('hostingPlanName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "Name": "EventHubName",
+              "Value": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
+            },
+            {
+              "Name": "Microsoft.ServiceBus.ConnectionString",
+              "Value": "[concat(listKeys(resourceid('Microsoft.EventHub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,'RootManageSharedAccessKey'),variables('settings')[ 'apiVersion' ].serviceBusApiVersion ).primaryConnectionString,';TransportType=Amqp')]"
+            },
+
+            {
+              "Name": "SCM_COMMAND_IDLE_TIMEOUT",
+              "Value": "1200"
+            },
+            {
+              "Name": "WEBJOBS_IDLE_TIMEOUT",
+              "Value": "1800"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "[variables('wsVersion')]",
+          "name": "MSDeploy",
+          "type": "extensions",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webJobSiteName'))]"
+          ],
+          "properties": {
+            "packageUri": "[variables('webSitePackageUrl')]",
+            "dbType": "None",
+            "connectionString": "",
+            "setParameters": {
+              "IIS Web Application Name": "[variables('webJobSiteName')]"
+            }
+          }
+        }
+      ],
+      "tags": {
+        "[concat('hidden-related:', variables('sfResourceId'))]": "empty"
+      },
+      "type": "Microsoft.Web/Sites"
+    }
+
+  ]
 }
