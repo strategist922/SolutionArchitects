@@ -73,6 +73,8 @@ To get started, click the below button.
 
 <a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 
+<a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2Fazuredeploy_webjob.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+
 This will create a new "blade" in the Azure portal.
 
 ![arm1-image](./media/arm1.png)
