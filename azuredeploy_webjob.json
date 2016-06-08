@@ -12,7 +12,7 @@
     "hostingPlanName": "[concat(variables('uniqueNamePrefix'), 'hostingplan')]",
     "appspsku": "Standard",
     "workerSize": "1",
-    "webSitePackageUrl": "https://daisydeng.blob.core.windows.net/datagenerator/cdr-gen.zip",
+    "webSitePackageUrl": "https://github.com/roalexan/SolutionArchitects/blob/master/webjobs.zip",
     "sfResourceId": "[resourceId('Microsoft.Web/serverFarms', variables('hostingPlanName'))]",
     "nsResourceId": "[resourceId('Microsoft.Eventhub/namespaces', concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique')))]",
     "paramVars": {
