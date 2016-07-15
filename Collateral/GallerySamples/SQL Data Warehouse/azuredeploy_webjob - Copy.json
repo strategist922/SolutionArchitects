@@ -1,0 +1,193 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#", 
+    "contentVersion": "1.0.0.0",
+  "variables": {
+    "sfVersion": "2016-03-01",
+    "wsVersion": "2016-03-01",
+    "namePrefix": "[resourceGroup().name]",
+    "location": "[resourceGroup().location]",
+    "uniqueNamePrefix": "[concat(variables('namePrefix'), uniqueString(subscription().subscriptionId))]",
+    "webJobSiteName": "[concat(variables('uniqueNamePrefix'), 'ws')]",
+    "webJobName": "cdr-gen",
+    "hostingPlanName": "[concat(variables('uniqueNamePrefix'), 'hostingplan')]",
+    "appspsku": "Standard",
+    "workerSize": "1",
+    "webSitePackageUrl": "https://daisydeng.blob.core.windows.net/datagenerator/cdr-gen.zip",
+    "sfResourceId": "[resourceId('Microsoft.Web/serverFarms', variables('hostingPlanName'))]",
+    "nsResourceId": "[resourceId('Microsoft.Eventhub/namespaces', concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique')))]",
+    "paramVars": {
+      "location": "[parameters('location')]",
+      "accountType": "Standard-GRS",
+      "scriptContainer": "scriptcontainer"
+    },
+    "settings": {
+      "sqlSettings": {
+        "sqlEdition": "DataWarehouse",
+        "sqlDatabaseName": "[concat(variables('currentSolAccSettings').title,'DB')]",
+        "sqlServerPassword": "pass@word1",
+        "sqlEndIpAddress": "255.255.255.255",
+        "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
+        "requestedServiceObjectiveName": "DW400",
+        "sqlMaxSizeBytes": "2147483648",
+        "sqlCollation": "SQL_Latin1_General_CP1_CI_AS",
+        "sqlLocation": "[parameters('location')]",
+        "sqlStartIpAddress": "0.0.0.0",
+        "sqlServerUserName": "[concat(variables('currentSolAccSettings').title,'user')]"
+      },
+      "asaSettings": {
+        "asaJobName": "[concat(variables('currentSolAccSettings').title,'streamanalytics',parameters('unique'))]",
+        "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
+        "asaBlobPathPattern": "rawdata/{date}/{time}",
+        "asaLocation": "[parameters('location')]"
+      },
+      "storageSettings": {
+        "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storage',parameters('unique'))]"
+      },
+      "apiVersion": {
+        "asaApiVersion": "2015-09-01",
+        "sqlApiVersion": "2014-04-01",
+        "azureMLApiVersion": "2015-09-01",
+        "storageAccountApiVersion": "2014-06-01",
+        "serviceBusApiVersion": "2014-09-01",
+        "dataFactoryApiVersion": "2015-09-01"
+      },
+      "serviceBusSettings": {
+        "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
+        "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
+        "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
+      },
+      "sqlSettings2": {
+        "sqlServerName": "WIN-DIFB3TPU2L9",
+        "sqlServerPassword": "EY65t3yBn4se",
+        "sqlServerUserName": "sqluser1",
+        "sqlServerDatabaseName": "personalDB"
+      }
+    },
+    "dataFactoryName": "[concat('dataFactory', parameters('unique'))]",
+    "dataLakeSettings": {
+      "location": "East US 2"
+    },
+    "currentSolAccSettings": "[variables('solutionAccSettings')['personal']]",
+    "storageAccountName": "[concat('storage', parameters('unique'))]",
+    "solutionAccSettings": {
+      "personal": {
+        "datafactorySettings": {
+          "inputSerialization": {
+            "type": "CSV",
+            "properties": {
+              "fieldDelimiter": ",",
+              "encoding": "UTF8"
+            }
+          },
+          "outputSerialization": {
+            "type": "CSV",
+            "properties": {
+              "fieldDelimiter": ",",
+              "encoding": "UTF8"
+            }
+          }
+        },
+        "title": "adl"
+      }
+    },
+    "adlAnalyticsName": "[concat('adla', parameters('unique'))]",
+    "adlStoreName": "[concat('adls', parameters('unique'))]"
+  }, 
+    "parameters": {
+        "unique": {
+            "type": "string", 
+            "metadata": {
+                "description": "A globally unique string appended to all the resources"
+            }
+        }, 
+        "location": {
+            "defaultValue": "East US", 
+            "metadata": {
+                "description": "The location to deploy all the resources (except the Data Lake Storage and Analytics accounts, which must be created in East US 2)"
+            }, 
+            "type": "string",
+          "allowedValues": [
+            "East US",
+            "North Europe",
+            "West US"
+          ]
+        }
+    },
+  "resources": [
+
+    {
+      "apiVersion": "[variables('sfVersion')]",
+      "name": "[variables('hostingPlanName')]",
+      "type": "Microsoft.Web/serverFarms",
+      "location": "[variables('location')]",
+      "properties": {
+        "name": "[variables('hostingPlanName')]",
+        "workerSize": "[variables('workerSize')]",
+        "numberOfWorkers": 1
+      },
+      "sku": {
+        "name": "S1",
+        "tier": "[variables('appspsku')]",
+        "size": "S1",
+        "family": "S",
+        "capacity": "1"
+      }
+    },
+    {
+      "apiVersion": "[variables('wsVersion')]",
+      "dependsOn": [
+        "[variables('sfResourceId')]"
+      ],
+      "location": "[variables('location')]",
+      "name": "[variables('webJobSiteName')]",
+      "properties": {
+        "name": "[variables('webJobSiteName')]",
+        "serverFarmId": "[variables('hostingPlanName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "Name": "EventHubName",
+              "Value": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
+            },
+            {
+              "Name": "Microsoft.ServiceBus.ConnectionString",
+              "Value": "[concat(listKeys(resourceid('Microsoft.EventHub/namespaces/authorizationRules',variables('settings')['serviceBusSettings'].serviceBusNamespaceName,'RootManageSharedAccessKey'),variables('settings')[ 'apiVersion' ].serviceBusApiVersion ).primaryConnectionString,';TransportType=Amqp')]"
+            },
+
+            {
+              "Name": "SCM_COMMAND_IDLE_TIMEOUT",
+              "Value": "1200"
+            },
+            {
+              "Name": "WEBJOBS_IDLE_TIMEOUT",
+              "Value": "1800"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "[variables('wsVersion')]",
+          "name": "MSDeploy",
+          "type": "extensions",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', variables('webJobSiteName'))]"
+          ],
+          "properties": {
+            "packageUri": "[variables('webSitePackageUrl')]",
+            "dbType": "None",
+            "connectionString": "",
+            "setParameters": {
+              "IIS Web Application Name": "[variables('webJobSiteName')]"
+            }
+          }
+        }
+      ],
+      "tags": {
+        "[concat('hidden-related:', variables('sfResourceId'))]": "empty"
+      },
+      "type": "Microsoft.Web/Sites"
+    }
+
+  ]
+}

@@ -1,0 +1,266 @@
+{
+    "contentVersion": "1.0.0.0",
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "unique": {
+            "type": "string",
+            "defaultValue": "rba8",
+            "metadata": {
+                "description": "Suffix for deployed resources"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "South Central US",
+                "West Europe",
+				"West US"
+            ],
+            "metadata": {
+                "description": "Location to deploy resources"
+            }
+        },
+		"storagelocation": {
+			"type": "string",
+			"defaultValue": "centralus"
+		},
+        "solAccType": {
+            "type": "string",
+            "defaultValue": "personal",
+            "allowedValues": [
+                "personal",
+                "predictive",
+                "mbl",
+				"other"
+            ]
+        }
+    },
+    "variables": {
+        "solutionAccSettings": {
+            "personal": {
+                "title": "personal",
+                "datafactorySettings": {
+                    "ETLHiveActivityQuery": "ETLQuery.hql",
+                    "inputSerilization": {
+						"type": "CSV",
+                        "properties": {
+							"fieldDelimiter": ",",
+                            "encoding": "UTF8"
+                        }
+                    },
+					"outputSerilization": {
+                        "type": "CSV",
+                        "properties": {
+                            "fieldDelimiter": ",",
+                            "encoding": "UTF8"
+                        }
+                    }
+                },
+                "azureMLSettings": {
+                    "azureMLEndpoint": "https://ussouthcentral.services.azureml.net/workspaces/1cb6843a931244a08611cf85ab3455d4/services/7adcfa540a56493dacbadeb9340ad3d3/jobs",
+                    "azureMLApiKey": "oop61dNlOmFiN/FH1SbllC2eQo6Cv42QYufnufePtkwx55xJPJETsj6oWIy8W+lktVHHUwteiwjauec+bq7rdg=="
+                }
+            }
+		},
+        "currentSolAccSettings": "[variables('solutionAccSettings')[parameters('solAccType')]]",
+        "paramVars": {
+            "location": "[parameters('location')]",
+            "accountType": "Standard-GRS",
+            "scriptContainer": "scriptcontainer"
+        },
+        "settings": {
+            "apiVersion": {
+                "storageAccountApiVersion": "2014-06-01",
+                "serviceBusApiVersion": "2014-09-01",
+                "sqlApiVersion": "12.0",
+                "asaApiVersion": "2015-09-01",
+                "azureMLApiVersion": "2015-09-01",
+                "dataFactoryApiVersion": "2015-09-01"
+            },
+            "asaSettings": {
+                "asaJobName": "[concat(variables('currentSolAccSettings').title,'streamanalytics',parameters('unique'))]",
+                "asaLocation": "[parameters('location')]",
+                "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
+                "asaBlobPathPattern": "rawdata/{date}/{time}"
+            },
+            "datafactorySettings": {
+                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
+                "dataFactoryLocation": "westus",
+                "linkedServiceNames": {
+                    "sqlServerLinkedServiceName": "SqlServerLinkedService",
+                    "azureSqlServerLinkedServiceName": "AzureSqlServerLinkedService"
+                },
+                "datasetNames": {
+					"sqlServerDBInputDatasetName": "SqlServerDBInput",
+					"azureSqlServerDWOutputDatasetName": "AzureSqlServerDWOutput"
+                }
+            },
+            "sqlSettings": {
+                "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
+				"sqlDatabaseName": "[concat(variables('currentSolAccSettings').title,'DB')]",
+                "sqlLocation": "[parameters('location')]",
+                "sqlServerUserName": "[concat(variables('currentSolAccSettings').title,'user')]",
+                "sqlServerPassword": "pass@word1",
+                "sqlMaxSizeBytes": "2147483648",
+                "sqlStartIpAddress": "0.0.0.0",
+                "sqlEndIpAddress": "255.255.255.255",
+				"sqlEdition": "DataWarehouse",
+                "sqlCollation": "SQL_Latin1_General_CP1_CI_AS",
+				"requestedServiceObjectiveName": "DW400"
+            },
+			"sqlSettings2": {
+				"sqlServerName": "WIN-DIFB3TPU2L9",
+				"sqlServerDatabaseName": "personalDB",
+				"sqlServerUserName": "sqluser1",
+				"sqlServerPassword": "EY65t3yBn4se"
+			},
+            "storageSettings": {
+                "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
+            },
+            "serviceBusSettings": {
+                "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
+                "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
+                "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
+            }
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+            "type": "Microsoft.DataFactory/datafactories",
+            "name": "[variables('settings')['datafactorySettings'].dataFactoryName]",
+            "location": "[variables('settings')['datafactorySettings'].dataFactoryLocation]",
+            "resources": [
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                    ],
+                    "properties": {
+                        "type": "OnPremisesSqlServer",
+                        "typeProperties": {
+                            "connectionString": "[concat('Server=',variables('settings')['sqlSettings2'].sqlServerName,';Initial Catalog=',variables('settings')['sqlSettings2'].sqlServerDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings2'].sqlServerUserName,';Password=',variables('settings')['sqlSettings2'].sqlServerPassword)]",
+							"gatewayName": "datagateway-rba11"
+                        }
+                    }
+                },
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "type": "linkedservices",
+                    "name": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]"
+                    ],
+                    "properties": {
+                        "type": "AzureSqlDW",
+                        "typeProperties": {
+                            "connectionString": "[concat('Server=tcp:',variables('settings')['sqlSettings'].sqlServerName,'.database.windows.net,1433;Initial Catalog=',variables('settings')['sqlSettings'].sqlDatabaseName,';Integrated Security=False;User ID=',variables('settings')['sqlSettings'].sqlServerUserName,';Password=',variables('settings')['sqlSettings'].sqlServerPassword,';Connect Timeout=30;Encrypt=True')]"
+                        }
+                    }
+                },
+                {
+					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+					"type": "datasets",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName)]"
+                    ],
+                    "name": "[variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName]",
+                    "properties": {
+                        "published": false,
+                        "type": "SqlServerTable",
+                        "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName]",
+                        "typeProperties": {
+                            "tableName": "Ratings"
+                        },
+                        "availability": {
+                            "frequency": "Minute",
+                            "interval": 15
+                        },
+						"external": true
+                    }
+                },
+                {
+					"apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+					"type": "datasets",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName)]"
+                    ],
+                    "name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName]",
+                    "properties": {
+                        "published": false,
+                        "type": "AzureSqlDWTable",
+                        "linkedServiceName": "[variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName]",
+                        "typeProperties": {
+                            "tableName": "Ratings"
+                        },
+                        "availability": {
+                            "frequency": "Minute",
+                            "interval": 15
+                        }
+                    }
+                },
+                {
+                    "apiVersion": "[variables('settings')['apiVersion'].dataFactoryApiVersion]",
+                    "name": "SQLDB-to-SQLDW-pipeline",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].sqlServerLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/linkedServices/', variables('settings')['datafactorySettings']['linkedServiceNames'].azureSqlServerLinkedServiceName)]",
+                        "[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName)]",
+						"[concat('Microsoft.DataFactory/dataFactories/', variables('settings')['datafactorySettings'].dataFactoryName, '/datasets/', variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName)]"
+                    ],
+                    "type": "datapipelines",
+                    "properties": {
+                        "description": "On Prem SQL Server DB to Azure SQL Server Data Warehouse",
+                        "activities": [
+                            {
+								"type": "Copy",
+								"typeProperties": {
+									"source": {
+										"type": "SqlSource",
+										"sqlReaderQuery": "select * from Ratings"
+									},
+									"sink": {
+										"type": "SqlSink",
+										"writeBatchSize": 1000,
+										"writeBatchTimeout": "00:30:00"
+									}
+								},
+								"inputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['datasetNames'].sqlServerDBInputDatasetName]"
+									}
+								],
+								"outputs": [
+									{
+										"name": "[variables('settings')['datafactorySettings']['datasetNames'].azureSqlServerDWOutputDatasetName]"
+									}
+								],
+								"policy": {
+									"timeout": "01:00:00",
+									"concurrency": 1,
+									"executionPriorityOrder": "NewestFirst",
+									"style": "StartOfInterval"
+								},
+								"scheduler": {
+									"frequency": "Minute",
+									"interval": 15
+								},
+								"name": "Activity-OnPremSQLToAzureSQL"
+							}
+						],
+						"start": "2015-11-05T05:00:00Z",
+						"end": "2015-11-05T06:00:00Z",
+						"isPaused": false,
+						"pipelineMode": "Scheduled"
+					}
+				}
+            ]
+        }
+    ]
+}
