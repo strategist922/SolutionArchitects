@@ -1,10 +1,27 @@
 {
     "contentVersion": "1.0.0.0",
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "parameters": {
+        "unique": {
+            "type": "string",
+            "metadata": {
+                "description": "Globally unique string appended to resources"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "East US",
+            "allowedValues": [
+                "West US",
+				"North Europe",
+				"East US"
+            ],
+            "metadata": {
+                "description": "Location to deploy resources"
+            }
+        }
+    },
     "variables": {
-		"location": "[resourceGroup().location]",
-		"namePrefix": "[resourceGroup().name]",
-		"unique": "[toLower(concat(variables('namePrefix'), uniqueString(subscription().subscriptionId)))]",
         "solutionAccSettings": {
             "personal": {
                 "title": "personal",
@@ -28,7 +45,7 @@
 		},
         "currentSolAccSettings": "[variables('solutionAccSettings')['personal']]",
         "paramVars": {
-            "location": "[variables('location')]",
+            "location": "[parameters('location')]",
             "accountType": "Standard-GRS",
             "scriptContainer": "scriptcontainer"
         },
@@ -42,14 +59,38 @@
                 "dataFactoryApiVersion": "2015-09-01"
             },
             "asaSettings": {
-                "asaJobName": "[concat(variables('currentSolAccSettings').title,'streamanalytics',variables('unique'))]",
-                "asaLocation": "[variables('location')]",
+                "asaJobName": "[concat(variables('currentSolAccSettings').title,'streamanalytics',parameters('unique'))]",
+                "asaLocation": "[parameters('location')]",
                 "asaBlobContainer": "[concat(variables('currentSolAccSettings').title,'stream')]",
                 "asaBlobPathPattern": "rawdata/{date}/{time}"
             },
+            "datafactorySettings": {
+                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'ADF',parameters('unique'))]",
+                "dataFactoryLocation": "westus",
+                "linkedServiceNames": {
+                    "azureSqlDWLinkedServiceName": "AzureSqlDWLinkedService",
+                    "azureMLLinkedServiceName": "AzureMLLinkedService"
+                },
+                "datasetNames": {
+					"azureSqlDWInputDatasetName": "AzureSqlDWInput",
+					"azureSqlDWOutputDatasetName": "AzureSqlDWOutput"
+                }
+            },
+            "datafactorySettings2": {
+                "dataFactoryName": "[concat(variables('currentSolAccSettings').title,'2ADF',parameters('unique'))]",
+                "dataFactoryLocation": "westus",
+                "linkedServiceNames": {
+                    "sqlServerLinkedServiceName": "SqlServerLinkedService",
+                    "azureSqlServerLinkedServiceName": "AzureSqlServerLinkedService"
+                },
+                "datasetNames": {
+					"sqlServerDBInputDatasetName": "SqlServerDBInput",
+					"azureSqlServerDWOutputDatasetName": "AzureSqlServerDWOutput"
+                }
+            },
             "sqlSettings": {
-                "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',variables('unique'))]",
-                "sqlLocation": "[variables('location')]",
+                "sqlServerName": "[concat(variables('currentSolAccSettings').title,'-',parameters('unique'))]",
+                "sqlLocation": "[parameters('location')]",
                 "sqlServerUserName": "[concat(variables('currentSolAccSettings').title,'user')]",
                 "sqlServerPassword": "pass@word1",
                 "sqlDatabaseName": "[concat(variables('currentSolAccSettings').title,'DB')]",
@@ -61,11 +102,11 @@
 				"requestedServiceObjectiveName": "DW400"
             },
             "storageSettings": {
-                "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',variables('unique'))]"
+                "storageAccountName": "[concat(variables('currentSolAccSettings').title,'storeage',parameters('unique'))]"
             },
             "serviceBusSettings": {
-                "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',variables('unique'))]",
-                "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',variables('unique'))]",
+                "serviceBusNamespaceName": "[concat(variables('currentSolAccSettings').title,'servicebus',parameters('unique'))]",
+                "serviceBusIngestEventHubName": "[concat(variables('currentSolAccSettings').title,'eventhub',parameters('unique'))]",
                 "serviceBusSharedAccessPolicyName": "RootManageSharedAccessKey"
             }
         }
@@ -75,16 +116,16 @@
             "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
             "type": "Microsoft.EventHub/namespaces",
             "name": "[variables('settings')['serviceBusSettings'].serviceBusNamespaceName]",
-            "location": "[variables('location')]",
+            "location": "[parameters('location')]",
             "properties": {
-                "region": "[variables('location')]"
+                "region": "[parameters('location')]"
             },
             "resources": [
                 {
                     "apiVersion": "[variables('settings')['apiVersion'].serviceBusApiVersion]",
                     "type": "eventHubs",
                     "name": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]",
-                    "location": "[variables('location')]",
+                    "location": "[parameters('location')]",
                     "dependsOn": [ "[concat('Microsoft.EventHub/namespaces/', variables('settings')['serviceBusSettings'].serviceBusNamespaceName)]" ],
                     "properties": {
                         "path": "[variables('settings')['serviceBusSettings'].serviceBusIngestEventHubName]"
