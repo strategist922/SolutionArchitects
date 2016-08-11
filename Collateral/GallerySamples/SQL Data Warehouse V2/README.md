@@ -72,7 +72,7 @@ is written as
 To get started, click the below button.
 
 <a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FCortana-Intelligence-Gallery-Content%2Fmaster%2FTutorials%2FSQL-Data-Warehouse%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
-<a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2FCollateral%2FGallerySamples%2FSQL-Data-Warehouse-V2%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+<a target="_blank" id="deploy-to-azure" href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Froalexan%2FSolutionArchitects%2Fmaster%2FCollateral%2FGallerySamples%2FSQL%20Data%20Warehouse%20V2%2Fazuredeploypart1.json"><img src="http://azuredeploy.net/deploybutton.png"/></a>
 
 This will create a new "blade" in the Azure portal.
 
