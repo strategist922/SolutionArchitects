@@ -1,0 +1,65 @@
+DECLARE @year int = Int32.Parse(@out.Split('/')[3]);
+DECLARE @month int = Int32.Parse(@out.Split('/')[4]);
+DECLARE @day int = Int32.Parse(@out.Split('/')[5]);
+DECLARE @hour int = Int32.Parse(@out.Split('/')[6]);
+DECLARE @filename string = @out.Split('/')[7];
+DECLARE @minute int = Int32.Parse(@filename.Split('_')[0]);
+DECLARE @jobTime DateTime = new DateTime(@year,@month,@day,@hour, @minute, 0,System.DateTimeKind.Utc);
+
+
+
+DECLARE @UTCTimeBegin DateTime = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
+@cdrdata =
+ EXTRACT Date DateTime?,
+         Failed string,
+         RecordType string,
+         SystemIdentity string,
+         FileNum string,
+         SwitchNum string,
+         CallingNum string,
+         CallingIMSI string,
+         CalledNum string,
+         CalledIMSI string,
+         TimeType string,
+         CallPeriod string,
+         ServiceType string,
+         Transfer string,
+         OutgoingTrunk string,
+         Msrn string,
+         EndType string,
+		 EventProcessedUtcTime string,
+		 PartitionId string,
+		 EventEnqueuedUtcTime string
+ FROM @in
+USING Extractors.Csv(silent:true);
+
+@rs1 =
+    SELECT DateAggregated,
+           SwitchNum,
+           COUNT(*) AS CallCount,
+           SUM(Convert.ToInt32(Failed=="True")) AS CallFailure
+    FROM  (
+        SELECT @UTCTimeBegin.AddSeconds((Date.Value.ToUniversalTime().Ticks - @UTCTimeBegin.Ticks) / 10000000 / 60 * 60) AS DateAggregated,
+               SwitchNum,
+               Failed
+        FROM
+        (
+            SELECT Date,
+                   SwitchNum,
+                   Failed
+            FROM @cdrdata
+            WHERE Date != null
+        ) AS normalizeddata
+        WHERE
+                 Date.Value.ToUniversalTime() > @jobTime
+            AND Date.Value.ToUniversalTime() <= @jobTime.AddMinutes(15) 
+    ) AS filtereddata
+    GROUP BY SwitchNum,
+    DateAggregated;
+
+
+ OUTPUT @rs1
+ TO  @out
+ ORDER BY DateAggregated,SwitchNum
+ USING Outputters.Csv();    
+
